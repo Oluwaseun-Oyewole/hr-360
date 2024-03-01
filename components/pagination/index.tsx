@@ -23,8 +23,8 @@ const HR360Pagination = ({
     setCurrent(page);
   };
   return (
-    <div className="py-6 flex justify-between items-center">
-      <div className="flex gap-3">
+    <div className="py-6 md:flex justify-between items-center">
+      <div className="flex gap-3 pb-4 md:pb-0">
         <span className="text-gray-500">Showing</span>
         <span className="font-normal">
           {itemCountFrom} to {itemCountTo} of {total}
@@ -38,7 +38,7 @@ const HR360Pagination = ({
         pageSize={5}
         showQuickJumper={false}
         showPrevNextJumpers={true}
-        className="flex items-center justify-center"
+        className="flex items-center md:justify-center"
         prevIcon={
           <div className="bg-[#F5F5F5] p-2 rounded-lg">
             <HiOutlineBackward className="text-md" />
