@@ -8,10 +8,12 @@ export interface TableParams {
 }
 
 interface ITableProps extends TableProps<any> {
-  title: any;
+  title: any | undefined;
   total: number;
   itemCountFrom: number;
   itemCountTo: number;
+  isPaginate?: boolean;
+  width?: number;
 }
 
 const HR360Table: React.FC<ITableProps> = ({
@@ -23,27 +25,31 @@ const HR360Table: React.FC<ITableProps> = ({
   itemCountFrom,
   itemCountTo,
   title,
+  isPaginate = true,
+  width,
   ...rest
 }) => {
   return (
     <>
-      <div className="py-3 h-[300px] overflow-y-scroll">
+      <div className="py-3">
         <Table
           dataSource={dataSource}
           columns={columns}
           onChange={onChange}
           pagination={pagination}
           {...rest}
-          className="relative cursor-pointer"
-          scroll={{ x: 900 }}
+          className="cursor-pointer"
+          scroll={{ x: width ?? 900 }}
         />
       </div>
-      <HR360Pagination
-        total={total}
-        title={title}
-        itemCountFrom={itemCountFrom}
-        itemCountTo={itemCountTo}
-      />
+      {isPaginate && (
+        <HR360Pagination
+          total={total}
+          title={title}
+          itemCountFrom={itemCountFrom}
+          itemCountTo={itemCountTo}
+        />
+      )}
     </>
   );
 };

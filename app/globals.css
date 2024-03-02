@@ -21,3 +21,21 @@
   justify-content: center !important;
   font-size: 800 !important;
 }
+
+.ant-input::placeholder {
+  color: black !important;
+}
+
+.ant-table {
+  position: relative !important;
+  height: 350px !important;
+  overflow: scroll !important;
+}
+
+/* .ant-table-thead {
+  position: sticky !important;
+  left: 0 !important;
+  top: 0 !important;
+  overflow: scroll !important;
+  z-index: 100 !important;
+} */

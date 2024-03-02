@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.className}  grid grid-flow-col grid-cols-[100%] lg:grid-cols-[16%_84%]`}
+        className={`${outfit.className} grid grid-flow-col grid-cols-[100%] lg:grid-cols-[16%_84%]`}
       >
         <div className="hidden lg:block bg-[#F5F5F5] h-screen overflow-y-scroll">
           <Sidebar />
@@ -69,8 +69,10 @@ export default function RootLayout({
             },
           }}
         >
-          <div className="overflow-hidden px-6 font-light">
-            <Header />
+          <div className="h-screen overflow-y-scroll px-6 font-light">
+            <div className="sticky top-0 left-0 bg-white z-50">
+              <Header />
+            </div>
             <p className="font-medium text-lg">
               {PageTitle[getTitleEnum as keyof typeof PageTitle]}
             </p>

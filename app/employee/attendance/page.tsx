@@ -1,10 +1,12 @@
 "use client";
-import Image from "@/assets/image.svg";
+import User from "@/assets/image.svg";
 import Cards from "@/components/card";
+import Filter from "@/components/filter";
 import HR360Table from "@/components/table";
 import { EmployeeCards } from "@/utils/constants";
 import { TableProps } from "antd";
-import { renderEmployment, renderStatus } from "./style";
+import Image from "next/image";
+import { renderEmployment, renderStatus } from "../../style";
 
 type EmployeeType = { name: string; img: string };
 
@@ -22,11 +24,6 @@ interface DataType {
 }
 
 export default function Home() {
-  const renderCustomCell = (object: EmployeeType) => {
-    const { name, img } = object;
-    return <div>{name}</div>;
-  };
-
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Date",
@@ -38,7 +35,12 @@ export default function Home() {
       title: "Employee",
       dataIndex: "employee",
       key: "employee",
-      render: (object) => renderCustomCell(object),
+      render: (_, el) => (
+        <div className="flex items-center gap-2">
+          {<Image src={el.employee.img} alt="" />}
+          {el.employee.name}
+        </div>
+      ),
     },
 
     {
@@ -53,7 +55,7 @@ export default function Home() {
       key: "employeeType",
       render: (el) => (
         <div
-          className={`md:w-1/2 py-1 capitalize text-center  border-[1px] rounded-md ${renderEmployment(
+          className={`lg:w-1/2 py-1 capitalize text-center  border-[1px] rounded-md ${renderEmployment(
             el
           )}`}
         >
@@ -99,7 +101,7 @@ export default function Home() {
   const data: DataType[] = [
     {
       key: "1",
-      employee: { name: "Samuel Oyewole", img: Image },
+      employee: { name: "Samuel Oyewole", img: User },
       checkIn: "9:00",
       checkOut: "5:00",
       date: "13/01",
@@ -111,7 +113,7 @@ export default function Home() {
     },
     {
       key: "2",
-      employee: { name: "Samuel Oyewole", img: Image },
+      employee: { name: "Samuel Oyewole", img: User },
       date: "13/01",
       checkIn: "9:00",
       checkOut: "5:00",
@@ -123,7 +125,7 @@ export default function Home() {
     },
     {
       key: "3",
-      employee: { name: "Samuel Oyewole", img: Image },
+      employee: { name: "Samuel Oyewole", img: User },
       date: "13/01",
       status: "Late",
       invoice: "View",
@@ -136,7 +138,7 @@ export default function Home() {
 
     {
       key: "4",
-      employee: { name: "Samuel Oyewole", img: Image },
+      employee: { name: "Samuel Oyewole", img: User },
       checkIn: "9:00",
       checkOut: "5:00",
       date: "13/01",
@@ -148,7 +150,44 @@ export default function Home() {
     },
     {
       key: "5",
-      employee: { name: "Samuel Oyewole", img: Image },
+      employee: { name: "Samuel Oyewole", img: User },
+      date: "13/01",
+      checkIn: "9:00",
+      checkOut: "5:00",
+      status: "Absent",
+      invoice: "View",
+      overtime: "0h",
+      employmentType: "Part-Time",
+      role: "Software Engineer",
+    },
+    {
+      key: "6",
+      employee: { name: "Samuel Oyewole", img: User },
+      date: "13/01",
+      status: "Late",
+      invoice: "View",
+      checkIn: "9:00",
+      checkOut: "5:00",
+      overtime: "2h",
+      employmentType: "Full-Time",
+      role: "Sales Manager",
+    },
+
+    {
+      key: "7",
+      employee: { name: "Samuel Oyewole", img: User },
+      checkIn: "9:00",
+      checkOut: "5:00",
+      date: "13/01",
+      status: "Present",
+      invoice: "View",
+      overtime: "0h",
+      employmentType: "Full-Time",
+      role: "HR Manager",
+    },
+    {
+      key: "8",
+      employee: { name: "Samuel Oyewole", img: User },
       date: "13/01",
       checkIn: "9:00",
       checkOut: "5:00",
@@ -163,6 +202,7 @@ export default function Home() {
   return (
     <main>
       <Cards cardArray={EmployeeCards} />
+      <Filter />
       <HR360Table
         columns={columns}
         dataSource={data}
