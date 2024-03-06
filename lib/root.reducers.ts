@@ -1,5 +1,5 @@
+import auth from "@/app/auth/login/store/slice";
 import dashboard from "@/app/dashboard/store/slice";
-import auth from "@/app/login/store/slice";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({

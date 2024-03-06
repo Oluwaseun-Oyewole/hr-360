@@ -3,7 +3,7 @@ import HR360Table from "@/components/table";
 import { formatCurrency } from "@/utils/helper";
 import { TableProps } from "antd";
 import Image from "next/image";
-import { renderEmployment } from "../style";
+import { renderEmployment } from "../../style";
 
 type EmployeeType = { name: string; img: string };
 

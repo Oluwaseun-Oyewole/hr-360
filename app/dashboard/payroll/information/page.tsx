@@ -1,12 +1,15 @@
 "use client";
 import User from "@/assets/image.svg";
-import Cards from "@/components/card";
 import Filter from "@/components/filter";
+import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import HR360Table from "@/components/table";
-import { AbsentCards } from "@/utils/constants";
+import { PayrollCards } from "@/utils/constants";
 import { TableProps } from "antd";
 import Image from "next/image";
-import { renderEmployment, renderStatus } from "../../style";
+import { useRef } from "react";
+import { renderEmployment, renderStatus } from "../../../style";
+import PayrollBreakdown from "../payroll-breakdown";
+import PayrollCard from "../payroll-card";
 
 type EmployeeType = { name: string; img: string };
 
@@ -199,9 +202,38 @@ export default function Home() {
     },
   ];
 
+  const modalRef = useRef<IHr360Modal>(null);
+
+  const handleScheduleModal = () => {
+    modalRef.current?.open({
+      title: "",
+      content: <p>Schedule View Breakdown coming soon</p>,
+    });
+  };
+
+  const handlePayoutModal = () => {
+    modalRef.current?.open({
+      title: "Payroll Breakdown",
+      content: <PayrollBreakdown />,
+    });
+  };
+
+  const handleViewModal = () => {
+    modalRef.current?.open({
+      title: "",
+      content: <p>View Breakdown Coming Soon</p>,
+    });
+  };
+
   return (
     <main>
-      <Cards cardArray={AbsentCards} />
+      <Hr360Modal ref={modalRef} />
+      <PayrollCard
+        cardArray={PayrollCards}
+        handleScheduleModal={handleScheduleModal}
+        handlePayoutModal={handlePayoutModal}
+        handleViewModal={handleViewModal}
+      />
       <Filter />
       <HR360Table
         columns={columns}

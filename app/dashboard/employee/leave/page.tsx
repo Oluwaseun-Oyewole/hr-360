@@ -3,10 +3,10 @@ import User from "@/assets/image.svg";
 import Cards from "@/components/card";
 import Filter from "@/components/filter";
 import HR360Table from "@/components/table";
-import { EmployeeCards } from "@/utils/constants";
+import { LeaveCards } from "@/utils/constants";
 import { TableProps } from "antd";
 import Image from "next/image";
-import { renderEmployment, renderStatus } from "../../style";
+import { renderEmployment, renderStatus } from "../../../style";
 
 type EmployeeType = { name: string; img: string };
 
@@ -201,7 +201,7 @@ export default function Home() {
 
   return (
     <main>
-      <Cards cardArray={EmployeeCards} />
+      <Cards cardArray={LeaveCards} />
       <Filter />
       <HR360Table
         columns={columns}

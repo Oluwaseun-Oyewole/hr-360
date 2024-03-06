@@ -3,11 +3,11 @@ import User from "@/assets/image.svg";
 import Filter from "@/components/filter";
 import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import HR360Table from "@/components/table";
-import { PayrollCompensationCards } from "@/utils/constants";
+import { BenefitPayrollCards } from "@/utils/constants";
 import { TableProps } from "antd";
 import Image from "next/image";
 import { useRef } from "react";
-import { renderEmployment, renderStatus } from "../../style";
+import { renderEmployment, renderStatus } from "../../../style";
 import PayrollCard from "../payroll-card";
 
 type EmployeeType = { name: string; img: string };
@@ -203,24 +203,24 @@ export default function Home() {
 
   const modalRef = useRef<IHr360Modal>(null);
 
-  const handleAnalysisModal = () => {
+  const handleViewListModal = () => {
     modalRef.current?.open({
-      title: <p>Analysis Breakdown</p>,
-      content: <p>Get your analysis breakdown...</p>,
+      title: <p>View Breakdown</p>,
+      content: <p>Get your view list breakdown...</p>,
     });
   };
 
-  const handlePayAnalysisModal = () => {
+  const handlePayListModal = () => {
     modalRef.current?.open({
-      title: "Pay Analysis",
-      content: <p>Get Payroll Analysis...</p>,
+      title: "Pay List",
+      content: <p>Get Payroll list Analysis...</p>,
     });
   };
 
   const handleViewModal = () => {
     modalRef.current?.open({
-      title: "View Analysis Breakdown",
-      content: <p>View Analysis....</p>,
+      title: "View",
+      content: <p>Get your view analysis....</p>,
     });
   };
 
@@ -228,10 +228,10 @@ export default function Home() {
     <main>
       <Hr360Modal ref={modalRef} />
       <PayrollCard
-        cardArray={PayrollCompensationCards}
-        handlePayoutModal={handleAnalysisModal}
-        handleViewModal={handleViewModal}
-        handleScheduleModal={handlePayAnalysisModal}
+        cardArray={BenefitPayrollCards}
+        handlePayoutModal={handleViewListModal}
+        handleViewModal={handlePayListModal}
+        handleScheduleModal={handleViewModal}
       />
       <Filter />
       <HR360Table

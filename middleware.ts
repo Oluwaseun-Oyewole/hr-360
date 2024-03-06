@@ -9,11 +9,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!currentUser && !request.nextUrl.pathname.startsWith("/login")) {
-    return Response.redirect(new URL("/login", request.url));
+  if (!currentUser && !request.nextUrl.pathname.startsWith("/auth/login")) {
+    return Response.redirect(new URL("/auth/login", request.url));
   }
 }
 
 export const config = {
-  matcher: ["/", "/login", "/dashboard"],
+  matcher: ["/", "/auth/login", "/dashboard"],
 };
