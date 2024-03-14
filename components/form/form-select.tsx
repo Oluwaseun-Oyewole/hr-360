@@ -1,5 +1,6 @@
 import type { SelectProps } from "antd";
 import { Select } from "antd";
+import classNames from "classnames";
 import { ErrorMessage } from "formik";
 import React from "react";
 import FormError from "./form-error";
@@ -38,8 +39,15 @@ const FormSelect: React.FC<ISelect> = ({
             value={value || undefined}
             allowClear
             showSearch
-            className={className}
-            style={{ width: "100%", height: "60px" }}
+            className={classNames(className)}
+            style={{
+              width: "100%",
+              height: "60px",
+            }}
+            dropdownStyle={{
+              color: "red",
+              fontWeight: "lighter",
+            }}
             placeholder={placeholder}
             onChange={handleChange}
             onBlur={onBlur}

@@ -1,11 +1,12 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
+import { login_redirect } from "@/routes";
+import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BsGithub } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
 import * as Yup from "yup";
 
 const Login = () => {
@@ -17,12 +18,28 @@ const Login = () => {
     password: Yup.string().required("Password Required"),
   });
 
-  const handleSubmit = async (values: Record<string, any>) => {};
+  const handleSubmit = async (values: Record<string, any>) => {
+    try {
+      const res = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      if (res?.status === 200) {
+        router.replace(login_redirect);
+      } else {
+        Toastify.error(res?.error as string);
+      }
+    } catch (error) {
+      Toastify.error(error as string);
+    }
+  };
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center justify-center h-screen !font-light">
+    <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
       <h1 className="text-center">Log in to your account</h1>
-      <div className="w-[500px]">
+      <div className="w-[80%] lg:w-[40%]">
         <Formik
           initialValues={{
             email: "",
@@ -33,39 +50,37 @@ const Login = () => {
         >
           {(formik) => {
             return (
-              <Form className="w-[500px]">
+              <Form>
                 <div className="flex flex-col gap-5">
                   <FormikController
                     control="input"
                     label=""
                     type="email"
-                    placeholder="test@gmail.com"
+                    placeholder="Email"
                     name="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="w-[500px] !py-3"
+                    className="!py-3"
                   />
 
                   <FormikController
                     control="input"
                     label=""
                     type="password"
-                    placeholder="input password"
+                    placeholder="Password"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="w-[500px] !py-3"
+                    className="!py-3"
                   />
                 </div>
 
                 <Button
                   isLoading={formik.isSubmitting}
                   disabled={!formik.isValid}
-                  className={`${
-                    !formik.isValid ? "!bg-red-500" : "!bg-blue-500"
-                  }  !mt-5 !disabled:cursor-not-allowed`}
+                  className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
                 >
                   login
                 </Button>
@@ -74,21 +89,19 @@ const Login = () => {
           }}
         </Formik>
 
+        <Link
+          href="/auth/forgotPassword"
+          className="text-blue-500 cursor-pointer !py-4 text-sm"
+        >
+          Forgot Password?
+        </Link>
+
         <p className="pt-4 text-right text-sm">
           Already have an account?{" "}
           <Link href="/auth/register" className="text-blue-500 cursor-pointer">
             register
           </Link>
         </p>
-
-        <div className="mt-4 flex flex-col gap-5">
-          <Button className="!bg-white !text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm">
-            <BsGithub className="text-xl" /> Continue with Github
-          </Button>
-          <Button className="!text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm">
-            <FcGoogle className="text-2xl" /> Continue with Google
-          </Button>
-        </div>
       </div>
     </div>
   );

@@ -39,3 +39,18 @@
   overflow: scroll !important;
   z-index: 100 !important;
 } */
+
+.ant-select-selection-placeholder,
+.ant-select-selection-item,
+.ant-select-selection {
+  color: black !important;
+  font-weight: 300 !important;
+}
+/* 
+.ant-select-selection-item{
+  font-weight: 300;
+} */
+
+.ant-select-selection {
+  background-color: green !important;
+}

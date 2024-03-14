@@ -50,25 +50,25 @@ export const routes: IRoutesType[] = [
       {
         id: 1,
         title: "Employee Directory",
-        url: "/employee/directory",
+        url: "/dashboard/employee/directory",
       },
 
       {
         id: 2,
         title: "Attendance",
-        url: "/employee/attendance",
+        url: "/dashboard/employee/attendance",
       },
 
       {
         id: 3,
         title: "Leave Request",
-        url: "/employee/leave",
+        url: "/dashboard/employee/leave",
       },
 
       {
         id: 4,
         title: "Absence Trends",
-        url: "/employee/absence",
+        url: "/dashboard/employee/absence",
       },
     ],
   },
@@ -77,9 +77,13 @@ export const routes: IRoutesType[] = [
     icon: Recruit,
     title: "Recruitment",
     subRoutes: [
-      { title: "Stage One", id: 1, url: "/recruitment/stage-one" },
-      { title: "Stage Two", id: 2, url: "/recruitment/stage-two" },
-      { title: "Stage Three", id: 3, url: "/recruitment/stage-three" },
+      { title: "Stage One", id: 1, url: "/dashboard/recruitment/stage-one" },
+      { title: "Stage Two", id: 2, url: "/dashboard/recruitment/stage-two" },
+      {
+        title: "Stage Three",
+        id: 3,
+        url: "/dashboard/recruitment/stage-three",
+      },
     ],
 
     ActiveIcon: FaUserPlus,
@@ -103,19 +107,19 @@ export const routes: IRoutesType[] = [
       {
         id: 1,
         title: "Payroll Information",
-        url: "/payroll/information",
+        url: "/dashboard/payroll/information",
       },
 
       {
         id: 2,
         title: "Benefits Overall",
-        url: "/payroll/benefits",
+        url: "/dashboard/payroll/benefits",
       },
 
       {
         id: 3,
         title: "Compensation Analysis",
-        url: "/payroll/compensation",
+        url: "/dashboard/payroll/compensation",
       },
     ],
   },

@@ -5,14 +5,19 @@ import Logout from "@/assets/logout-03.svg";
 import Mail from "@/assets/mail-02.svg";
 import Bell from "@/assets/notification-03.svg";
 import Settings from "@/assets/setting-03.svg";
+import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import type { MenuProps } from "antd";
 import { Dropdown, Tooltip, notification } from "antd";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import Button from "../button";
 
 const UserDetails = ({ isHidden }: { isHidden: boolean }) => {
   const [api, contextHolder] = notification.useNotification();
-
+  const router = useRouter();
   const openNotification = () => {
     api.open({
       duration: 3,
@@ -21,22 +26,83 @@ const UserDetails = ({ isHidden }: { isHidden: boolean }) => {
     });
   };
 
+  const modalRef = useRef<IHr360Modal>(null);
+
+  const handleLogoutModal = () => {
+    modalRef.current?.open({
+      title: "",
+      content: (
+        <div className="w-full flex items-center justify-center flex-col">
+          <p className="text-lg pb-3 !font-light">
+            Are you sure you want to logout?
+          </p>
+
+          <div className="flex gap-5 pt-6 pb-4 w-[80%] items-center justify-center">
+            <Button
+              className="!bg-green-700"
+              onClick={() => {
+                signOut({ redirect: false });
+                router.push("/auth/login");
+              }}
+            >
+              Yes
+            </Button>
+            <Button
+              className="!bg-red-700"
+              onClick={() => modalRef.current?.close()}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ),
+    });
+  };
+
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <p className="font-light">User Profile Information</p>,
+      label: (
+        <Link href="/auth/accountUpdate">
+          <p className="font-light">Account update</p>
+        </Link>
+      ),
     },
+
     {
       key: "2",
       label: (
-        <div className="flex items-center gap-2 font-light">
+        <Link href="/auth/forgotPassword">
+          <p className="font-light">Update password</p>
+        </Link>
+      ),
+    },
+
+    {
+      key: "3",
+      label: (
+        <Link href="/auth/emailUpdate">
+          <p className="font-light">Update Email</p>
+        </Link>
+      ),
+    },
+
+    {
+      key: "4",
+      label: (
+        <div
+          className="flex items-center gap-2 font-light"
+          onClick={handleLogoutModal}
+        >
           Logout <Image src={Logout} alt="logout" />
         </div>
       ),
     },
   ];
+
   return (
     <div className={`${isHidden && "hidden"} flex gap-8 items-center`}>
+      <Hr360Modal ref={modalRef} />
       <div className="flex gap-4 items-center">
         {contextHolder}
 
@@ -62,7 +128,7 @@ const UserDetails = ({ isHidden }: { isHidden: boolean }) => {
         </Tooltip>
       </div>
 
-      <Dropdown menu={{ items }} trigger={["click"]} className="!font-light">
+      <Dropdown menu={{ items }} trigger={["click"]} className="!font-normal">
         <Tooltip title="Profile" color={`#380ABB`} className="text-black">
           <div
             className="flex gap-2 items-center cursor-pointer"

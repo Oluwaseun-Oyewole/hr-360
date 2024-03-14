@@ -22,6 +22,7 @@ export default function FormInput({
   type = "text",
   onChange,
   onBlur,
+  style,
   ...props
 }: IProps) {
   const { Password } = Input;

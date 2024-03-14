@@ -2,7 +2,9 @@
 import { AppStore, store } from "@/lib/store";
 import { ConfigProvider } from "antd";
 import { useRef } from "react";
-import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
+import { Provider as Providers } from "react-redux";
+import Provider from "./provider/layout";
 import { outfit } from "./fonts";
 import "./globals.css";
 
@@ -18,27 +20,33 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${outfit.className}`}>
-        <ConfigProvider
-          theme={{
-            token: {
-              fontFamily: `${outfit}`,
-              fontWeightStrong: 300,
-            },
-            components: {
-              Table: {
-                headerBg: "#F5F5F5",
-                rowHoverBg: "rgba(0,0,0,0.02)",
-                colorText: "#000",
-                borderColor: "rgba(0,0,0,0.1)",
-                boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
+      <head>
+        <title>hr360</title>
+        <meta name="hr360" content="hr360 dashboard" />
+      </head>
+      <Providers store={storeRef.current}>
+        <body className={`${outfit.className}`}>
+          <ConfigProvider
+            theme={{
+              token: {
+                fontFamily: `${outfit}`,
               },
-            },
-          }}
-        >
-          <Provider store={storeRef.current}> {children}</Provider>
-        </ConfigProvider>
-      </body>
+              components: {
+                Table: {
+                  headerBg: "#F5F5F5",
+                  rowHoverBg: "rgba(0,0,0,0.02)",
+                  colorText: "#000",
+                  borderColor: "rgba(0,0,0,0.1)",
+                  boxShadow: "10px 10px 5px 0px rgba(0,0,0,0.75)",
+                },
+              },
+            }}
+          >
+            <Provider>{children}</Provider>
+          </ConfigProvider>
+          <Toaster position="top-center" />
+        </body>
+      </Providers>
     </html>
   );
 }

@@ -1,3 +1,11 @@
+// "use client";
+
+import { getServerSession } from "next-auth";
+
+// import { useSession } from "next-auth/react";
+
 export default function Home() {
-  return <main>Dashboard</main>;
+  const session = getServerSession();
+  // console.log("user", session);
+  return <main>Dashboard -- {JSON.stringify(session)}</main>;
 }
