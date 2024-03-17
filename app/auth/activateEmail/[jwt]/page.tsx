@@ -13,17 +13,17 @@ const ActivateEmail = async ({ params: { jwt } }: IProps) => {
   return (
     <div className="flex h-screen items-center justify-center">
       {result === "userNotExist" ? (
-        <p className="text-red-500">User does not exist</p>
+        <p className="text-red-500 text-lg py-2">User does not exist</p>
       ) : result === "alreadyActivate" ? (
         <div>
-          <p className="text-red-500">Email already activated</p>
+          <p className="text-red-500 text-lg py-2">Email already activated</p>
           <Button className="!bg-primary-100 !w-[300px] !mt-4">
             <Link href="/auth/login"> Back to login</Link>
           </Button>
         </div>
       ) : result === "success" ? (
         <div>
-          <p>Email is now activated</p>
+          <p className="text-lg py-2">Email is now activated</p>
           <Button className="!bg-primary-100 !w-[300px] !mt-4">
             <Link href="/auth/login"> Back to login</Link>
           </Button>

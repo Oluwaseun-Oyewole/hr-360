@@ -20,10 +20,10 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*:;'><.,/?}{[\]\-_+=])(?=.{8,})/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       )
-      .required("New password is required"),
+      .required("Password is required"),
     confirm_password: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
-      .required("Confirm new password is required"),
+      .required("Confirm password is required"),
   });
 
   const handleSubmit = async (
@@ -45,7 +45,7 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
       <h1 className="text-center">Password Reset Form</h1>
-      <div>
+      <div className="w-[80%] lg:w-[40%]">
         <Formik
           initialValues={{
             password: "",
@@ -56,8 +56,8 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
         >
           {(formik) => {
             return (
-              <Form className="!w-[500px]">
-                <div className=" flex flex-col gap-5">
+              <Form>
+                <div className="flex flex-col gap-5">
                   <FormikController
                     control="input"
                     type="password"
@@ -66,7 +66,7 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter password"
-                    className="py-[15px] !w-[500px]"
+                    className="py-[15px]"
                     onCopy={(e: any) => {
                       e.preventDefault();
                       return false;
@@ -85,7 +85,7 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Confirm password"
-                    className="py-[15px] !w-[500px]"
+                    className="py-[15px]"
                     onCopy={(e: any) => {
                       console.log("trying to copy");
                       e.preventDefault();
@@ -101,9 +101,7 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                 <Button
                   isLoading={formik.isSubmitting}
                   disabled={!formik.isValid}
-                  className={`${
-                    !formik.isValid ? "!bg-red-500" : "!bg-blue-500"
-                  }  !mt-5 !disabled:cursor-not-allowed`}
+                  className={`${"!bg-blue-500"} !mt-5 !disabled:cursor-not-allowed`}
                 >
                   Submit
                 </Button>

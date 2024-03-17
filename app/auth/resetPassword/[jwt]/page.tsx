@@ -14,7 +14,7 @@ const ResetPassword = ({ params: { jwt } }: IProps) => {
     return <div>Invalid token or URL</div>;
   }
   return (
-    <div>
+    <div className="w-full">
       <PasswordReset params={{ jwt }} />
     </div>
   );

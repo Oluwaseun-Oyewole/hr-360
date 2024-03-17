@@ -47,7 +47,7 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
         : api.open({
             duration: 3,
             message: "",
-            description: <div>No Available Notification</div>,
+            description: <div>No Notification</div>,
           });
     }
   };

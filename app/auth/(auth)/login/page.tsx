@@ -20,7 +20,7 @@ const Login = () => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-8])(?=.*[!@#$%^&*:;'><.,/?}{[\]\-_+=])(?=.{8,})/,
         "Must Contain 7 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       )
-      .required("New password is required"),
+      .required("Password is required"),
   });
 
   const handleSubmit = async (values: Record<string, any>) => {

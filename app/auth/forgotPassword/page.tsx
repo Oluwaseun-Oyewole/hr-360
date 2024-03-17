@@ -35,7 +35,7 @@ const ForgotPassword = () => {
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
       <h1 className="text-center">Reset Your Password</h1>
-      <div className="w-[500px]">
+      <div className="w-[85%] lg:w-[40%]">
         <Formik
           initialValues={{
             email: "",
@@ -45,7 +45,7 @@ const ForgotPassword = () => {
         >
           {(formik) => {
             return (
-              <Form className="w-[500px]">
+              <Form>
                 <div className="flex flex-col gap-5">
                   <FormikController
                     control="input"
@@ -56,7 +56,6 @@ const ForgotPassword = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="w-[500px] !py-3"
                   />
                 </div>
 
@@ -69,9 +68,7 @@ const ForgotPassword = () => {
                 <Button
                   isLoading={formik.isSubmitting}
                   disabled={!formik.isValid}
-                  className={`${
-                    !formik.isValid ? "!bg-red-500" : "!bg-blue-500"
-                  }  !mt-5 !disabled:cursor-not-allowed`}
+                  className={`${"!bg-blue-500"} !mt-5 !disabled:cursor-not-allowed`}
                 >
                   Reset Password
                 </Button>

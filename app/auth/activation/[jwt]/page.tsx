@@ -13,17 +13,17 @@ const ActivationPage = async ({ params: { jwt } }: IProps) => {
   return (
     <div className="flex h-screen items-center justify-center">
       {result === "userNotExist" ? (
-        <p className="text-red-500">User does not exist</p>
+        <p className="text-red-500 text-xl py-2">Account does not exist</p>
       ) : result === "alreadyActivate" ? (
         <div>
-          <p className="text-red-500">User already activated</p>
+          <p className="text-red-500 text-xl py-2">Account already activated</p>
           <Button className="!bg-primary-100 !w-[300px] !mt-4">
             <Link href="/auth/login"> Back to login</Link>
           </Button>
         </div>
       ) : result === "success" ? (
         <div>
-          <p>Success! The user is now activated</p>
+          <p className="text-xl py-2">Account activation is successful</p>
           <Button className="!bg-primary-100 !w-[300px] !mt-4">
             <Link href="/auth/login"> Back to login</Link>
           </Button>
