@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { PageTitle } from "@/utils/constants";
 import { Breadcrumb } from "antd";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = useSession();
   const pathname = usePathname();
   const getTitle = pathname.split("/");
   let getTitleEnum = getTitle[getTitle.length - 1];
@@ -40,8 +42,11 @@ export default function RootLayout({
       </div>
 
       <div className="h-screen overflow-y-scroll px-6 font-light">
-        <div className="sticky top-0 left-0 bg-white z-50">
-          <Header />
+        <div
+          className="sticky top-0 left-0 bg-white
+         z-50"
+        >
+          <Header role={session?.data?.user?.role!} />
         </div>
         <p className="font-medium text-xl">
           {PageTitle[getTitleEnum as keyof typeof PageTitle]}
@@ -53,13 +58,6 @@ export default function RootLayout({
               {
                 title: <Link href="/dashboard">Dashboard</Link>,
               },
-              // {
-              //   title: (
-              //     <button disabled className="disabled:cursor-not-allowed">
-              //       {PageTitle[getTitleEnum as keyof typeof PageTitle]}
-              //     </button>
-              //   ),
-              // },
               {
                 title: (
                   <p className="text-primary-100">

@@ -29,7 +29,7 @@ export const POST = async (req: NextRequest) => {
     );
     if (result)
       return NextResponse.json(
-        { message: "Password update successful" },
+        { message: "Password update successful", statusCode: 200 },
         { status: 200 }
       );
     else {

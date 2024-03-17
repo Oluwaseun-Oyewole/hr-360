@@ -7,6 +7,9 @@ declare module "next-auth" {
       _id: string;
       role: string;
       email: string;
+      name: string;
+      isUpdated: boolean;
+      accountType;
       employmentType: string;
       accessToken: string;
       refreshToken: string;
@@ -18,7 +21,9 @@ declare module "next-auth" {
 
   interface User extends DefaultUser {
     role: string;
+    isUpdated: boolean;
     employmentType: string;
+    accountType;
     accessToken: string;
     refreshToken: string;
     verify: any;
@@ -29,6 +34,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     role: string;
+    isUpdated: boolean;
     employmentType: string;
     address: string;
     accessToken: string;

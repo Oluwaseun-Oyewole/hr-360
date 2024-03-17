@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { Toastify } from "@/utils/toasts";
+import { register } from "@/services/auth";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ const SignUp = () => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-8])(?=.*[!@#$%^&*:;'><.,/?}{[\]\-_+=])(?=.{8,})/,
         "Must Contain 7 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       )
-      .required("New password is required"),
+      .required("Password is required"),
     role: Yup.string().required("Select Role"),
     employmentType: Yup.string().required("Select Employment Type"),
   });
@@ -28,22 +28,16 @@ const SignUp = () => {
     values: Record<string, any>,
     { resetForm }: any
   ) => {
-    try {
-      const res: any = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        Toastify.success(data?.message ?? "...");
-        resetForm();
-        router.push("/auth/login");
-      } else {
-        Toastify.error(data?.message ?? "Form Submission Failed");
-      }
-    } catch (error) {
-      Toastify.error("Something went wrong");
+    const response = await register({
+      name: values.name,
+      email: values.email,
+      role: values.role,
+      employmentType: values.employmentType,
+      password: values.password,
+    });
+    if (response?.statusCode === 200) {
+      resetForm();
+      router.push("/auth/login");
     }
   };
 

@@ -29,6 +29,7 @@ export interface IRoutesType {
     title?: string;
     url: string;
   }[];
+  disabled?: boolean;
 }
 [];
 
@@ -85,8 +86,8 @@ export const routes: IRoutesType[] = [
         url: "/dashboard/recruitment/stage-three",
       },
     ],
-
     ActiveIcon: FaUserPlus,
+    disabled: true,
   },
 
   {
@@ -102,7 +103,6 @@ export const routes: IRoutesType[] = [
     icon: Payroll,
     title: "Payroll",
     ActiveIcon: PiNotebookThin,
-
     subRoutes: [
       {
         id: 1,
@@ -126,20 +126,19 @@ export const routes: IRoutesType[] = [
 
   {
     id: 5,
-    path: Routes.training,
-    icon: Book,
-    title: "Training and Development",
-
-    ActiveIcon: PiNotebookThin,
+    path: Routes.schedule,
+    icon: Schedule,
+    title: "Schedule",
+    disabled: true,
+    ActiveIcon: CiCalendarDate,
   },
 
   {
     id: 6,
-    path: Routes.schedule,
-    icon: Schedule,
-    title: "Schedule",
-
-    ActiveIcon: CiCalendarDate,
+    path: Routes.training,
+    icon: Book,
+    title: "Training and Development",
+    ActiveIcon: PiNotebookThin,
   },
 
   {
@@ -147,7 +146,7 @@ export const routes: IRoutesType[] = [
     path: Routes.report,
     icon: Training,
     title: "Report and Analytics",
-
+    disabled: true,
     ActiveIcon: TbReport,
   },
 ];
@@ -159,5 +158,6 @@ export const bottomRoutes: IRoutesType[] = [
     icon: Help,
     title: "Help",
     ActiveIcon: IoIosHelpCircleOutline,
+    disabled: true,
   },
 ];

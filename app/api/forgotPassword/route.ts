@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
       });
 
       return NextResponse.json(
-        { message: "Reset password link was sent to your mail" },
+        { message: "Reset link was sent to your mail", statusCode: 200 },
         { status: 201 }
       );
     }

@@ -11,11 +11,23 @@ export const todoApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://jsonplaceholder.typicode.com/todos/",
   }),
+  tagTypes: ["Post"],
   endpoints: (builder) => ({
-    getTodoByName: builder.query<TodoType, string>({
+    getTodoByName: builder.query({
       query: (id) => ({ url: `/${id}` }),
+    }),
+    addNewPost: builder.mutation({
+      query: (payload) => ({
+        url: "/posts",
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["Post"],
     }),
   }),
 });
 
-export const { useGetTodoByNameQuery } = todoApi;
+export const { useGetTodoByNameQuery, useAddNewPostMutation } = todoApi;

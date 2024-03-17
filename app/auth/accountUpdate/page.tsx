@@ -2,7 +2,7 @@
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
 import { login_redirect } from "@/routes";
-import { Toastify } from "@/utils/toasts";
+import { updateAccount } from "@/services/auth";
 import { Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,9 +10,7 @@ import * as Yup from "yup";
 
 const AccountUpdate = () => {
   const router = useRouter();
-  const { data } = useSession();
-
-  console.log("back", router);
+  const { data, update } = useSession();
 
   const validationSchema = Yup.object({
     name: Yup.string().required("FullName is required"),
@@ -24,22 +22,21 @@ const AccountUpdate = () => {
     values: Record<string, any>,
     { resetForm }: any
   ) => {
-    try {
-      const res: any = await fetch("/api/accountUpdate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data?.user.email, ...values }),
+    const response = await updateAccount({
+      email: data?.user.email!,
+      name: values.name,
+      role: values.role,
+      employmentType: values.employmentType,
+    });
+
+    if (response?.status === 200) {
+      update({
+        name: values.name,
+        role: values.role,
+        employmentType: values.employmentType,
       });
-      const dataResponse = await res.json();
-      if (res.ok) {
-        Toastify.success(dataResponse?.message);
-        resetForm();
-        router.push(login_redirect);
-      } else {
-        Toastify.error(dataResponse?.message ?? "Form Submission Failed");
-      }
-    } catch (error) {
-      Toastify.error("Something went wrong");
+      resetForm();
+      router.push(login_redirect);
     }
   };
 

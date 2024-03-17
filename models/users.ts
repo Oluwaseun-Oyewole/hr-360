@@ -29,6 +29,7 @@ export interface IUser extends Document {
   emailVerified: Date;
   password: string;
   employmentType: IEmploymentType;
+  isUpdated: boolean;
 }
 
 const userSchema = new Schema<IUser>(

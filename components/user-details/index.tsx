@@ -12,18 +12,44 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Button from "../button";
 
-const UserDetails = ({ isHidden }: { isHidden: boolean }) => {
+type UserProps = {
+  isHidden: boolean;
+  role: string;
+};
+const UserDetails = ({ isHidden, role }: UserProps) => {
+  const [msg, setMsgs] = useState([
+    {
+      id: 1,
+      title: `Account Update (oauth user)`,
+      description: "Click this link to update your account",
+    },
+  ]);
+
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
-  const openNotification = () => {
-    api.open({
-      duration: 3,
-      message: "In App Notification",
-      description: "No Notification Available",
-    });
+  const openNotification: any = () => {
+    {
+      role === ""
+        ? msg.map((value) => {
+            api.open({
+              duration: 3,
+              message: value.title,
+              description: (
+                <div className="text-primary-100">
+                  <Link href="/auth/accountUpdate">{value.description}</Link>
+                </div>
+              ),
+            });
+          })
+        : api.open({
+            duration: 3,
+            message: "",
+            description: <div>No Available Notification</div>,
+          });
+    }
   };
 
   const modalRef = useRef<IHr360Modal>(null);
@@ -106,23 +132,35 @@ const UserDetails = ({ isHidden }: { isHidden: boolean }) => {
       <div className="flex gap-4 items-center">
         {contextHolder}
 
-        <Tooltip title="Notification" color={`#380ABB`} className="text-black">
-          <Image
-            src={Bell}
-            alt="bell"
-            className="cursor-pointer"
-            onClick={openNotification}
-          />
-        </Tooltip>
+        <div className="relative">
+          <Tooltip
+            title="Notification"
+            color={`#380ABB`}
+            className="text-black"
+          >
+            <Image
+              src={Bell}
+              alt="bell"
+              className="cursor-pointer"
+              onClick={openNotification}
+            />
+
+            {!role && (
+              <div className="h-4 w-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center text-white font-bold absolute -top-2 left-3">
+                {msg?.length}
+              </div>
+            )}
+          </Tooltip>
+        </div>
 
         <Tooltip title="Messages" color={`#380ABB`} className="text-black">
-          <Link href="/messages">
+          <Link href="/dashboard/messages">
             <Image src={Mail} alt="mail" className="cursor-pointer" />
           </Link>
         </Tooltip>
 
         <Tooltip title="Settings" color={`#380ABB`} className="text-black">
-          <Link href="/settings">
+          <Link href="/dashboard/settings">
             <Image src={Settings} alt="settings" className="cursor-pointer" />
           </Link>
         </Tooltip>

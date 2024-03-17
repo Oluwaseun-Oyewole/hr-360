@@ -37,7 +37,8 @@ export const POST = async (req: NextRequest) => {
 
       return NextResponse.json(
         {
-          message: "Successful, An activation link has been sent to your mail",
+          message: "An activation link has been sent to your mail",
+          statusCode: 200,
         },
         { status: 201 }
       );

@@ -1,9 +1,10 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { Toastify } from "@/utils/toasts";
+import { forgotPassword } from "@/services/auth";
 import { Form, Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 interface IProps {
@@ -13,6 +14,7 @@ interface IProps {
 }
 
 const ForgotPassword = () => {
+  const router = useRouter();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
@@ -23,21 +25,10 @@ const ForgotPassword = () => {
     values: Record<string, any>,
     { resetForm }: any
   ) => {
-    try {
-      const res: any = await fetch("/api/forgotPassword", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        Toastify.success(data?.message);
-        resetForm();
-      } else {
-        Toastify.error(data?.message);
-      }
-    } catch (error) {
-      Toastify.error(error as string);
+    const response = await forgotPassword({ email: values.email });
+    if (response?.statusCode === 200) {
+      resetForm();
+      router.push("/auth/login");
     }
   };
 

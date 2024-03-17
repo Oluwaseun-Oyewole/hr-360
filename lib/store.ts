@@ -1,4 +1,4 @@
-import { todoApi } from "@/app/dashboard/store/query";
+import { registerSlice } from "@/app/auth/(auth)/register/query";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./root.reducers";
 
@@ -6,10 +6,11 @@ export const store = () => {
   return configureStore({
     reducer: {
       rootReducer,
-      [todoApi.reducerPath]: todoApi.reducer,
+      // [todoApi.reducerPath]: todoApi.reducer,
+      [registerSlice.reducerPath]: registerSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat([todoApi.middleware]),
+      getDefaultMiddleware({}).concat([registerSlice.middleware]),
     devTools: process.env.NODE_ENV !== "production",
   });
 };

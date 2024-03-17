@@ -50,3 +50,5 @@ export default withAuth(
 export const config = {
   matcher: ["/"],
 };
+
+// "/dashboard", "/api/auth", "/auth/login", "/auth/register"

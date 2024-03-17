@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { Toastify } from "@/utils/toasts";
+import { resetPassword } from "@/services/auth";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -30,22 +30,15 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
     values: Record<string, any>,
     { resetForm }: any
   ) => {
-    try {
-      const res: any = await fetch("/api/resetPassword", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jwtUserId: jwt, password: values?.password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        Toastify.success(data?.message);
-        resetForm();
-        router.push("/auth/login");
-      } else {
-        Toastify.error(data?.message);
-      }
-    } catch (error) {
-      Toastify.error("Something went wrong");
+    const response = await resetPassword({
+      jwtUserId: jwt,
+      password: values.password,
+      confirm_password: values.confirm_password,
+    });
+
+    if (response?.statusCode === 200) {
+      resetForm();
+      router.push("/auth/login");
     }
   };
 

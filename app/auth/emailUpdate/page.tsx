@@ -1,13 +1,16 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { Toastify } from "@/utils/toasts";
+import { changeEmail } from "@/services/auth";
 import { Form, Formik } from "formik";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const EmailUpdate = () => {
   const router = useRouter();
+  const { data } = useSession();
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
@@ -21,22 +24,15 @@ const EmailUpdate = () => {
     values: Record<string, any>,
     { resetForm }: any
   ) => {
-    try {
-      const res: any = await fetch("/api/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        Toastify.success(data?.message);
-        resetForm();
-        router.push("/auth/login");
-      } else {
-        Toastify.error(data?.message ?? "Form Submission Failed");
-      }
-    } catch (error) {
-      Toastify.error("Something went wrong");
+    const response = await changeEmail({
+      name: data?.user.name!,
+      email: values.email,
+      updateEmail: values.updateEmail,
+    });
+
+    if (response?.status === 200) {
+      resetForm();
+      router.push("/auth/login");
     }
   };
 
@@ -51,6 +47,7 @@ const EmailUpdate = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
+          validateOnMount
         >
           {(formik) => {
             return (

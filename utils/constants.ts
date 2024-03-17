@@ -1,11 +1,16 @@
+import Aisa from "@/assets/aisa.svg";
 import Alarm from "@/assets/alarm-clock.svg";
 import Alert from "@/assets/alert-diamond.svg";
 import Space from "@/assets/beach.svg";
 import Briefcase from "@/assets/briefcase-06.svg";
+import Emeka from "@/assets/emeka.svg";
+import Grid from "@/assets/grid.svg";
+import Edward from "@/assets/image (2).svg";
 import Money from "@/assets/money-02.svg";
 import Office from "@/assets/office-chair.svg";
 import Paid from "@/assets/paid.svg";
 import Pending from "@/assets/pay.svg";
+import Check from "@/assets/read.svg";
 
 type PageTitle = {
   [key: string]: string;
@@ -237,5 +242,102 @@ export const BenefitPayrollCards: IPayrollCardTypes[] = [
     image: Paid,
     view: true,
     view_text: "View",
+  },
+];
+
+type MessageType = {
+  imageSrc: string;
+  title: string;
+  description: string;
+  time: string;
+  readSrc: string;
+}[];
+
+export const messages: MessageType = [
+  {
+    imageSrc: Grid,
+    title: "HR Announcement",
+    description: "Attention Team!, Employment App..",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+  {
+    imageSrc: Grid,
+    title: "Design Team",
+    description: "Good morning team, Let's have a...",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+
+  {
+    imageSrc: Grid,
+    title: "Dev Team",
+    description: "Alex can you provide a..",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+];
+
+export const pinMessages: MessageType = [
+  {
+    imageSrc: Aisa,
+    title: "Aisa Doe",
+    description: "Sure, I will get them to you on time",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+  {
+    imageSrc: Emeka,
+    title: "Chukwuemeka",
+    description: "Can we schedule a meeting for..",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+
+  {
+    imageSrc: Edward,
+    title: "Edward",
+    description: "Hi, how are you today",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+];
+
+export const allMessages: MessageType = [
+  {
+    imageSrc: Aisa,
+    title: "Olamide",
+    description: "Sure, I will get them to you on time",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+  {
+    imageSrc: Emeka,
+    title: "John",
+    description: "Can we schedule a meeting for..",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+
+  {
+    imageSrc: Edward,
+    title: "Samuel",
+    description: "Hi, how are you today",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+  {
+    imageSrc: Aisa,
+    title: "Seun",
+    description: "Sure, I will get them to you on time",
+    time: "10:07 AM",
+    readSrc: Check,
+  },
+  {
+    imageSrc: Emeka,
+    title: "Mark",
+    description: "Can we schedule a meeting for..",
+    time: "10:07 AM",
+    readSrc: Check,
   },
 ];

@@ -6,7 +6,7 @@ import Bell from "@/assets/notification-03.svg";
 import { IHr360Modal } from "@/components/modal";
 import type { DrawerProps } from "antd";
 import { Drawer, Tooltip, notification } from "antd";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,22 +20,16 @@ import { bottomRoutes, routes } from "../sidebar/links";
 import { Routes } from "../sidebar/routes";
 import UserDetails from "../user-details";
 
+type IHeadProps = {
+  role: string;
+};
 const images = [Bell, Mail];
-const Header = () => {
+const Header = ({ role }: IHeadProps) => {
+  const session = useSession();
   const [click, setClicked] = useState(false);
   const [open, setOpen] = useState(false);
   const [placement, ,] = useState<DrawerProps["placement"]>("left");
-  const [api, contextHolder] = notification.useNotification();
   const modalRef = useRef<IHr360Modal>(null);
-
-  const openNotification = () => {
-    api.open({
-      duration: 3,
-      message: "In App Notification",
-      description: "No Notification Available",
-    });
-  };
-
   const router = useRouter();
 
   const onClose = () => {
@@ -95,11 +89,11 @@ const Header = () => {
         <div className="hidden md:flex">
           <h1>Welcome back, </h1>
           <span className="pl-1 font-medium flex gap-1 items-center">
-            Samuel <IoStar className="text-yellow-500" />
+            {session?.data?.user?.name} <IoStar className="text-yellow-500" />
           </span>
         </div>
         <div className="hidden md:block">
-          <UserDetails isHidden={false} />
+          <UserDetails isHidden={false} role={role} />
         </div>
         <div onClick={handleClick} className="lg:hidden">
           {click ? (
@@ -120,7 +114,7 @@ const Header = () => {
         className="font-light bg-white sticky top-0 left-0 pb-4"
       >
         <div className="py-3 w-full pb-5">
-          <UserDetails isHidden={false} />
+          <UserDetails isHidden={false} role={role} />
         </div>
 
         <ul className="flex flex-col gap-7">

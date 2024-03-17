@@ -4,9 +4,9 @@ import { ConfigProvider } from "antd";
 import { useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import { Provider as Providers } from "react-redux";
-import Provider from "./provider/layout";
 import { outfit } from "./fonts";
 import "./globals.css";
+import Provider from "./provider/layout";
 
 export default function RootLayout({
   children,

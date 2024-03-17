@@ -19,14 +19,16 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json(
         {
           message: "Account update successful ",
+          status: 200,
         },
         { status: 201 }
       );
+    } else {
+      return NextResponse.json(
+        { message: "Oops, something went wrong" },
+        { status: 501 }
+      );
     }
-    return NextResponse.json(
-      { message: "Oops, something went wrong" },
-      { status: 501 }
-    );
   } catch (error) {
     return NextResponse.json(
       { message: "Oops, something went wrong" },

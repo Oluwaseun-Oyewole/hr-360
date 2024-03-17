@@ -15,7 +15,12 @@ const Login = () => {
     email: Yup.string()
       .email("Invalid email format")
       .required("Email Required"),
-    password: Yup.string().required("Password Required"),
+    password: Yup.string()
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-8])(?=.*[!@#$%^&*:;'><.,/?}{[\]\-_+=])(?=.{8,})/,
+        "Must Contain 7 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      )
+      .required("New password is required"),
   });
 
   const handleSubmit = async (values: Record<string, any>) => {
@@ -89,14 +94,16 @@ const Login = () => {
           }}
         </Formik>
 
-        <Link
-          href="/auth/forgotPassword"
-          className="text-blue-500 cursor-pointer !py-4 text-sm"
-        >
-          Forgot Password?
-        </Link>
+        <div className="py-2">
+          <Link
+            href="/auth/forgotPassword"
+            className="text-blue-500 cursor-pointer text-sm"
+          >
+            Forgot Password?
+          </Link>
+        </div>
 
-        <p className="pt-4 text-right text-sm">
+        <p className="pt-5 text-right text-sm">
           Already have an account?{" "}
           <Link href="/auth/register" className="text-blue-500 cursor-pointer">
             register

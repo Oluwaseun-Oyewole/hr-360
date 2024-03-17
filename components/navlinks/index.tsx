@@ -15,7 +15,7 @@ type INavMenuTypes = {
   route: IRoutesType;
 };
 const NavMenuItems: React.FC<INavMenuTypes> = ({ route }) => {
-  const { path, icon, title, subRoutes, ActiveIcon } = route;
+  const { path, icon, title, subRoutes, ActiveIcon, disabled } = route;
   const [dropdown, setDropdown] = useState(false);
   const pathname = usePathname();
   const menuRef = useRef<HTMLLIElement | null>(null);
@@ -98,7 +98,14 @@ const NavMenuItems: React.FC<INavMenuTypes> = ({ route }) => {
             pathname === path && "bg-primary-100 py-5 rounded-lg"
           }`}
         >
-          <Link href={`${path}`} className={`flex gap-3`}>
+          <Link
+            href={`${path}`}
+            className={`flex gap-3 disabled:cursor-not-allowed`}
+            aria-disabled={true}
+            style={{
+              pointerEvents: disabled ? "none" : "auto",
+            }}
+          >
             {pathname === path ? (
               <ActiveIcon className="text-xl text-white" />
             ) : (

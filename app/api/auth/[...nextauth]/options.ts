@@ -210,30 +210,45 @@ export const options: NextAuthOptions = {
       return url;
     },
     // if you want to use the role in client component
-    async session({ session, token }) {
-      // console.log("session from here", session);
-      // console.log("token from here", token);
+    async session({ session, token, user }) {
+      await mongoDBConnection();
+      const existingUser = await User.findOne({
+        email: session.user.email!,
+      });
       if (session.user) {
-        session.user.accessToken = token.accessToken;
-        session.user.refreshToken = token.refreshToken;
-        // session.user.verify = token.verify;
-        session.user.testingVerification = token.testingVerification;
+        if (existingUser) {
+          session.user.name = existingUser.name!;
+          session.user.email = existingUser.email!;
+          session.user.role = existingUser.role;
+        } else {
+          session.user.name = token.name!;
+          session.user.email = token.email!;
+          session.user.role = token.role;
+        }
       }
       return session;
     },
 
-    async jwt({ token, user, account }) {
-      // console.log("account", account);
-      // if (account && user) {
-      //   return {
-      //     accessToken: account.access_token,
-      //     accessTokenExpires: account.expires_at,
-      //     refreshToken: account.refresh_token,
-      //     tokenType: account?.token_type,
-      //     accountType: account?.type,
-      //     expiredTokenTime: Date.now() < account.expires_at!,
-      //   };
-      // }
+    async jwt({ token, user, account, trigger, session }) {
+      if (account && user) {
+        return {
+          name: user.name,
+          email: user.email,
+          accessToken: account.access_token,
+          accessTokenExpires: account.expires_at,
+          refreshToken: account.refresh_token,
+          tokenType: account?.token_type,
+          role: "",
+          employmentType: "",
+          accountType: account?.type,
+          // expiredTokenTime: Date.now() < account.expires_at!,
+        };
+      }
+      if (trigger === "update" && session?.name) {
+        token.role = session.role;
+        token.employmentType = session.employmentType;
+        token.name = session.name;
+      }
       // // Return previous token if the access token has not expired yet
       // if (token.accessTokenExpires > Date.now()) {
       //   console.log("token still valid");
