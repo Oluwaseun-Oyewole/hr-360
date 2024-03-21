@@ -169,17 +169,13 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
         </Tooltip>
 
         <Tooltip title="Settings" color={`#380ABB`} className="text-black">
-          <Link href="/dashboard/settings">
+          <Link href="/dashboard">
             <Image src={Settings} alt="settings" className="cursor-pointer" />
           </Link>
         </Tooltip>
       </div>
 
-      <Dropdown
-        menu={{ items }}
-        trigger={["click"]}
-        className="!font-normal !h-[20px]"
-      >
+      <Dropdown menu={{ items }} trigger={["click"]} className="!font-normal">
         <Tooltip title="Profile" color={`#380ABB`} className="text-black">
           <div
             className="flex gap-2 items-center cursor-pointer"

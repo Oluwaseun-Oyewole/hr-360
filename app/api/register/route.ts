@@ -2,6 +2,7 @@ import { signJwt, verifyJwt } from "@/lib/jwt";
 import { compileActivationTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { isEmptyOrSpaces } from "@/utils/helper";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,17 +20,12 @@ export const POST = async (req: NextRequest) => {
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
       if (
-        name.trim() === ""
-        // !email ||
-        // !password ||
-        // !role ||
-        // !emailVerified ||
-        // !employmentType ||
-        // name.trim() === "" ||
-        // email.trim() === "" ||
-        // password.trim() === "" ||
-        // emailVerified.trim() === "" ||
-        // employmentType.trim() === ""
+        isEmptyOrSpaces(name) ||
+        isEmptyOrSpaces(email) ||
+        isEmptyOrSpaces(password) ||
+        isEmptyOrSpaces(role) ||
+        isEmptyOrSpaces(emailVerified) ||
+        isEmptyOrSpaces(employmentType)
       ) {
         return NextResponse.json(
           {

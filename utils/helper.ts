@@ -14,3 +14,12 @@ export function formatCurrency(
   const formattedCurrency = `${currencySymbol}${integerWithCommas}.${fractionalPart}`;
   return formattedCurrency;
 }
+
+export function isEmptyOrSpaces(str: string) {
+  return (
+    str === null ||
+    str.match(/^ *$/) !== null ||
+    str.trim() === "" ||
+    str === ""
+  );
+}

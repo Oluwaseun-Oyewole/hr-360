@@ -1,4 +1,5 @@
 import { mongoDBConnection } from "@/lib/mongodb";
+import { isEmptyOrSpaces } from "@/utils/helper";
 import { NextRequest, NextResponse } from "next/server";
 import { DashboardModel } from "./../../../models/dashboard";
 
@@ -14,39 +15,14 @@ export const POST = async (req: NextRequest) => {
     email,
   } = await req.json();
   await mongoDBConnection();
-  function isStringEmptyOrWhitespace(str: string) {
-    return str.trim() === "";
-  }
+
   try {
     if (
-      !employeeName ||
-      !role ||
-      !employmentType ||
-      !status ||
-      !checkIn ||
-      !checkOut ||
-      !overTime ||
-      !email
-    ) {
-      return NextResponse.json(
-        {
-          message: "Fields cannot be empty",
-        },
-        { status: 400 }
-      );
-    }
-
-    if (
-      isStringEmptyOrWhitespace(employeeName)
-      // ||
-
-      // role.trim() === "" ||
-      // employmentType.trim() === "" ||
-      // status.trim() === "" ||
-      // checkIn.trim() === "" ||
-      // checkOut.trim() === "" ||
-      // overTime.trim() === "" ||
-      // email.trim() === ""
+      isEmptyOrSpaces(employeeName) ||
+      isEmptyOrSpaces(role) ||
+      isEmptyOrSpaces(employmentType) ||
+      isEmptyOrSpaces(status) ||
+      isEmptyOrSpaces(email)
     ) {
       return NextResponse.json(
         {

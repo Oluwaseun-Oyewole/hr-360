@@ -46,16 +46,7 @@
   color: black !important;
   font-weight: 300 !important;
 }
-/* 
-.ant-select-selection-item{
-  font-weight: 300;
-} */
-
-.ant-select-selection {
-  background-color: green !important;
-}
 
 .ant-dropdown-menu-root {
-  height: 250px !important;
   overflow-y: scroll !important;
 }

@@ -207,8 +207,10 @@ const Filter = ({
               onSelect: (ev) => {
                 setDropdownFilter(ev.selectedKeys[0]);
               },
+              rootClassName: "!h-[250px]",
             }}
             trigger={["click"]}
+            // placement="bottom"
           >
             <button className="flex justify-between items-center text-[16px] gap-2">
               {dropdownFilter || <span className="">All Roles</span>}
@@ -252,7 +254,7 @@ const Filter = ({
           </Button>
         </div>
       </div>
-      <Link href="/dashboard/attendance" className="text-primary-100">
+      <Link href="/dashboard/attendance" className="text-primary-100 !text-sm">
         Attendance Form
       </Link>
     </>
