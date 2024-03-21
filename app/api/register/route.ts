@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   const { email, password, name, role, emailVerified, employmentType } =
     await req.json();
+  console.log("name", name);
   await mongoDBConnection();
   try {
     const checkIfUserEmailExists = await User.findOne({ email });
@@ -18,30 +19,52 @@ export const POST = async (req: NextRequest) => {
       );
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({
-        name,
-        email,
-        password: hashedPassword,
-        role,
-        emailVerified,
-        employmentType,
-      });
-      const jwtUserId = signJwt({ id: user?.id });
-      const activationURL = `${process.env.NEXTAUTH_URL}/auth/activation/${jwtUserId}`;
-      const body = compileActivationTemplate(name, activationURL);
-      await sendMail({
-        to: email,
-        subject: "Activate your account",
-        body: body,
-      });
+      if (
+        name.trim() === ""
+        // !email ||
+        // !password ||
+        // !role ||
+        // !emailVerified ||
+        // !employmentType ||
+        // name.trim() === "" ||
+        // email.trim() === "" ||
+        // password.trim() === "" ||
+        // emailVerified.trim() === "" ||
+        // employmentType.trim() === ""
+      ) {
+        return NextResponse.json(
+          {
+            message: "Fields can't be empty",
+            statusCode: 204,
+          },
+          { status: 204 }
+        );
+      } else {
+        const user = await User.create({
+          name,
+          email,
+          password: hashedPassword,
+          role,
+          emailVerified,
+          employmentType,
+        });
+        const jwtUserId = signJwt({ id: user?.id });
+        const activationURL = `${process.env.NEXTAUTH_URL}/auth/activation/${jwtUserId}`;
+        const body = compileActivationTemplate(name, activationURL);
+        await sendMail({
+          to: email,
+          subject: "Activate your account",
+          body: body,
+        });
 
-      return NextResponse.json(
-        {
-          message: "An activation link has been sent to your mail",
-          statusCode: 200,
-        },
-        { status: 201 }
-      );
+        return NextResponse.json(
+          {
+            message: "An activation link has been sent to your mail",
+            statusCode: 200,
+          },
+          { status: 201 }
+        );
+      }
     }
   } catch (error) {
     return NextResponse.json(

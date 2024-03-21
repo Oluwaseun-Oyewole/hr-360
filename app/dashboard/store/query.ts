@@ -1,33 +1,63 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-type TodoType = {
-  completed: boolean;
-  id: number;
-  title: string;
-  userId: number;
-};
-export const todoApi = createApi({
-  reducerPath: "todo",
+export const DashboardSlice = createApi({
+  reducerPath: "employee",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://jsonplaceholder.typicode.com/todos/",
+    baseUrl: process.env.BASE_API_URL,
   }),
-  tagTypes: ["Post"],
+  tagTypes: ["Employee", "Search", "Filter"],
   endpoints: (builder) => ({
-    getTodoByName: builder.query({
-      query: (id) => ({ url: `/${id}` }),
+    getAllEmployees: builder.query({
+      query: (page) => {
+        return {
+          url: `/api/employee?resultsPerPage=10&page=${page}`,
+        };
+      },
+      providesTags: ["Employee"],
     }),
-    addNewPost: builder.mutation({
+    getSearchEmployees: builder.query<
+      any,
+      { page: number; searchQuery: string }
+    >({
+      query: (args) => {
+        const { page, searchQuery } = args;
+        return {
+          url: `/api/search?resultsPerPage=10`,
+          params: { page, searchQuery },
+        };
+      },
+      providesTags: ["Search"],
+    }),
+
+    getFilterEmployees: builder.query<
+      any,
+      { page: number; role: string; date: string }
+    >({
+      query: (args) => {
+        const { page, role, date } = args;
+        return {
+          url: `/api/filter?resultsPerPage=10`,
+          params: { page, role, date },
+        };
+      },
+      providesTags: ["Filter"],
+    }),
+    addNewEmployee: builder.mutation({
       query: (payload) => ({
-        url: "/posts",
+        url: "/api/dashboard",
         method: "POST",
         body: payload,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-      invalidatesTags: ["Post"],
+      invalidatesTags: (_) => ["Employee", "Search", "Filter"],
     }),
   }),
 });
 
-export const { useGetTodoByNameQuery, useAddNewPostMutation } = todoApi;
+export const {
+  useGetAllEmployeesQuery,
+  useGetSearchEmployeesQuery,
+  useGetFilterEmployeesQuery,
+  useAddNewEmployeeMutation,
+} = DashboardSlice;

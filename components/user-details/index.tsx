@@ -12,7 +12,7 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../button";
 
 type UserProps = {
@@ -20,14 +20,14 @@ type UserProps = {
   role: string;
 };
 const UserDetails = ({ isHidden, role }: UserProps) => {
-  const [msg, setMsgs] = useState([
+  const [msg, ,] = useState([
     {
       id: 1,
       title: `Account Update (oauth user)`,
       description: "Click this link to update your account",
     },
   ]);
-
+  const [online, setOnline] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
   const openNotification: any = () => {
@@ -52,8 +52,17 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
     }
   };
 
-  const modalRef = useRef<IHr360Modal>(null);
+  useEffect(() => {
+    window.addEventListener("load", () => {
+      if (window && typeof window === "undefined") {
+        if (navigator.onLine) {
+          setOnline(true);
+        }
+      }
+    });
+  }, []);
 
+  const modalRef = useRef<IHr360Modal>(null);
   const handleLogoutModal = () => {
     modalRef.current?.open({
       title: "",
@@ -145,7 +154,7 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
               onClick={openNotification}
             />
 
-            {!role && (
+            {!role && online && (
               <div className="h-4 w-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center text-white font-bold absolute -top-2 left-3">
                 {msg?.length}
               </div>
@@ -166,7 +175,11 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
         </Tooltip>
       </div>
 
-      <Dropdown menu={{ items }} trigger={["click"]} className="!font-normal">
+      <Dropdown
+        menu={{ items }}
+        trigger={["click"]}
+        className="!font-normal !h-[20px]"
+      >
         <Tooltip title="Profile" color={`#380ABB`} className="text-black">
           <div
             className="flex gap-2 items-center cursor-pointer"

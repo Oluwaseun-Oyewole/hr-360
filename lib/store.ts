@@ -1,4 +1,4 @@
-import { registerSlice } from "@/app/auth/(auth)/register/query";
+import { DashboardSlice } from "@/app/dashboard/store/query";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./root.reducers";
 
@@ -6,11 +6,10 @@ export const store = () => {
   return configureStore({
     reducer: {
       rootReducer,
-      // [todoApi.reducerPath]: todoApi.reducer,
-      [registerSlice.reducerPath]: registerSlice.reducer,
+      [DashboardSlice.reducerPath]: DashboardSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat([registerSlice.middleware]),
+      getDefaultMiddleware({}).concat([DashboardSlice.middleware]),
     devTools: process.env.NODE_ENV !== "production",
   });
 };

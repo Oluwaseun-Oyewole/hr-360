@@ -341,3 +341,40 @@ export const allMessages: MessageType = [
     readSrc: Check,
   },
 ];
+
+export const filters = [
+  {
+    label: "HRManager",
+  },
+  {
+    label: "Software",
+  },
+  {
+    label: "Marketing",
+  },
+
+  {
+    label: "Designer",
+  },
+  {
+    label: "FinancialAnalyst",
+  },
+  {
+    label: "ProjectManager",
+  },
+  {
+    label: "SocialMedia",
+  },
+  {
+    label: "Accountant",
+  },
+  {
+    label: "SalesRep",
+  },
+  {
+    label: "CustomerService",
+  },
+  {
+    label: "AdministrativeAssistant",
+  },
+];

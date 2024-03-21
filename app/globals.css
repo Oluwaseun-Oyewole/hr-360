@@ -28,7 +28,7 @@
 
 .ant-table {
   position: relative !important;
-  height: 350px !important;
+  height: 500px !important;
   overflow: scroll !important;
 }
 
@@ -53,4 +53,9 @@
 
 .ant-select-selection {
   background-color: green !important;
+}
+
+.ant-dropdown-menu-root {
+  height: 250px !important;
+  overflow-y: scroll !important;
 }

@@ -1,41 +1,57 @@
 "use client";
 import type { PaginationProps } from "antd";
 import { Pagination } from "antd";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 import { HiOutlineBackward } from "react-icons/hi2";
 import { IoPlayForwardOutline } from "react-icons/io5";
 
 type IPagination = {
   total: number;
   title: string;
-  itemCountFrom: number;
-  itemCountTo: number;
+  totalResults: number;
+  page: number;
+  currentPage: number;
+  resultsPerPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
 };
 const HR360Pagination = ({
   total,
   title,
-  itemCountFrom,
-  itemCountTo,
+  resultsPerPage,
+  currentPage,
+  totalResults,
+  page,
+  setCurrentPage,
 }: IPagination) => {
-  const [current, setCurrent] = useState(3);
+  const [lowBound, upBound] = [
+    totalResults === 0 ? 0 : (page - 1) * resultsPerPage + 1,
+    totalResults > page * resultsPerPage ? page * resultsPerPage : totalResults,
+  ];
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
 
   const onChange: PaginationProps["onChange"] = (page) => {
-    setCurrent(page);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    setCurrentPage(page);
+    replace(`${pathname}?${params.toString()}`);
   };
   return (
     <div className="py-6 md:flex justify-between items-center">
       <div className="flex gap-3 pb-4 md:pb-0">
         <span className="text-gray-500">Showing</span>
         <span className="font-normal">
-          {itemCountFrom} to {itemCountTo} of {total}
+          {lowBound} to {upBound} of {total}
         </span>
-        <span className="text-gray-500">{title}</span>
+        <span className="text-gray-500 -ml-2">{title}</span>
       </div>
       <Pagination
-        current={current}
+        current={currentPage}
         onChange={onChange}
         total={total}
-        pageSize={5}
+        pageSize={resultsPerPage}
         showQuickJumper={false}
         showPrevNextJumpers={true}
         className="flex items-center md:justify-center"
