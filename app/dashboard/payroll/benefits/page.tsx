@@ -1,20 +1,18 @@
 "use client";
 import User from "@/assets/image.svg";
+import Button from "@/components/button";
 import Filter from "@/components/filter";
 import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import HR360Table from "@/components/table";
-import { BenefitPayrollCards } from "@/utils/constants";
-import { TableProps } from "antd";
-import Image from "next/image";
-import { useRef } from "react";
-import { renderEmployment, renderStatus } from "../../../style";
-import Button from "@/components/button";
 import { useAppDispatch, useAppSelector } from "@/lib/hook";
+import { BenefitPayrollCards } from "@/utils/constants";
 import { truncate } from "@/utils/helper";
-import { Popover, Tag } from "antd";
+import { Popover, TableProps, Tag } from "antd";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { renderEmployment, renderStatus } from "../../../style";
 import { useGetAllEmployeesQuery } from "../../store/query";
 import { startFilter, stopFilter } from "../../store/slice";
 import PayrollCard from "../payroll-card";
@@ -42,17 +40,12 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(
     +searchParams.get("page")! ?? 1
   );
+  const page = currentPage <= 0 ? 1 : currentPage;
   const role = useState(+searchParams.get("role")!);
   const query = useState(+searchParams.get("searchQuery")!);
   const { data, isLoading, isFilter } = useAppSelector(
     (state: any) => state.rootReducer.dashboard
   );
-
-  useEffect(() => {
-    if (currentPage === 0) {
-      setCurrentPage(1);
-    }
-  }, []);
 
   useEffect(() => {
     if (role || query) {
@@ -205,8 +198,8 @@ export default function Home() {
     },
   ];
 
-  const { refetch } = useGetAllEmployeesQuery(currentPage, {
-    skip: isFilter,
+  const { refetch } = useGetAllEmployeesQuery(page, {
+    skip: isFilter || page === 0,
   });
   const [rowInfo, setRowInfo] = useState<RowType>();
 

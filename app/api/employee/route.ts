@@ -14,13 +14,14 @@ export const GET = async (req: NextRequest) => {
       .skip(skip);
     const totalResults = await DashboardModel.countDocuments();
     const totalPages = Math.ceil(totalResults / resultsPerPage);
+    const total = page > totalPages ? 0 : totalResults;
     return NextResponse.json(
       {
         message: "success",
         data: {
           employees,
-          totalResults,
-          totalPages,
+          totalResults: page > totalPages ? total : totalResults,
+          totalPages: page > totalPages ? 1 : totalPages,
           resultsPerPage,
           page,
         },

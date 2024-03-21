@@ -12,6 +12,7 @@ type IProps = {
   label?: string;
   placeholder?: string;
   value?: string | number | null;
+  height?: number;
 } & InputProps;
 
 export default function FormInput({
@@ -23,6 +24,7 @@ export default function FormInput({
   onChange,
   onBlur,
   style,
+  height = 60,
   ...props
 }: IProps) {
   const { Password } = Input;
@@ -45,6 +47,7 @@ export default function FormInput({
                 allowClear={type === "search"}
                 prefix={type === "search" && <IoSearch />}
                 suffix={type === "search" && <Image src={CK} alt="" />}
+                style={{ height: `${height}px` }}
                 {...props}
               />
 
@@ -68,6 +71,7 @@ export default function FormInput({
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
+                style={{ height: `${height}px` }}
                 {...props}
               />
 

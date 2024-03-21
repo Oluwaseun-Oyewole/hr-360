@@ -163,6 +163,7 @@ const Filter = ({
                         }}
                         onBlur={formik.handleBlur}
                         placeholder="Search by name, role, department..."
+                        height={53}
                       />
                     </div>
                   </Form>

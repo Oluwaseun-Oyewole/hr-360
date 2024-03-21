@@ -41,18 +41,13 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(
     +searchParams.get("page")! ?? 1
   );
+  const page = currentPage <= 0 ? 1 : currentPage;
   const role = useState(+searchParams.get("role")!);
   const modalRef = useRef<IHr360Modal>(null);
   const query = useState(+searchParams.get("searchQuery")!);
   const { data, isLoading, isFilter } = useAppSelector(
     (state: any) => state.rootReducer.dashboard
   );
-
-  useEffect(() => {
-    if (currentPage === 0) {
-      setCurrentPage(1);
-    }
-  }, []);
 
   useEffect(() => {
     if (role || query) {
@@ -205,8 +200,8 @@ export default function Home() {
     },
   ];
 
-  const { refetch } = useGetAllEmployeesQuery(currentPage, {
-    skip: isFilter,
+  const { refetch } = useGetAllEmployeesQuery(page, {
+    skip: isFilter || page === 0,
   });
   const [rowInfo, setRowInfo] = useState<RowType>();
 

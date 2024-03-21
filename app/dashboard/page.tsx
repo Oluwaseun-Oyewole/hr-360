@@ -37,21 +37,13 @@ interface DataType {
 export default function Home() {
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(
-    +searchParams.get("page")! ?? 1
-  );
+  const [currentPage, setCurrentPage] = useState(+searchParams.get("page")!);
+  const page = currentPage <= 0 ? 1 : currentPage;
   const role = useState(+searchParams.get("role")!);
-
   const query = useState(+searchParams.get("searchQuery")!);
   const { data, isLoading, isFilter } = useAppSelector(
     (state: any) => state.rootReducer.dashboard
   );
-
-  useEffect(() => {
-    if (currentPage === 0) {
-      setCurrentPage(1);
-    }
-  }, []);
 
   useEffect(() => {
     if (role || query) {
@@ -61,8 +53,8 @@ export default function Home() {
     }
   }, []);
 
-  const { refetch } = useGetAllEmployeesQuery(currentPage, {
-    skip: isFilter,
+  const { refetch } = useGetAllEmployeesQuery(page, {
+    skip: isFilter || page === 0,
   });
   const [rowInfo, setRowInfo] = useState<RowType>();
   const columns: TableProps<DataType>["columns"] = [

@@ -7,6 +7,7 @@ import { Provider as Providers } from "react-redux";
 import { outfit } from "./fonts";
 import "./globals.css";
 import Provider from "./provider/layout";
+import { RootStyleRegistry } from "./rootStyleRegisty";
 
 export default function RootLayout({
   children,
@@ -42,7 +43,9 @@ export default function RootLayout({
               },
             }}
           >
-            <Provider>{children}</Provider>
+            <Provider>
+              <RootStyleRegistry>{children}</RootStyleRegistry>
+            </Provider>
           </ConfigProvider>
           <Toaster position="top-center" />
         </body>
