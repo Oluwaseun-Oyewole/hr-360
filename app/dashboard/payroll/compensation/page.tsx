@@ -242,7 +242,7 @@ export default function Home() {
         handleScheduleModal={handlePayAnalysisModal}
       />
       <Filter
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={data?.totalPages}
         handleRefresh={handleRefresh}
       />

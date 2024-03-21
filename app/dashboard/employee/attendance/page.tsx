@@ -207,7 +207,7 @@ export default function Home() {
       <Hr360Modal ref={modalRef} />
       <Cards cardArray={EmployeeCards} />
       <Filter
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={data?.totalPages}
         handleRefresh={handleRefresh}
       />

@@ -215,7 +215,7 @@ export default function TrainingAndDevelopment() {
       <Hr360Modal ref={modalRef} />
       <Cards cardArray={EmployeeCards} />
       <Filter
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={data?.totalPages}
         handleRefresh={handleRefresh}
       />

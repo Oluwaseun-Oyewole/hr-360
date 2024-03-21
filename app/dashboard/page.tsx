@@ -235,7 +235,7 @@ export default function Home() {
         handleScheduleModal={handleViewModal}
       />
       <Filter
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={data?.totalPages}
         handleRefresh={handleRefresh}
       />

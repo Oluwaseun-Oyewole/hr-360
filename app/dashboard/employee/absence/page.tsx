@@ -213,7 +213,7 @@ export default function Home() {
     <main>
       <Cards cardArray={AbsentCards} />
       <Filter
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={data?.totalPages}
         handleRefresh={handleRefresh}
       />
