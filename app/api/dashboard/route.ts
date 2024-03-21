@@ -82,7 +82,6 @@ export const POST = async (req: NextRequest) => {
       { status: 201 }
     );
   } catch (error) {
-    console.log("error", error);
     return NextResponse.json(
       { message: "Oops, something went wrong" },
       { status: 501 }

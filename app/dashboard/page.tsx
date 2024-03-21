@@ -55,10 +55,8 @@ export default function Home() {
 
   useEffect(() => {
     if (role || query) {
-      console.log("start filter");
       dispatch(startFilter());
     } else {
-      console.log("stop filter");
       dispatch(stopFilter());
     }
   }, []);

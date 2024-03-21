@@ -87,7 +87,6 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                     placeholder="Confirm password"
                     className="py-[15px]"
                     onCopy={(e: any) => {
-                      console.log("trying to copy");
                       e.preventDefault();
                       return false;
                     }}

@@ -50,24 +50,18 @@ export const routes: IRoutesType[] = [
     subRoutes: [
       {
         id: 1,
-        title: "Employee Directory",
-        url: "/dashboard/employee/directory",
-      },
-
-      {
-        id: 2,
         title: "Attendance",
         url: "/dashboard/employee/attendance",
       },
 
       {
-        id: 3,
+        id: 2,
         title: "Leave Request",
         url: "/dashboard/employee/leave",
       },
 
       {
-        id: 4,
+        id: 3,
         title: "Absence Trends",
         url: "/dashboard/employee/absence",
       },
@@ -80,11 +74,6 @@ export const routes: IRoutesType[] = [
     subRoutes: [
       { title: "Stage One", id: 1, url: "/dashboard/recruitment/stage-one" },
       { title: "Stage Two", id: 2, url: "/dashboard/recruitment/stage-two" },
-      {
-        title: "Stage Three",
-        id: 3,
-        url: "/dashboard/recruitment/stage-three",
-      },
     ],
     ActiveIcon: FaUserPlus,
     disabled: true,

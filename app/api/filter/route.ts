@@ -13,7 +13,6 @@ export const GET = async (req: NextRequest) => {
   const page = Number(searchParams.get("page"))!;
   const skip = page > 0 ? (page - 1) * resultsPerPage : 0;
   await mongoDBConnection();
-  console.log("page", page);
 
   const filter: any = {};
 

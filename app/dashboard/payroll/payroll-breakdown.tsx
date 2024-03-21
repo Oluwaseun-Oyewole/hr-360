@@ -3,6 +3,8 @@ import HR360Table from "@/components/table";
 import { formatCurrency } from "@/utils/helper";
 import { TableProps } from "antd";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { renderEmployment } from "../../style";
 
 type EmployeeType = { name: string; img: string };
@@ -17,6 +19,10 @@ interface DataType {
 }
 
 const PayrollBreakdown = () => {
+  const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(
+    +searchParams.get("page")! ?? 1
+  );
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Date",
@@ -122,14 +128,17 @@ const PayrollBreakdown = () => {
   return (
     <div className="font-light">
       <HR360Table
+        title=""
         dataSource={data}
         columns={columns}
         pagination={false}
         isPaginate={false}
         total={0}
-        itemCountFrom={0}
-        itemCountTo={0}
-        title=""
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        resultsPerPage={10}
+        totalResults={0}
+        page={currentPage}
         width={800}
       />
     </div>

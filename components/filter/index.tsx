@@ -85,7 +85,6 @@ const Filter = ({
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  console.log("date testing -- ", date);
   const onChange: DatePickerProps["onChange"] = (_, dateString) => {
     const params = new URLSearchParams(searchParams);
     setDate(dateString as string);
@@ -93,14 +92,11 @@ const Filter = ({
     dispatch(startFilter());
     dispatch(api.util.resetApiState());
     if (date === "" || !dateString) {
-      console.log("handling refresh");
       refresh();
     } else {
       params.set("date", dateString as string);
       params.set("role", role);
       params.delete("searchQuery", searchQuery);
-      console.log("date string", dateString);
-
       replace(`${pathname}?${params.toString()}`);
     }
   };
@@ -116,7 +112,6 @@ const Filter = ({
   };
 
   const handleDropdown = (key: string) => {
-    console.log("handle dropdown", key);
     setPage(currentPage);
     dispatch(startFilter());
     dispatch(api.util.resetApiState());
