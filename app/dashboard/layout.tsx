@@ -52,7 +52,7 @@ export default function RootLayout({
           <p className="font-medium text-xl">
             {PageTitle[getTitleEnum as keyof typeof PageTitle]}
           </p>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center py-4">
             <Breadcrumb
               className="flex items-center py-4 !text-xs"
               items={[

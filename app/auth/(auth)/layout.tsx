@@ -22,13 +22,13 @@ export default function AuthLayout({
         className={classNames("w-[80%] lg:w-[40%] flex flex-col gap-3 py-10")}
       >
         <Button
-          className="!bg-white !text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm"
+          className="!bg-white !text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm !py-5"
           onClick={() => signIn("github", { callbackUrl: login_redirect })}
         >
           <BsGithub className="text-xl" /> Continue with Github
         </Button>
         <Button
-          className="!text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm"
+          className="!text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm !py-5"
           onClick={() => signIn("google", { callbackUrl: login_redirect })}
         >
           <FcGoogle className="text-2xl" /> Continue with Google

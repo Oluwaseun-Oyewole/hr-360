@@ -1,4 +1,4 @@
-import { signJwt, verifyJwt } from "@/lib/jwt";
+import { signJwt } from "@/lib/jwt";
 import { compileActivationTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
@@ -67,18 +67,4 @@ export const POST = async (req: NextRequest) => {
       { status: 501 }
     );
   }
-};
-
-type ActivateUserTypeFunc = (
-  jwtUserId: string
-) => Promise<"userNotExist" | "alreadyActivate" | "success">;
-
-export const activateUser: ActivateUserTypeFunc = async (jwtUserId) => {
-  const payload = verifyJwt(jwtUserId);
-  const userId = payload?.id;
-  const user = await User.findById({ _id: userId });
-  if (!user) return "userNotExist";
-  if (user.emailVerified) return "alreadyActivate";
-  await User.findOneAndUpdate({ _id: user?.id }, { emailVerified: new Date() });
-  return "success";
 };

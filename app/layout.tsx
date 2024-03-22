@@ -7,7 +7,7 @@ import { Provider as Providers } from "react-redux";
 import { outfit } from "./fonts";
 import "./globals.css";
 import Provider from "./provider/layout";
-import { RootStyleRegistry } from "./rootStyleRegisty";
+import { RootStyleRegistry } from "./rootStyleRegistry";
 
 export default function RootLayout({
   children,
@@ -24,6 +24,11 @@ export default function RootLayout({
       <head>
         <title>hr360</title>
         <meta name="hr360" content="hr360 dashboard" />
+        <meta name="manifest" content="/manifest.json" />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
       </head>
       <Providers store={storeRef.current}>
         <body className={`${outfit.className}`}>

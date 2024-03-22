@@ -1,4 +1,4 @@
-import { activateUser } from "@/app/api/register/route";
+import { activateUser } from "@/app/api/register/activateUser";
 import Button from "@/components/button";
 import Link from "next/link";
 

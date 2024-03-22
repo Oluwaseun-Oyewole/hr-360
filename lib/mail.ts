@@ -12,22 +12,17 @@ export async function sendMail({
   subject: string;
   body: string;
 }) {
-  const { SMTP_EMAIL, SMTP_GMAIL_PASS, HOST, SERVICE } = process.env;
+  const { SMTP_EMAIL, SMTP_PASSWORD, SMTP_HOST } = process.env;
 
   const transport = nodemailer.createTransport({
-    service: SERVICE,
-    host: HOST,
+    // service: SERVICE,
+    host: SMTP_HOST,
+    port: 587,
     auth: {
       user: SMTP_EMAIL,
-      pass: SMTP_GMAIL_PASS,
+      pass: SMTP_PASSWORD,
     },
   });
-
-  //   try {
-  //     await transport.verify();
-  //   } catch (error) {
-  //     return null;
-  //   }
 
   try {
     await transport.sendMail({

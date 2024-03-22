@@ -6,57 +6,57 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-const GOOGLE_AUTHORIZATION_URL =
-  "https://accounts.google.com/o/oauth2/v2/auth?" +
-  new URLSearchParams({
-    prompt: "consent",
-    access_type: "offline",
-    response_type: "code",
-  });
+// const GOOGLE_AUTHORIZATION_URL =
+//   "https://accounts.google.com/o/oauth2/v2/auth?" +
+//   new URLSearchParams({
+//     prompt: "consent",
+//     access_type: "offline",
+//     response_type: "code",
+//   });
 
-type GenericObject<T = unknown> = T & {
-  [key: string]: any;
-};
+// type GenericObject<T = unknown> = T & {
+//   [key: string]: any;
+// };
 
-async function refreshAccessToken(token: any) {
-  try {
-    const url =
-      "https://www.googleapis.com/oauth2/v4/token?" +
-      new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID!,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        grant_type: "refresh_token",
-        // refresh_token: token.refreshToken,
-        access_type: "offline",
-        response_type: "code",
-        prompt: "consent",
-      });
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      method: "POST",
-    });
+// async function refreshAccessToken(token: any) {
+//   try {
+//     const url =
+//       "https://www.googleapis.com/oauth2/v4/token?" +
+//       new URLSearchParams({
+//         client_id: process.env.GOOGLE_CLIENT_ID!,
+//         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+//         grant_type: "refresh_token",
+//         // refresh_token: token.refreshToken,
+//         access_type: "offline",
+//         response_type: "code",
+//         prompt: "consent",
+//       });
+//     const response = await fetch(url, {
+//       headers: {
+//         "Content-Type": "application/x-www-form-urlencoded",
+//       },
+//       method: "POST",
+//     });
 
-    const refreshedTokens = await response.json();
+//     const refreshedTokens = await response.json();
 
-    if (!response.ok) {
-      throw refreshedTokens;
-    }
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
-  }
-}
+//     if (!response.ok) {
+//       throw refreshedTokens;
+//     }
+//     return {
+//       ...token,
+//       accessToken: refreshedTokens.access_token,
+//       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+//       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       ...token,
+//       error: "RefreshAccessTokenError",
+//     };
+//   }
+// }
 
 // interface AuthPayload {
 //   user: AuthUser;
@@ -230,25 +230,25 @@ export const options: NextAuthOptions = {
     },
 
     async jwt({ token, user, account, trigger, session }) {
-      if (account && user) {
-        return {
-          name: user.name,
-          email: user.email,
-          accessToken: account.access_token,
-          accessTokenExpires: account.expires_at,
-          refreshToken: account.refresh_token,
-          tokenType: account?.token_type,
-          role: "",
-          employmentType: "",
-          accountType: account?.type,
-          // expiredTokenTime: Date.now() < account.expires_at!,
-        };
-      }
-      if (trigger === "update" && session?.name) {
-        token.role = session.role;
-        token.employmentType = session.employmentType;
-        token.name = session.name;
-      }
+      // if (account && user) {
+      //   return {
+      //     name: user.name,
+      //     email: user.email,
+      //     accessToken: account.access_token,
+      //     accessTokenExpires: account.expires_at,
+      //     refreshToken: account.refresh_token,
+      //     tokenType: account?.token_type,
+      //     role: "",
+      //     employmentType: "",
+      //     accountType: account?.type,
+      //     // expiredTokenTime: Date.now() < account.expires_at!,
+      //   };
+      // }
+      // if (trigger === "update" && session?.name) {
+      //   token.role = session.role;
+      //   token.employmentType = session.employmentType;
+      //   token.name = session.name;
+      // }
       // // Return previous token if the access token has not expired yet
       // if (token.accessTokenExpires > Date.now()) {
       //   console.log("token still valid");
