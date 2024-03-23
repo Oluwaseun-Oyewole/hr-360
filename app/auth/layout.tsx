@@ -1,4 +1,3 @@
-"use client";
 import { outfit } from "../fonts";
 
 export default function AuthLayout({

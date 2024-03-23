@@ -24,7 +24,7 @@ export default function RootLayout({
       <head>
         <title>hr360</title>
         <meta name="hr360" content="hr360 dashboard" />
-        <meta name="manifest" content="/manifest.json" />
+        <link rel="manifest" href="/manifest.json" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
