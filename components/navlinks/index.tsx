@@ -118,7 +118,7 @@ const NavMenuItems: React.FC<INavMenuTypes> = ({ route }) => {
               className={`${pathname === path && "text-white"}`}
             >
               <p
-                className={`text-sm ${
+                className={`text-sm text-black ${
                   pathname === path
                     ? "hover:text-white"
                     : "hover:text-primary-100"

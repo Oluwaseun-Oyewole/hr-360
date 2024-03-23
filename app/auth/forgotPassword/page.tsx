@@ -3,7 +3,6 @@ import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
 import { forgotPassword } from "@/services/auth";
 import { Form, Formik } from "formik";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
@@ -59,10 +58,8 @@ const ForgotPassword = () => {
                   />
                 </div>
 
-                <div className="text-sm py-3">
-                  <Link className="text-blue-500 pl-1" href="/auth/login">
-                    {"Back to login"}
-                  </Link>
+                <div className="text-primary-100 text-sm !py-3 cursor-pointer">
+                  <p onClick={() => router.back()}>Back</p>
                 </div>
 
                 <Button

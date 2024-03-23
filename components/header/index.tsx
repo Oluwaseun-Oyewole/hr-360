@@ -3,9 +3,9 @@ import Logo from "@/assets/logo.svg";
 import Logout from "@/assets/logout-03.svg";
 import Mail from "@/assets/mail-02.svg";
 import Bell from "@/assets/notification-03.svg";
-import { IHr360Modal } from "@/components/modal";
+import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import type { DrawerProps } from "antd";
-import { Drawer, Tooltip, notification } from "antd";
+import { Drawer, Tooltip } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -76,6 +76,7 @@ const Header = ({ role }: IHeadProps) => {
 
   return (
     <>
+      <Hr360Modal ref={modalRef} />
       <div className="pt-8 pb-10 flex items-center justify-between sticky top-0 left-0 bg-white">
         <div className="sticky top-0 left-0 z-20 self-start md:hidden">
           <Link
