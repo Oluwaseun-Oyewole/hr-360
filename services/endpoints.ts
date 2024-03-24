@@ -1,9 +1,9 @@
-export const BASE_URL = process.env.BASE_API_URL + "/api/";
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 export class Endpoints {
-  static register = BASE_URL + "/register";
-  static forgotPassword = BASE_URL + "/forgotPassword";
-  static resetPassword = BASE_URL + "/resetPassword";
-  static changeEmail = BASE_URL + "/email";
-  static updateAccount = BASE_URL + "/accountUpdate";
+  static register = BASE_URL + "register";
+  static forgotPassword = BASE_URL + "forgotPassword";
+  static resetPassword = BASE_URL + "resetPassword";
+  static changeEmail = BASE_URL + "email";
+  static updateAccount = BASE_URL + "accountUpdate";
 }

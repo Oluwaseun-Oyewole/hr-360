@@ -17,9 +17,6 @@ export function formatCurrency(
 
 export function isEmptyOrSpaces(str: string) {
   return (
-    str === null ||
-    str.match(/^ *$/) !== null ||
-    str.trim() === "" ||
-    str === ""
+    str === null || str.match(/^ *$/) !== null || str.trim() === "" || !str
   );
 }

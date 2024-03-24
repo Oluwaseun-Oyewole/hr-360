@@ -24,7 +24,6 @@ export const POST = async (req: NextRequest) => {
         isEmptyOrSpaces(email) ||
         isEmptyOrSpaces(password) ||
         isEmptyOrSpaces(role) ||
-        isEmptyOrSpaces(emailVerified) ||
         isEmptyOrSpaces(employmentType)
       ) {
         return NextResponse.json(
@@ -54,7 +53,7 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json(
           {
-            message: "An activation link has been sent to your mail",
+            message: "Activation link has been sent to your mail",
             statusCode: 200,
           },
           { status: 201 }
