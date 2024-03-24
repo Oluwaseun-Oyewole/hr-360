@@ -158,7 +158,7 @@ export const options: NextAuthOptions = {
             }
           }
         } catch (error) {
-          throw new Error(error as string);
+          throw new Error("Oops, something went wrong");
         }
       },
     }),

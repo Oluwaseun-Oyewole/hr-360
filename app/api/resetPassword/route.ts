@@ -1,6 +1,7 @@
 import { verifyJwt } from "@/lib/jwt";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { isEmptyOrSpaces } from "@/utils/helper";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,6 +11,17 @@ export const POST = async (req: NextRequest) => {
   await mongoDBConnection();
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (isEmptyOrSpaces(jwtUserId) || isEmptyOrSpaces(password)) {
+      return NextResponse.json(
+        {
+          message: "Fields can't be empty",
+          statusCode: 204,
+        },
+        { status: 204 }
+      );
+    }
+
     if (!payload)
       return NextResponse.json(
         { message: "User does not exit" },

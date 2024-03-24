@@ -2,6 +2,7 @@ import { signJwt } from "@/lib/jwt";
 import { compileResetPasswordTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { isEmptyOrSpaces } from "@/utils/helper";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -9,6 +10,17 @@ export const POST = async (req: NextRequest) => {
   await mongoDBConnection();
   try {
     const user = await User.findOne({ email });
+
+    if (isEmptyOrSpaces(email)) {
+      return NextResponse.json(
+        {
+          message: "Fields can't be empty",
+          statusCode: 204,
+        },
+        { status: 204 }
+      );
+    }
+
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     } else {
