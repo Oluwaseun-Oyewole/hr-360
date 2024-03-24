@@ -1,5 +1,6 @@
 "use client";
 import Header from "@/components/header";
+import Loader from "@/components/loader";
 import { Sidebar } from "@/components/sidebar";
 import { PageTitle } from "@/utils/constants";
 import { Breadcrumb } from "antd";
@@ -34,7 +35,13 @@ export default function RootLayout({
   }, []);
 
   return (
-    <Suspense fallback={<p>Loading state...</p>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          <Loader />
+        </div>
+      }
+    >
       <div
         className={`${outfit.className} grid grid-flow-col grid-cols-[100%] lg:grid-cols-[16%_84%]`}
       >

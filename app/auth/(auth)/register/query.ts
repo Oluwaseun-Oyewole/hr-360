@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const registerSlice = createApi({
   reducerPath: "todo",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3002/api/",
+    baseUrl: "http://localhost:3000/api/",
   }),
   tagTypes: ["Post"],
   endpoints: (builder) => ({

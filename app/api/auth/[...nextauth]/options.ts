@@ -242,38 +242,39 @@ export const options: NextAuthOptions = {
           session.user.name = existingUser.name!;
           session.user.email = existingUser.email!;
           session.user.role = existingUser.role;
+          session.user.employmentType = existingUser.employmentType;
+          session.user.accessToken = existingUser.accessToken;
         } else {
           session.user.name = token.name!;
           session.user.email = token.email!;
           session.user.role = token.role;
+          session.user.employmentType = token.employmentType;
+          session.user.accessToken = token.accessToken;
         }
       }
       return session;
     },
 
     async jwt({ token, user, account, trigger, session }) {
-      // if (account && user) {
-      //   return {
-      //     name: user.name,
-      //     email: user.email,
-      //     accessToken: account.access_token,
-      //     accessTokenExpires: account.expires_at,
-      //     refreshToken: account.refresh_token,
-      //     tokenType: account?.token_type,
-      //     role: "",
-      //     employmentType: "",
-      //     accountType: account?.type,
-      //     // expiredTokenTime: Date.now() < account.expires_at!,
-      //   };
-      // }
-      // if (trigger === "update" && session?.name) {
-      //   token.role = session.role;
-      //   token.employmentType = session.employmentType;
-      //   token.name = session.name;
-      // }
+      if (account && user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.accessToken = account.access_token!;
+        token.accessTokenExpires = account.expires_at!;
+        token.accountType = account.type;
+        // refreshToken: account.refresh_token,
+        token.role = "";
+        token.employmentType = "";
+        // expiredTokenTime: Date.now() < account.expires_at!,
+      }
+      if (trigger === "update" && session?.name) {
+        token.role = session.role;
+        token.employmentType = session.employmentType;
+        token.name = session.name;
+      }
       // // Return previous token if the access token has not expired yet
       // if (token.accessTokenExpires > Date.now()) {
-      //   console.log("token still valid");
+      //   console.log("token still valid");s
       //   return token;
       // } else {
       //   console.log("trying refresh token");

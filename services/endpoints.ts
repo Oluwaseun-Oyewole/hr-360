@@ -1,4 +1,4 @@
-export const BASE_API_URL = "http://localhost:3002/api";
+export const BASE_API_URL = "http://localhost:3000/api";
 
 export class Endpoints {
   static register = BASE_API_URL + "/register";

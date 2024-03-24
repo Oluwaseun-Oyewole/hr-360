@@ -9,6 +9,7 @@ import { BenefitPayrollCards } from "@/utils/constants";
 import { truncate } from "@/utils/helper";
 import { Popover, TableProps, Tag } from "antd";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -44,7 +45,8 @@ export default function Home() {
   const { data, isLoading, isFilter } = useAppSelector(
     (state: any) => state.rootReducer.dashboard
   );
-
+  const session = useSession();
+  console.log("session", session);
   useEffect(() => {
     if (role || query) {
       dispatch(startFilter());
