@@ -55,7 +55,8 @@ const Header = ({ role }: IHeadProps) => {
               <Button
                 className="!bg-green-700"
                 onClick={() => {
-                  signOut({ redirect: false });
+                  console.log("handling modal");
+                  signOut({ redirect: false, callbackUrl: "/auth/login" });
                   router.push("/auth/login");
                 }}
               >

@@ -12,29 +12,18 @@ export default withAuth(
   async function middleware(req) {
     const { nextUrl } = req;
     const token = await getToken({ req });
-
     const isAuthenticated = !!token;
-    const isApiRoutes = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoutes = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    if (isApiRoutes) {
-      if (isAuthenticated) {
-        return Response.redirect(new URL(login_redirect, nextUrl));
-      } else {
-        return Response.redirect(new URL("/auth/login", nextUrl));
-      }
-    }
+    if (isApiAuthRoute) return;
 
     if (isAuthRoute) {
       if (isAuthenticated) {
         return Response.redirect(new URL(login_redirect, nextUrl));
       }
       return null;
-    }
-
-    if (!isAuthenticated && isPublicRoutes) {
-      return Response.redirect(new URL("/auth/login", nextUrl));
     }
 
     if (!isAuthenticated && !isPublicRoutes) {
@@ -44,11 +33,15 @@ export default withAuth(
     if (isAuthenticated && isPublicRoutes) {
       return Response.redirect(new URL("/dashboard", nextUrl));
     }
+    return null;
   }
 );
 
 export const config = {
-  matcher: ["/"],
+  matcher: [
+    // "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/",
+    "/dashboard/:path*",
+    "/api/auth//:path*",
+  ],
 };
-
-// "/dashboard", "/api/auth", "/auth/login", "/auth/register"

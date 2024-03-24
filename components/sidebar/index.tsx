@@ -30,8 +30,9 @@ export const Sidebar = () => {
               <Button
                 className="!bg-green-700"
                 onClick={() => {
-                  signOut({ redirect: false });
-                  router.push("/auth/login");
+                  console.log("handling modal");
+                  signOut({ redirect: false, callbackUrl: "/auth/login" });
+                  // router.push("/auth/login");
                 }}
               >
                 Yes
