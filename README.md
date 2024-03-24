@@ -24,6 +24,9 @@ Tailwind
 Typescript
 ```
 
+[Designer](https://www.behance.net/Barbaraani)
+[Design](https://www.behance.net/gallery/189238867/HR-Dashboard-Concept-HR360)
+
 [Hr360](https://hr-360-dashboard.vercel.app/)
 
 ![screenshot](<assets/Screenshot 2024-03-24 at 14.37.18.png>)
