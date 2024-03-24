@@ -76,8 +76,7 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
             <Button
               className="!bg-green-700"
               onClick={() => {
-                signOut({ redirect: false });
-                router.push("/auth/login");
+                signOut({ callbackUrl: "/auth/login" });
               }}
             >
               Yes

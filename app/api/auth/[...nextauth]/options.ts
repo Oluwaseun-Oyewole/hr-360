@@ -206,9 +206,31 @@ export const options: NextAuthOptions = {
       return true;
     },
 
-    async redirect({ url, baseUrl }) {
-      return url;
-    },
+    // async redirect({ url, baseUrl }) {
+    //   console.log("url", url);
+    //   console.log("base url", baseUrl);
+
+    //   const isRelativeUrl = url.startsWith("/");
+    //   console.log("relative", isRelativeUrl);
+    //   if (isRelativeUrl) {
+    //     return `${baseUrl}${url}`;
+    //   }
+    //   const isSameOriginUrl = new URL(url).origin === baseUrl;
+    //   const alreadyRedirected = url.includes("callbackUrl=");
+    //   console.log("already", alreadyRedirected);
+
+    //   if (isSameOriginUrl && alreadyRedirected) {
+    //     const originalCallbackUrl = decodeURIComponent(
+    //       url.split("callbackUrl=")[1]
+    //     );
+    //     return originalCallbackUrl;
+    //   }
+
+    //   if (isSameOriginUrl) {
+    //     return url;
+    //   }
+    //   return baseUrl;
+    // },
     // if you want to use the role in client component
     async session({ session, token, user }) {
       await mongoDBConnection();

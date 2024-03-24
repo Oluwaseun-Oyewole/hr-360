@@ -7,10 +7,16 @@ import { Form, Formik } from "formik";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 import * as Yup from "yup";
 
 const Login = () => {
   const router = useRouter();
+  useLayoutEffect(() => {
+    if (window && typeof window !== undefined) {
+      router.replace("/auth/login");
+    }
+  }, []);
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
