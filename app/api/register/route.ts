@@ -1,6 +1,5 @@
-import { signJwt } from "@/lib/jwt";
-import { compileActivationTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
+import { sendOTPVerification } from "@/lib/otpVerification";
 import { User } from "@/models/users";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import bcrypt from "bcryptjs";
@@ -42,18 +41,12 @@ export const POST = async (req: NextRequest) => {
           emailVerified,
           employmentType,
         });
-        const jwtUserId = signJwt({ id: user?.id });
-        const activationURL = `${process.env.NEXTAUTH_URL}/auth/activation/${jwtUserId}`;
-        const body = compileActivationTemplate(name, activationURL);
-        await sendMail({
-          to: email,
-          subject: "Activate your account",
-          body: body,
-        });
+
+        await sendOTPVerification({ _id: user._id, name, email });
 
         return NextResponse.json(
           {
-            message: "Activation link has been sent to your mail",
+            message: "An OTP has been sent to your mail",
             statusCode: 200,
           },
           { status: 201 }

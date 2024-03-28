@@ -22,6 +22,7 @@ React
 NextJS
 Tailwind
 Typescript
+NextAuth
 Mongo
 Mongoose
 ```

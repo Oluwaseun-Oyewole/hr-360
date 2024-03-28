@@ -1,6 +1,7 @@
 import Handlebars from "handlebars";
 import nodemailer from "nodemailer";
 import { activationTemplate } from "./email-template/activation";
+import { otpTemplate } from "./email-template/otp";
 import { resetPasswordTemplate } from "./email-template/reset-password";
 
 export async function sendMail({
@@ -35,6 +36,18 @@ export async function sendMail({
     return null;
   }
 }
+
+export const compileOTPVerificationTemplate = (
+  username: string,
+  otp: number
+) => {
+  const template = Handlebars.compile(otpTemplate);
+  const htmlBody = template({
+    username,
+    otp,
+  });
+  return htmlBody;
+};
 
 export const compileActivationTemplate = (name: string, url: string) => {
   const template = Handlebars.compile(activationTemplate);
