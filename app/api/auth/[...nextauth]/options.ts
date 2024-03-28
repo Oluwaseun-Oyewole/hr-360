@@ -1,5 +1,6 @@
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { isEmptyOrSpaces } from "@/utils/helper";
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -144,9 +145,17 @@ export const options: NextAuthOptions = {
         const { email, password } = credentials;
         try {
           await mongoDBConnection();
-          const user = await User.findOne({ email });
+          if (isEmptyOrSpaces(email) || isEmptyOrSpaces(password)) {
+            throw new Error("Fill in your fields");
+          }
+          const user = await User.findOne({
+            email,
+          });
           if (!user) {
             throw new Error("User not found");
+          }
+          if (!user?.password) {
+            throw new Error("Invalid credentials");
           }
           if (!user?.emailVerified) {
             throw new Error("Please activate your email");
@@ -158,7 +167,7 @@ export const options: NextAuthOptions = {
             }
           }
         } catch (error) {
-          throw new Error("Oops, something went wrong");
+          throw new Error(error as string);
         }
       },
     }),
