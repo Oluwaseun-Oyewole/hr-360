@@ -6,4 +6,6 @@ export class Endpoints {
   static resetPassword = BASE_URL + "resetPassword";
   static changeEmail = BASE_URL + "email";
   static updateAccount = BASE_URL + "accountUpdate";
+  static verifyOTP = BASE_URL + "verifyOTP";
+  static resendOTP = BASE_URL + "resendOTP";
 }

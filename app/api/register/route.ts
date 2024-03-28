@@ -41,9 +41,7 @@ export const POST = async (req: NextRequest) => {
           emailVerified,
           employmentType,
         });
-
         await sendOTPVerification({ _id: user._id, name, email });
-
         return NextResponse.json(
           {
             message: "An OTP has been sent to your mail",

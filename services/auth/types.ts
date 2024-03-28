@@ -31,3 +31,12 @@ export interface updateAccountRequestBody {
   role: string;
   employmentType: string;
 }
+
+export interface resendOTPRequestBody {
+  email: string;
+}
+
+export interface verifyOTPRequestBody {
+  email: string;
+  otp: string;
+}
