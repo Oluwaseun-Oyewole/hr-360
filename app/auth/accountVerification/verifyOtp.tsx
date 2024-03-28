@@ -1,16 +1,15 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { login_redirect } from "@/routes";
+import { verifyOTP } from "@/services/auth";
 import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const VerifyOTP = () => {
   const router = useRouter();
-
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
@@ -24,14 +23,9 @@ const VerifyOTP = () => {
 
   const handleSubmit = async (values: Record<string, any>) => {
     try {
-      const res = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
-
-      if (res?.status === 200) {
-        router.replace(login_redirect);
+      const res = await verifyOTP({ email: values.email, otp: values.otp });
+      if (res) {
+        router.replace("/auth/login");
       } else {
         Toastify.error(res?.error as string);
       }
@@ -53,41 +47,46 @@ const VerifyOTP = () => {
         >
           {(formik) => {
             return (
-              <Form>
-                <div className="flex flex-col gap-5">
-                  <FormikController
-                    control="input"
-                    label=""
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="!py-3"
-                  />
+              <>
+                <Form>
+                  <div className="flex flex-col gap-5">
+                    <FormikController
+                      control="input"
+                      label=""
+                      type="email"
+                      placeholder="Email"
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="!py-3"
+                    />
+                    <FormikController
+                      control="input"
+                      label=""
+                      type="text"
+                      placeholder="otp"
+                      name="otp"
+                      value={formik.values.otp}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="!py-3"
+                    />
+                  </div>
 
-                  <FormikController
-                    control="input"
-                    label=""
-                    type="text"
-                    placeholder="Otp"
-                    name="otp"
-                    value={formik.values.otp}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="!py-3"
-                  />
+                  <Button
+                    isLoading={formik.isSubmitting}
+                    disabled={!formik.isValid}
+                    className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
+                  >
+                    verify
+                  </Button>
+                </Form>
+
+                <div className="flex items-end justify-end text-primary-100 py-3">
+                  <Link href="/auth/login">login</Link>
                 </div>
-
-                <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
-                  className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
-                >
-                  verify
-                </Button>
-              </Form>
+              </>
             );
           }}
         </Formik>

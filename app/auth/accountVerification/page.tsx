@@ -5,22 +5,6 @@ import { useEffect } from "react";
 import InvalidRoute from "./error";
 import FormContent from "./formLayout";
 
-const data = [
-  {
-    id: 1,
-    title: "Personal Information",
-    description: "Enter your personal data appropriately",
-    step: "?step=1",
-  },
-
-  {
-    id: 2,
-    title: "Dependent Information",
-    description: "Enter your dependent data appropriately",
-    step: "?step=2",
-  },
-];
-
 const FormLayout = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -50,7 +34,7 @@ const FormLayout = () => {
     if (stepNumber === 1) {
       return "Enter your registered Email address";
     } else if (stepNumber === 2) {
-      return "Verify your OTP";
+      return "Enter the otp sent to your mail";
     } else return;
   };
 
@@ -59,11 +43,10 @@ const FormLayout = () => {
       {stepNumber > 0 && stepNumber <= totalStepNumber ? (
         <div className="w-full">
           <div className="flex items-center justify-center">
-            <div className="w-full md:w-[50%] flex justify-between">
+            <div className="w-[90%] md:w-[50%] flex justify-between">
               {stepNumber > 1 && (
                 <p
                   onClick={() => {
-                    console.log("clicking .. ");
                     router.push(`${pathname}?step=1`);
                   }}
                   className="cursor-pointer text-primary-100"
@@ -74,7 +57,6 @@ const FormLayout = () => {
               {stepNumber < 2 && (
                 <p
                   onClick={() => {
-                    console.log("clicking .. ");
                     router.push(`${pathname}?step=2`);
                   }}
                   className="cursor-pointer text-primary-100"

@@ -4,7 +4,7 @@ import VerifyOTP from "./verifyOtp";
 
 const FormContent = () => {
   const searchParams = useSearchParams();
-  const step = searchParams.get("step") ?? 1;
+  const step = searchParams.get("step") ?? "";
   const currentStep = Number(step);
 
   const renderForm = () => {
@@ -14,7 +14,7 @@ const FormContent = () => {
       return <VerifyOTP />;
     } else return;
   };
-  return <div>{renderForm()}</div>;
+  return <div>{renderForm()} </div>;
 };
 
 export default FormContent;

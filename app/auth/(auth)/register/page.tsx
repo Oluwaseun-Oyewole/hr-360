@@ -4,12 +4,13 @@ import FormikController from "@/components/form/form-controller";
 import { register } from "@/services/auth";
 import { Form, Formik } from "formik";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";
 import * as Yup from "yup";
 
 const SignUp = () => {
   const router = useRouter();
+  const pathname = usePathname();
   useLayoutEffect(() => {
     if (window && typeof window !== undefined) {
       router.replace("/auth/register");
@@ -46,7 +47,7 @@ const SignUp = () => {
     });
     if (response?.statusCode === 200) {
       resetForm();
-      router.push("/auth/login");
+      router.push(`/auth/accountVerification?step=2`);
     }
   };
 
