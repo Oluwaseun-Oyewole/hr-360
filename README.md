@@ -22,6 +22,8 @@ React
 NextJS
 Tailwind
 Typescript
+Mongo
+Mongoose
 ```
 
 [Designer](https://www.behance.net/Barbaraani)
