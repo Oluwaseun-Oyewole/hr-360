@@ -22,8 +22,6 @@ const ResendOTP = () => {
       const res = await resendOTP({ email: values.email });
       if (res) {
         router.push(`${pathname}?step=2`);
-      } else {
-        Toastify.error(res?.error as string);
       }
     } catch (error) {
       Toastify.error(error as string);
@@ -63,7 +61,7 @@ const ResendOTP = () => {
                     disabled={!formik.isValid}
                     className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
                   >
-                    send OTP
+                    send otp
                   </Button>
                 </Form>
                 <div className="flex items-end justify-end text-primary-100 py-3">

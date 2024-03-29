@@ -1,7 +1,7 @@
 import Handlebars from "handlebars";
 import nodemailer from "nodemailer";
 import { activationTemplate } from "./email-template/activation";
-import { otpTemplate } from "./email-template/otp";
+import { otpTemplates } from "./email-template/otps";
 import { resetPasswordTemplate } from "./email-template/reset-password";
 
 export async function sendMail({
@@ -14,11 +14,11 @@ export async function sendMail({
   body: string;
 }) {
   const { SMTP_EMAIL, SMTP_PASSWORD, SMTP_HOST } = process.env;
-
   const transport = nodemailer.createTransport({
-    // service: SERVICE,
+    // service: "Gmail",
     host: SMTP_HOST,
     port: 587,
+    // secure: false,
     auth: {
       user: SMTP_EMAIL,
       pass: SMTP_PASSWORD,
@@ -41,7 +41,7 @@ export const compileOTPVerificationTemplate = (
   username: string,
   otp: number
 ) => {
-  const template = Handlebars.compile(otpTemplate);
+  const template = Handlebars.compile(otpTemplates);
   const htmlBody = template({
     username,
     otp,

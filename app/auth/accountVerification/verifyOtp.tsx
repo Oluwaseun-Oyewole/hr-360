@@ -18,16 +18,14 @@ const VerifyOTP = () => {
     otp: Yup.number()
       .required("Otp is required")
       .min(60000, "Valid OTP should be 6 digits")
-      .max(600000, "OTP should not exceed 6 digits"),
+      .max(6000000, "OTP should not exceed 6 digits"),
   });
 
   const handleSubmit = async (values: Record<string, any>) => {
     try {
-      const res = await verifyOTP({ email: values.email, otp: values.otp });
+      const res = await verifyOTP({ email: values.email, otpCode: values.otp });
       if (res) {
         router.replace("/auth/login");
-      } else {
-        Toastify.error(res?.error as string);
       }
     } catch (error) {
       Toastify.error(error as string);

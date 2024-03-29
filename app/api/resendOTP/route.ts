@@ -8,28 +8,33 @@ export const POST = async (req: NextRequest) => {
   const { email } = await req.json();
   await mongoDBConnection();
   try {
-    if (isEmptyOrSpaces(email)) {
-      return NextResponse.json(
-        { message: "Email can not be empty", statusCode: 204 },
-        { status: 204 }
-      );
+    const checkIfUserEmailExists = await User.findOne({ email });
+    if (!checkIfUserEmailExists) {
+      return NextResponse.json({ message: "User not found" }, { status: 409 });
+    } else {
+      if (isEmptyOrSpaces(email)) {
+        return NextResponse.json(
+          {
+            message: "Fields can't be empty",
+            statusCode: 204,
+          },
+          { status: 204 }
+        );
+      } else {
+        await sendOTPVerification({
+          _id: checkIfUserEmailExists._id,
+          name: checkIfUserEmailExists.name,
+          email,
+        });
+        return NextResponse.json(
+          {
+            message: "An OTP has been sent to your mail",
+            statusCode: 200,
+          },
+          { status: 201 }
+        );
+      }
     }
-    const checkIfUserExist = await User.findOne({ email });
-    if (!checkIfUserExist) {
-      NextResponse.json(
-        { message: "User not found", statusCode: 404 },
-        { status: 404 }
-      );
-    }
-    sendOTPVerification({
-      _id: checkIfUserExist._id,
-      name: checkIfUserExist.name,
-      email,
-    });
-    return NextResponse.json(
-      { message: "An otp code has been sent to your account" },
-      { status: 200 }
-    );
   } catch (error) {
     return NextResponse.json(
       { message: "Oops, something went wrong" },

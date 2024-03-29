@@ -38,5 +38,5 @@ export interface resendOTPRequestBody {
 
 export interface verifyOTPRequestBody {
   email: string;
-  otp: string;
+  otpCode: string;
 }
