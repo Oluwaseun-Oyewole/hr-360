@@ -12,7 +12,7 @@ export const handleRequestError = (
     const data = error?.response?.data;
 
     useMessage =
-      truncate(data?.message, 45) ||
+      truncate(data?.message, 50) ||
       data?.message ||
       (data?.errors && data?.errors[0]?.message) ||
       error?.message ||

@@ -13,6 +13,14 @@ export const POST = async (req: NextRequest) => {
     const checkIfUserExist = await User.findOne({ email });
     const userId = checkIfUserExist?._id;
     const isVerified = !!checkIfUserExist?.emailVerified;
+
+    if (isVerified) {
+      return NextResponse.json(
+        { message: "Account already activated" },
+        { status: 501 }
+      );
+    }
+
     if (!checkIfUserExist) {
       return NextResponse.json({ message: "User not found" }, { status: 409 });
     } else {
