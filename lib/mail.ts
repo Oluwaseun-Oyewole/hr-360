@@ -14,11 +14,12 @@ export async function sendMail({
   body: string;
 }) {
   const { SMTP_EMAIL, SMTP_PASSWORD, SMTP_HOST } = process.env;
+
   const transport = nodemailer.createTransport({
-    // service: "Gmail",
+    service: "Gmail",
     host: SMTP_HOST,
     port: 587,
-    // secure: false,
+    secure: false,
     auth: {
       user: SMTP_EMAIL,
       pass: SMTP_PASSWORD,
