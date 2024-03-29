@@ -32,7 +32,7 @@ const FormLayout = () => {
 
   const description = () => {
     if (stepNumber === 1) {
-      return "Enter your registered Email address";
+      return "Generate a new otp ";
     } else if (stepNumber === 2) {
       return "Enter the otp sent to your mail";
     } else return;

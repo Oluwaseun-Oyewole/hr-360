@@ -100,15 +100,24 @@ const Login = () => {
           }}
         </Formik>
 
-        <div className="py-2">
-          <Link
-            href="/auth/forgotPassword"
-            className="text-blue-500 cursor-pointer text-sm"
-          >
-            Forgot Password?
-          </Link>
+        <div className="flex justify-between items-center">
+          <div className="py-2">
+            <Link
+              href="/auth/forgotPassword"
+              className="text-blue-500 cursor-pointer text-sm"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+          <div className="py-2">
+            <Link
+              href="/auth/accountVerification?step=2"
+              className="text-blue-500 cursor-pointer text-sm"
+            >
+              Activate account
+            </Link>
+          </div>
         </div>
-
         <p className="pt-5 text-right text-sm">
           Already have an account?{" "}
           <Link href="/auth/register" className="text-blue-500 cursor-pointer">
