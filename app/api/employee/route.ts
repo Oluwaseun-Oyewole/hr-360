@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   const token = req.headers.get("Authorization")!;
   const tokenWithoutBearer = token?.replace(/^Bearer\s+/i, "");
-
   const { searchParams } = await new URL(req.url);
   const resultsPerPage = Number(searchParams.get("resultsPerPage"))!;
   const page = Number(searchParams.get("page"))!;

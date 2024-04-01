@@ -156,7 +156,7 @@ export const options: NextAuthOptions = {
         token.email = user.email;
         token.accessToken = userToken;
         token.accountType = account.type;
-        token.refreshToken = refreshToken(userToken);
+        // token.refreshToken = refreshToken(userToken);
         token.role = "";
         token.employmentType = "";
       }
@@ -180,21 +180,6 @@ export const options: NextAuthOptions = {
       //   return refreshAccessToken(token);
       // }
       return { ...token, ...user };
-      // const accessToken = signJwt({ sub: token?.sub }, { expiresIn: "1s" })!;
-      // const verify = verifyJwt(accessToken);
-      // const refreshToken = signJwt(
-      //   { accessToken: token?.accessToken },
-      //   { expiresIn: "1d" }
-      // );
-      // const testingVerification = verifyJWT(accessToken);
-
-      // token.testingVerification = testingVerification;
-      // token.accessToken = accessToken!;
-      // token.refreshToken = refreshToken!;
-      // token.verify = verify;
-
-      // Access token has expired, try to update it
-      // return refreshAccessToken(token);
     },
     async session({ session, token, user }) {
       await mongoDBConnection();
