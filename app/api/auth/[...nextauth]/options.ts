@@ -1,4 +1,3 @@
-import { verifyJwt } from "@/lib/jwt";
 import { jwtService } from "@/lib/jwt/index";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
@@ -8,115 +7,6 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-
-// const GOOGLE_AUTHORIZATION_URL =
-//   "https://accounts.google.com/o/oauth2/v2/auth?" +
-//   new URLSearchParams({
-//     prompt: "consent",
-//     access_type: "offline",
-//     response_type: "code",
-//   });
-
-// type GenericObject<T = unknown> = T & {
-//   [key: string]: any;
-// };
-
-// async function refreshAccessToken(token: any) {
-//   try {
-//     const url =
-//       "https://www.googleapis.com/oauth2/v4/token?" +
-//       new URLSearchParams({
-//         client_id: process.env.GOOGLE_CLIENT_ID!,
-//         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-//         grant_type: "refresh_token",
-//         // refresh_token: token.refreshToken,
-//         access_type: "offline",
-//         response_type: "code",
-//         prompt: "consent",
-//       });
-//     const response = await fetch(url, {
-//       headers: {
-//         "Content-Type": "application/x-www-form-urlencoded",
-//       },
-//       method: "POST",
-//     });
-
-//     const refreshedTokens = await response.json();
-
-//     if (!response.ok) {
-//       throw refreshedTokens;
-//     }
-//     return {
-//       ...token,
-//       accessToken: refreshedTokens.access_token,
-//       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-//       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-//     };
-//   } catch (error) {
-//     console.log(error);
-//     return {
-//       ...token,
-//       error: "RefreshAccessTokenError",
-//     };
-//   }
-// }
-
-// interface AuthPayload {
-//   user: AuthUser;
-//   accessToken: string;
-//   accessTokenExpires: number;
-//   refreshToken: string;
-//   error?: string;
-// }
-
-// const refreshAccessToken = async (
-//   payload: AuthPayload
-// ): Promise<AuthPayload> => {
-//   try {
-//     const url = new URL("https://www.googleapis.com/oauth2/v4/token");
-//     url.searchParams.set("client_id", process.env.GOOGLE_CLIENT_ID!);
-//     url.searchParams.set("client_secret", process.env.GOOGLE_CLIENT_SECRET!);
-//     url.searchParams.set("grant_type", "refresh_token");
-//     url.searchParams.set("refresh_token", payload.refreshToken);
-//     url.searchParams.set("redirect_uri", "/");
-
-//     const response = await fetch(url.toString(), {
-//       headers: {
-//         "Content-Type": "application/x-www-form-urlencoded",
-//       },
-//       method: "POST",
-//     });
-
-//     console.log("responde", response);
-
-//     const refreshToken = await response.json();
-
-//     if (!response.ok) {
-//       throw refreshToken;
-//     }
-
-//     // Give a 10 sec buffer
-//     const now = new Date();
-//     const accessTokenExpires = now.setSeconds(
-//       now.getSeconds() + refreshToken.expires_in - 10
-//     );
-
-//     return {
-//       ...payload,
-//       accessToken: refreshToken.access_token,
-//       accessTokenExpires,
-//       refreshToken: refreshToken.refresh_token,
-//     };
-//   } catch (error) {
-//     console.log("error from fetching tokens", error);
-//     console.error(error);
-
-//     return {
-//       ...payload,
-//       error: "RefreshAccessTokenError",
-//     };
-//   }
-// };
 
 export const options: NextAuthOptions = {
   providers: [
@@ -242,33 +132,31 @@ export const options: NextAuthOptions = {
     //   }
     //   return baseUrl;
     // },
-    // if you want to use the role in client component
 
     async jwt({ token, user, account, trigger, session }) {
       const userToken = await jwtService.sign(
         { name: user?.name, email: user?.email },
-        "15m"
+        "24hrs"
       );
 
-      const refreshToken = async (token: string) => {
-        const decoded = verifyJwt(token);
-        let accessToken;
-        if (!decoded) {
-          accessToken = await jwtService.sign(
-            { name: user?.name, email: user?.email },
-            "24h"
-          );
-        }
-        console.log("refresh token", accessToken);
-        return accessToken;
-      };
+      // const refreshToken = async (token: string) => {
+      //   const decoded = verifyJwt(token);
+      //   let accessToken;
+      //   if (!decoded) {
+      //     accessToken = await jwtService.sign(
+      //       { name: user?.name, email: user?.email },
+      //       "24h"
+      //     );
+      //   }
+      //   return accessToken;
+      // };
 
       if (account && user) {
         token.name = user.name;
         token.email = user.email;
         token.accessToken = userToken;
         token.accountType = account.type;
-        // token.refreshToken: refreshToken(userToken);
+        token.refreshToken = refreshToken(userToken);
         token.role = "";
         token.employmentType = "";
       }
@@ -277,7 +165,6 @@ export const options: NextAuthOptions = {
         token.employmentType = session.employmentType;
         token.name = session.name;
       }
-
       // const v = verifyJWT(token?.accessToken);
       // console.log("vvvvv", v);
       // if (v.expired) {

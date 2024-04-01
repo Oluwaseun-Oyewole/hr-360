@@ -11,9 +11,6 @@ declare module "next-auth" {
       accountType: String;
       employmentType: string;
       accessToken: string;
-      refreshToken: () => void;
-      testingVerification;
-      accessTokenExpires: boolean;
     } & DefaultSession;
   }
 
@@ -22,8 +19,6 @@ declare module "next-auth" {
     employmentType: string;
     accountType: String;
     accessToken: string;
-    refreshToken: () => void;
-    accessTokenExpires: boolean;
   }
 }
 
@@ -34,7 +29,5 @@ declare module "next-auth/jwt" {
     accountType: String;
     address: string;
     accessToken: string;
-    refreshToken: () => void;
-    accessTokenExpires: boolean;
   }
 }
