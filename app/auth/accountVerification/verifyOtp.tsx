@@ -18,7 +18,7 @@ const VerifyOTP = () => {
     otp: Yup.number()
       .required("Otp is required")
       .min(60000, "Valid OTP should be 6 digits")
-      .max(6000000, "OTP should not exceed 6 digits"),
+      .max(600000, "OTP should not exceed 6 digits"),
   });
 
   const handleSubmit = async (values: Record<string, any>) => {

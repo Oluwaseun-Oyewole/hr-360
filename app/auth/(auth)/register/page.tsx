@@ -52,7 +52,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
+    <div className="w-full flex flex-col gap-4 items-center justify-center !font-light mt-20 lg:mt-14">
       <h1 className="text-center">Registration</h1>
       <div className="w-[85%] lg:w-[40%]">
         <Formik

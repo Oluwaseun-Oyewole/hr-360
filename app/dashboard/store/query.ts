@@ -1,9 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getSession } from "next-auth/react";
+
+const addTokenToRequest = async (headers: any, { getState }: any) => {
+  const session = await getSession();
+  if (session?.user?.accessToken) {
+    headers.set("Authorization", `Bearer ${session.user.accessToken}`);
+  }
+  return headers;
+};
 export const DashboardSlice = createApi({
   reducerPath: "employee",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL,
+    prepareHeaders: (headers, { getState }) => {
+      return addTokenToRequest(headers, { getState });
+    },
   }),
+
   tagTypes: ["Employee", "Search", "Filter"],
   endpoints: (builder) => ({
     getAllEmployees: builder.query({

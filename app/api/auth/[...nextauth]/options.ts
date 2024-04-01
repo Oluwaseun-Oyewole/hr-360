@@ -1,3 +1,5 @@
+import { verifyJwt } from "@/lib/jwt";
+import { jwtService } from "@/lib/jwt/index";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
 import { isEmptyOrSpaces } from "@/utils/helper";
@@ -241,46 +243,46 @@ export const options: NextAuthOptions = {
     //   return baseUrl;
     // },
     // if you want to use the role in client component
-    async session({ session, token, user }) {
-      await mongoDBConnection();
-      const existingUser = await User.findOne({
-        email: session.user.email!,
-      });
-      if (session.user) {
-        if (existingUser) {
-          session.user.name = existingUser.name!;
-          session.user.email = existingUser.email!;
-          session.user.role = existingUser.role;
-          session.user.employmentType = existingUser.employmentType;
-          session.user.accessToken = existingUser.accessToken;
-        } else {
-          session.user.name = token.name!;
-          session.user.email = token.email!;
-          session.user.role = token.role;
-          session.user.employmentType = token.employmentType;
-          session.user.accessToken = token.accessToken;
-        }
-      }
-      return session;
-    },
 
     async jwt({ token, user, account, trigger, session }) {
+      const userToken = await jwtService.sign(
+        { name: user?.name, email: user?.email },
+        "15m"
+      );
+
+      const refreshToken = async (token: string) => {
+        const decoded = verifyJwt(token);
+        let accessToken;
+        if (!decoded) {
+          accessToken = await jwtService.sign(
+            { name: user?.name, email: user?.email },
+            "24h"
+          );
+        }
+        console.log("refresh token", accessToken);
+        return accessToken;
+      };
+
       if (account && user) {
         token.name = user.name;
         token.email = user.email;
-        token.accessToken = account.access_token!;
-        token.accessTokenExpires = account.expires_at!;
+        token.accessToken = userToken;
         token.accountType = account.type;
-        // refreshToken: account.refresh_token,
+        // token.refreshToken: refreshToken(userToken);
         token.role = "";
         token.employmentType = "";
-        // expiredTokenTime: Date.now() < account.expires_at!,
       }
       if (trigger === "update" && session?.name) {
         token.role = session.role;
         token.employmentType = session.employmentType;
         token.name = session.name;
       }
+
+      // const v = verifyJWT(token?.accessToken);
+      // console.log("vvvvv", v);
+      // if (v.expired) {
+      //   console.log("this token has expired");
+      // }
       // // Return previous token if the access token has not expired yet
       // if (token.accessTokenExpires > Date.now()) {
       //   console.log("token still valid");s
@@ -290,7 +292,7 @@ export const options: NextAuthOptions = {
       //   // Access token has expired, try to update it
       //   return refreshAccessToken(token);
       // }
-      return token;
+      return { ...token, ...user };
       // const accessToken = signJwt({ sub: token?.sub }, { expiresIn: "1s" })!;
       // const verify = verifyJwt(accessToken);
       // const refreshToken = signJwt(
@@ -307,39 +309,29 @@ export const options: NextAuthOptions = {
       // Access token has expired, try to update it
       // return refreshAccessToken(token);
     },
+    async session({ session, token, user }) {
+      await mongoDBConnection();
 
-    // async jwt(
-    //   payload: AuthPayload,
-    //   user: AuthUser,
-    //   account: GenericObject
-    // ): Promise<AuthPayload> {
-    //   let res: AuthPayload;
+      const existingUser = await User.findOne({
+        email: session.user.email!,
+      });
+      if (session.user) {
+        if (existingUser) {
+          session.user.name = existingUser.name!;
+          session.user.email = existingUser.email!;
+          session.user.role = existingUser.role;
+          session.user.employmentType = existingUser.employmentType;
+          session.user.accessToken = token.accessToken;
+        } else {
+          session.user.name = token.name!;
+          session.user.email = token.email!;
+          session.user.role = token.role;
+          session.user.employmentType = token.employmentType;
+          session.user.accessToken = token.accessToken;
+        }
+      }
 
-    //   const now = Date.now();
-
-    //   // Signing in
-    //   if (account && user) {
-    //     const accessToken = account.accessToken;
-    //     const refreshToken = account.refreshToken;
-
-    //     res = {
-    //       accessToken,
-    //       accessTokenExpires: account.accessTokenExpires,
-    //       refreshToken,
-    //       user,
-    //     };
-    //   } else if (now < payload.accessTokenExpires) {
-    //     // Subsequent use of JWT, the user has been logged in before
-    //     // access token has not expired yet
-    //     console.log("access token has not expired");
-    //     res = payload;
-    //   } else {
-    //     console.log("access token has expired");
-    //     // access token has expired, try to update it
-    //     res = await refreshAccessToken(payload);
-    //   }
-
-    //   return res;
-    // },
+      return session;
+    },
   },
 };

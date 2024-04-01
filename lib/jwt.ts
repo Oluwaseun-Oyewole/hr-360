@@ -12,7 +12,7 @@ export const signJwt = (
   option: SignOption = DEFAULT_SIGN_OPTION
 ) => {
   try {
-    const secretKey = process.env.JWT_USER_ID_SECRET;
+    const secretKey = process.env.NEXTAUTH_SECRET;
     const token = jwt.sign(payload, secretKey!, option);
     return token;
   } catch (error) {
@@ -22,7 +22,7 @@ export const signJwt = (
 
 export const verifyJwt = (token: string) => {
   try {
-    const secretKey = process.env.JWT_USER_ID_SECRET;
+    const secretKey = process.env.NEXTAUTH_SECRET;
     const decode = jwt.verify(token, secretKey!);
     return decode as JwtPayload;
   } catch (error) {
@@ -33,7 +33,7 @@ export const verifyJwt = (token: string) => {
 export function verifyJWT(token: string) {
   try {
     return {
-      payload: jwt.verify(token, process.env.JWT_USER_ID_SECRET!),
+      payload: jwt.verify(token, process.env.NEXTAUTH_SECRET!),
       expired: false,
     };
   } catch (error) {
