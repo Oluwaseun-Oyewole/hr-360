@@ -119,7 +119,7 @@ const Login = () => {
           </div>
         </div>
         <p className="pt-5 text-right text-sm">
-          Already have an account?{" "}
+          {"Don't have an account? "}
           <Link href="/auth/register" className="text-blue-500 cursor-pointer">
             register
           </Link>
