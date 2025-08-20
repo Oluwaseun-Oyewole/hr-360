@@ -25,6 +25,7 @@ const Login = () => {
   });
 
   const handleSubmit = async (values: Record<string, any>) => {
+            router.replace(login_redirect);
     try {
       const res = await signIn("credentials", {
         email: values.email,
