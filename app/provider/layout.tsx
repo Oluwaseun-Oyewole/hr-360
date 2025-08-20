@@ -1,5 +1,6 @@
 "use client";
-
+import ProgressLoader from "@/components/NProgress";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 
 export default function Provider({
@@ -7,9 +8,11 @@ export default function Provider({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = new QueryClient();
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
+      <ProgressLoader />
       <SessionProvider>{children}</SessionProvider>
-    </div>
+    </QueryClientProvider>
   );
 }

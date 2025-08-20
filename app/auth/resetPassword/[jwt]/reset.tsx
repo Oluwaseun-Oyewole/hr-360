@@ -1,7 +1,9 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { resetPassword } from "@/services/auth";
+import { routes } from "@/routes";
+import { useResetPasswordMutation } from "@/services/mutations";
+import { handleSuccessToast } from "@/utils/success";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -25,21 +27,23 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm password is required"),
   });
-
-  const handleSubmit = async (
-    values: Record<string, any>,
-    { resetForm }: any
-  ) => {
-    const response = await resetPassword({
-      jwtUserId: jwt,
-      password: values.password,
-      confirm_password: values.confirm_password,
-    });
-
-    if (response?.statusCode === 200) {
-      resetForm();
-      router.push("/auth/login");
-    }
+  const { mutate, isPending } = useResetPasswordMutation();
+  const handleSubmit = async (values: Record<string, any>) => {
+    return mutate(
+      {
+        jwtUserId: jwt,
+        password: values.password,
+        confirm_password: values.confirm_password,
+      },
+      {
+        onSuccess: (data) => {
+          if (data) {
+            handleSuccessToast(data?.message);
+            router.replace(routes.login);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -75,6 +79,7 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                       e.preventDefault();
                       return false;
                     }}
+                    error={formik.errors.password && formik.touched.password}
                   />
 
                   <FormikController
@@ -94,12 +99,16 @@ const PasswordReset = ({ params: { jwt } }: IProps) => {
                       e.preventDefault();
                       return false;
                     }}
+                    error={
+                      formik.errors.confirm_password &&
+                      formik.touched.confirm_password
+                    }
                   />
                 </div>
 
                 <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
+                  isLoading={formik.isSubmitting || isPending}
+                  disabled={!formik.isValid || isPending}
                   className={`${"!bg-blue-500"} !mt-5 !disabled:cursor-not-allowed`}
                 >
                   Submit

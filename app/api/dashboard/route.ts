@@ -1,7 +1,7 @@
 import { mongoDBConnection } from "@/lib/mongodb";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import { NextRequest, NextResponse } from "next/server";
-import { DashboardModel } from "./../../../models/dashboard";
+import { DashboardModel } from "../../../prisma/dashboard";
 
 export const POST = async (req: NextRequest) => {
   const {

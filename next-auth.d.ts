@@ -1,5 +1,6 @@
 import { DefaultSession, DefaultUser } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import { useEffect } from "react";
 
 declare module "next-auth" {
   interface Session {

@@ -42,11 +42,7 @@ const FormSelect: React.FC<ISelect> = ({
             className={classNames(className)}
             style={{
               width: "100%",
-              height: "60px",
-            }}
-            dropdownStyle={{
-              color: "red",
-              fontWeight: "lighter",
+              height: "50px",
             }}
             placeholder={placeholder}
             onChange={handleChange}

@@ -1,3 +1,4 @@
+import { signJwt } from "@/lib/jwt";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { sendOTPVerification } from "@/lib/otpVerification";
 import { User } from "@/models/users";
@@ -41,11 +42,19 @@ export const POST = async (req: NextRequest) => {
           emailVerified,
           employmentType,
         });
+        const tokenPayload = {
+          userId: user._id.toString(),
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        };
         await sendOTPVerification({ _id: user._id, name, email });
+        const token = await signJwt(tokenPayload);
         return NextResponse.json(
           {
             message: "An OTP has been sent to your mail",
             statusCode: 200,
+            token,
           },
           { status: 201 }
         );

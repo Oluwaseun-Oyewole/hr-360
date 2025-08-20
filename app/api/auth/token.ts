@@ -40,16 +40,13 @@ const refreshAccessToken = async (
     url.searchParams.set("client_secret", clientSecret);
     url.searchParams.set("grant_type", "refresh_token");
     url.searchParams.set("refresh_token", payload.refreshToken);
-
     const response = await fetch(url.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "POST",
     });
-
     const refreshToken = await response.json();
-
     if (!response.ok) {
       throw refreshToken;
     }

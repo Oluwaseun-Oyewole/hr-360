@@ -1,10 +1,6 @@
 import { mongoDBConnection } from "@/lib/mongodb";
+import { DashboardInterface, DashboardModel } from "@/models/dashboard";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  DashboardInterface,
-  DashboardModel,
-} from "./../../../models/dashboard";
-
 export const GET = async (req: NextRequest) => {
   const resultsPerPage = 10;
   const { searchParams } = await new URL(req.url);

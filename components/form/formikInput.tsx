@@ -1,6 +1,7 @@
 import CK from "@/assets/ck.svg";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Input, InputProps } from "antd";
+import classNames from "classnames";
 import { ErrorMessage } from "formik";
 import Image from "next/image";
 import { IoSearch } from "react-icons/io5";
@@ -13,6 +14,7 @@ type IProps = {
   placeholder?: string;
   value?: string | number | null;
   height?: number;
+  error?: boolean;
 } & InputProps;
 
 export default function FormInput({
@@ -24,7 +26,8 @@ export default function FormInput({
   onChange,
   onBlur,
   style,
-  height = 60,
+  height = 50,
+  error,
   ...props
 }: IProps) {
   const { Password } = Input;
@@ -34,15 +37,17 @@ export default function FormInput({
       content={
         <>
           {type !== "password" ? (
-            <div className="relative">
+            <div>
               <Input
-                className="relative py-[15px] !rounded-lg border-gray-300 border-[1.3px] focus:border-btn hover:border-btn px-3 placeholder:font-normal placeholder:text-black"
-                value={value || undefined}
+                className={classNames(
+                  `!rounded-lg border-gray-300 border-[1.3px] focus:border-btn hover:border-btn px-3 placeholder:font-light placeholder:!text-gray-500`,
+                  { "!border-red-500": !!error }
+                )}
+                value={value}
                 placeholder={placeholder}
                 onChange={onChange && onChange}
                 onBlur={onBlur}
                 name={name}
-                autoComplete="off"
                 type={type}
                 allowClear={type === "search"}
                 prefix={type === "search" && <IoSearch />}
@@ -50,23 +55,22 @@ export default function FormInput({
                 style={{ height: `${height}px` }}
                 {...props}
               />
-
-              <ErrorMessage
-                name={name as string}
-                // eslint-disable-next-line react/no-children-prop
-                children={(msg) => <FormError error={msg} />}
-              />
+              <ErrorMessage name={name as string}>
+                {(msg) => <FormError error={msg} />}
+              </ErrorMessage>
             </div>
           ) : (
             <div className="relative">
               <Password
-                className="relative py-[15px] !rounded-lg border-gray-300 border-[1.3px] focus:border-btn hover:border-btn px-3 placeholder:font-light placeholder:text-black"
-                value={value || undefined}
+                className={classNames(
+                  `!rounded-lg border-gray-300 border-[1.3px] focus:border-btn hover:border-btn px-3 placeholder:font-light placeholder:!text-gray-500`,
+                  { "!border-red-500": error }
+                )}
+                value={value}
                 placeholder={placeholder}
                 onChange={onChange && onChange}
                 onBlur={onBlur}
                 name={name}
-                autoComplete="off"
                 type="password"
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -75,11 +79,9 @@ export default function FormInput({
                 {...props}
               />
 
-              <ErrorMessage
-                name={name as string}
-                // eslint-disable-next-line react/no-children-prop
-                children={(msg) => <FormError error={msg} />}
-              />
+              <ErrorMessage name={name as string}>
+                {(msg) => <FormError error={msg} />}
+              </ErrorMessage>
             </div>
           )}
         </>

@@ -378,3 +378,58 @@ export const filters = [
     label: "AdministrativeAssistant",
   },
 ];
+
+export const COOKIES_KEYS = {
+  TOKEN: "token",
+};
+
+export const ROLES = [
+  { label: "HR Manager", value: "HRManager" },
+  {
+    label: "Software Engineer",
+    value: "SoftwareEngineer",
+  },
+  { label: "Marketing Ex", value: "MarketingEx" },
+  {
+    label: "Financial Analyst",
+    value: "FinancialAnalyst",
+  },
+  {
+    label: "Project Manager",
+    value: "ProjectManager",
+  },
+  { label: "Designer", value: "Designer" },
+  {
+    label: "Social Media Manager",
+    value: "SocialMediaManager",
+  },
+  { label: "Accountant", value: "Accountant" },
+  {
+    label: "Business Analyst",
+    value: "BusinessAnalyst",
+  },
+  {
+    label: "Sales Representative",
+    value: "SalesRep",
+  },
+  {
+    label: "Customer service",
+    value: "CustomerService",
+  },
+  {
+    label: "Administrative assistant",
+    value: "AdministrativeAssistant",
+  },
+];
+
+export const EMPLOYMENT_TYPE = [
+  { label: "Full-Time", value: "Full-Time" },
+  {
+    label: "Part-Time",
+    value: "Part-Time",
+  },
+  {
+    label: "Contract",
+    value: "Contract",
+  },
+];

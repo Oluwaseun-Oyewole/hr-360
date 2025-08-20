@@ -8,18 +8,15 @@ import {
   PasswordResetRequestBody,
   RegisterRequestBody,
   changeEmailRequestBody,
-  resendOTPRequestBody,
   updateAccountRequestBody,
   verifyOTPRequestBody,
 } from "./types";
 
 export const register = async (data: RegisterRequestBody) => {
   try {
-    const response = await Request.post<AuthResponseBody>(Endpoints.register, {
+    return await Request.post<AuthResponseBody>(Endpoints.register, {
       data,
     });
-    handleRequestSuccess(response);
-    return response;
   } catch (error) {
     handleRequestError(error);
   }
@@ -87,11 +84,9 @@ export const updateAccount = async (data: updateAccountRequestBody) => {
   }
 };
 
-export const resendOTP = async (data: resendOTPRequestBody) => {
+export const resendOTP = async () => {
   try {
-    const response = await Request.post(Endpoints.resendOTP, {
-      data,
-    });
+    const response = await Request.post(Endpoints.resendOTP, {});
     handleRequestSuccess(response);
     return response;
   } catch (error) {

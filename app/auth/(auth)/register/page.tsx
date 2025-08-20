@@ -1,16 +1,19 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { register } from "@/services/auth";
+import { routes } from "@/routes";
+import { useRegisterMutation } from "@/services/mutations";
+import { COOKIES_KEYS, EMPLOYMENT_TYPE, ROLES } from "@/utils/constants";
+import { saveToStorage } from "@/utils/helper";
+import { handleSuccessToast } from "@/utils/success";
 import { Form, Formik } from "formik";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";
 import * as Yup from "yup";
 
 const SignUp = () => {
   const router = useRouter();
-  const pathname = usePathname();
   useLayoutEffect(() => {
     if (window && typeof window !== undefined) {
       router.replace("/auth/register");
@@ -34,26 +37,31 @@ const SignUp = () => {
     employmentType: Yup.string().required("Select Employment Type"),
   });
 
-  const handleSubmit = async (
-    values: Record<string, any>,
-    { resetForm }: any
-  ) => {
-    const response = await register({
-      name: values.name,
-      email: values.email,
-      role: values.role,
-      employmentType: values.employmentType,
-      password: values.password,
-    });
-    if (response?.statusCode === 200) {
-      resetForm();
-      router.push(`/auth/accountVerification?step=2`);
-    }
+  const { mutate, isPending } = useRegisterMutation();
+  const handleSubmit = async (values: Record<string, any>) => {
+    return mutate(
+      {
+        name: values.name,
+        email: values.email,
+        role: values.role,
+        employmentType: values.employmentType,
+        password: values.password,
+      },
+      {
+        onSuccess: (data) => {
+          if (data) {
+            handleSuccessToast(data?.message);
+            saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
+            router.replace(routes.verify);
+          }
+        },
+      }
+    );
   };
 
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light mt-20 lg:mt-14">
-      <h1 className="text-center">Registration</h1>
+      <h1>Registration</h1>
       <div className="w-[85%] lg:w-[40%]">
         <Formik
           initialValues={{
@@ -79,6 +87,7 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     className="py-[15px]"
+                    error={formik.errors.name && formik.touched.name}
                   />
 
                   <FormikController
@@ -90,6 +99,7 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     className="py-[15px]"
+                    error={formik.errors.email && formik.touched.email}
                   />
 
                   <FormikController
@@ -101,6 +111,7 @@ const SignUp = () => {
                     onBlur={formik.handleBlur}
                     placeholder="Password"
                     className="py-[15px]"
+                    error={formik.errors.password && formik.touched.password}
                   />
 
                   <div className="flex flex-col lg:flex-row div py-2 gap-4">
@@ -113,46 +124,10 @@ const SignUp = () => {
                         onChange={(value: string) => {
                           formik.setFieldValue("role", value);
                         }}
+                        error={formik.errors.role && formik.touched.role}
                         onBlur={() => formik.setFieldTouched("role", true)}
                         placeholder="Select Roles"
-                        options={[
-                          { label: "HR Manager", value: "HR Manager" },
-                          {
-                            label: "Software Engineer",
-                            value: "Software Engineer",
-                          },
-                          { label: "Marketing Ex", value: "Marketing Ex" },
-                          {
-                            label: "Financial Analyst",
-                            value: "Financial Analyst",
-                          },
-                          {
-                            label: "Project Manager",
-                            value: "Project Manager",
-                          },
-                          { label: "Designer", value: "Designer" },
-                          {
-                            label: "Social Media Manager",
-                            value: "Social Media Manager",
-                          },
-                          { label: "Accountant", value: "Accountant" },
-                          {
-                            label: "Business analyst",
-                            value: "Business analyst",
-                          },
-                          {
-                            label: "Sales representative",
-                            value: "Sales representative",
-                          },
-                          {
-                            label: "Customer service",
-                            value: "Customer service",
-                          },
-                          {
-                            label: "Administrative assistant",
-                            value: "Administrative assistant",
-                          },
-                        ]}
+                        options={ROLES}
                       />
                     </div>
 
@@ -169,25 +144,19 @@ const SignUp = () => {
                           formik.setFieldTouched("employmentType", true)
                         }
                         placeholder="Select employment type"
-                        options={[
-                          { label: "Full-Time", value: "Full-Time" },
-                          {
-                            label: "Part-Time",
-                            value: "Part-Time",
-                          },
-                          {
-                            label: "Contract",
-                            value: "Contract",
-                          },
-                        ]}
+                        options={EMPLOYMENT_TYPE}
+                        error={
+                          formik.errors.employmentType &&
+                          formik.touched.employmentType
+                        }
                       />
                     </div>
                   </div>
                 </div>
 
                 <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
+                  isLoading={formik.isSubmitting || isPending}
+                  disabled={!formik.isValid || isPending}
                   className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
                 >
                   Submit
@@ -199,7 +168,7 @@ const SignUp = () => {
 
         <div className="text-right text-sm py-3">
           Have an account already?
-          <Link className="text-blue-500 pl-1" href="/auth/login">
+          <Link className="text-blue-700 pl-1" href={routes.login}>
             {"login"}
           </Link>
         </div>

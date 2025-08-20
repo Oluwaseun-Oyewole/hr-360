@@ -11,7 +11,6 @@ export const POST = async (req: NextRequest) => {
   await mongoDBConnection();
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-
     if (isEmptyOrSpaces(jwtUserId) || isEmptyOrSpaces(password)) {
       return NextResponse.json(
         {

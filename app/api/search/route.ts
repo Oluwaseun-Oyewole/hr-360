@@ -1,5 +1,5 @@
 import { mongoDBConnection } from "@/lib/mongodb";
-import { DashboardInterface, DashboardModel } from "@/models/dashboard";
+import { DashboardInterface, DashboardModel } from "@/prisma/dashboard";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {

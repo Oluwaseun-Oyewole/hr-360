@@ -28,7 +28,6 @@ const AccountUpdate = () => {
       role: values.role,
       employmentType: values.employmentType,
     });
-
     if (response?.status === 200) {
       update({
         name: values.name,

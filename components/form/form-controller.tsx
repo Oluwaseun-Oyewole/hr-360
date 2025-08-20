@@ -1,6 +1,6 @@
 import { FC } from "react";
-import FormInput from "./form-input";
-import FormSelect from "./form-select";
+import FormInput from "./formikInput";
+import FormSelect from "./formikSelect";
 
 interface IFormikControlProps {
   control: "input" | "select" | "area";

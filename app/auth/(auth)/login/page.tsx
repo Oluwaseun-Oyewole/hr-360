@@ -7,12 +7,12 @@ import { Form, Formik } from "formik";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import * as Yup from "yup";
 
 const Login = () => {
   const router = useRouter();
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window && typeof window !== undefined) {
       router.replace("/auth/login");
     }
@@ -21,12 +21,7 @@ const Login = () => {
     email: Yup.string()
       .email("Invalid email format")
       .required("Email Required"),
-    password: Yup.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-8])(?=.*[!@#$%^&*:;'><.,/?}{[\]\-_+=])(?=.{8,})/,
-        "Must Contain 7 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      )
-      .required("Password is required"),
+    password: Yup.string().required("Password is required"),
   });
 
   const handleSubmit = async (values: Record<string, any>) => {
@@ -36,21 +31,19 @@ const Login = () => {
         password: values.password,
         redirect: false,
       });
-
       if (res?.status === 200) {
         router.replace(login_redirect);
-      } else {
-        Toastify.error(res?.error as string);
       }
+      Toastify.error(res?.error as string);
     } catch (error) {
-      Toastify.error(error as string);
+      Toastify.error("Something went wrong");
     }
   };
 
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
-      <h1 className="text-center">Log in to your account</h1>
-      <div className="w-[80%] lg:w-[40%]">
+      <h1>Log in to your account</h1>
+      <div className="w-[90%] md:w-[60%] lg:w-[40%]">
         <Formik
           initialValues={{
             email: "",
@@ -65,33 +58,31 @@ const Login = () => {
                 <div className="flex flex-col gap-5">
                   <FormikController
                     control="input"
-                    label=""
                     type="email"
                     placeholder="Email"
                     name="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="!py-3"
+                    error={formik.errors.email && formik.touched.email}
                   />
 
                   <FormikController
                     control="input"
-                    label=""
                     type="password"
                     placeholder="Password"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="!py-3"
+                    error={formik.errors.password && formik.touched.password}
                   />
                 </div>
 
                 <Button
                   isLoading={formik.isSubmitting}
                   disabled={!formik.isValid}
-                  className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
+                  className="!bg-blue-500 !mt-5"
                 >
                   login
                 </Button>
@@ -100,30 +91,24 @@ const Login = () => {
           }}
         </Formik>
 
-        <div className="flex justify-between items-center">
-          <div className="py-2">
-            <Link
-              href="/auth/forgotPassword"
-              className="text-blue-500 cursor-pointer text-sm"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-          <div className="py-2">
-            <Link
-              href="/auth/accountVerification?step=2"
-              className="text-blue-500 cursor-pointer text-sm"
-            >
-              Activate account
-            </Link>
-          </div>
-        </div>
-        <p className="pt-5 text-right text-sm">
-          {"Don't have an account? "}
-          <Link href="/auth/register" className="text-blue-500 cursor-pointer">
-            register
+        <div className="flex justify-between items-center py-2">
+          <Link
+            href="/auth/forgotPassword"
+            className="text-blue-700 cursor-pointer text-sm"
+          >
+            Forgot Password?
           </Link>
-        </p>
+
+          <p className="text-right text-sm">
+            {"Don't have an account? "}
+            <Link
+              href="/auth/register"
+              className="text-blue-700 cursor-pointer"
+            >
+              register
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

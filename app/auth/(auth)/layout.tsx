@@ -18,8 +18,11 @@ export default function AuthLayout({
     >
       {children}
 
+      {/* OAuth UI */}
       <div
-        className={classNames("w-[80%] lg:w-[40%] flex flex-col gap-3 py-10")}
+        className={classNames(
+          "w-[90%] md:w-[60%] lg:w-[40%] flex flex-col gap-3 py-10"
+        )}
       >
         <Button
           className="!bg-white !text-black flex items-center justify-center !border-[2px] !border-gray-200 !text-sm !py-6 !font-light"

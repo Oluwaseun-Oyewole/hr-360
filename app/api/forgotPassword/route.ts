@@ -10,14 +10,13 @@ export const POST = async (req: NextRequest) => {
   await mongoDBConnection();
   try {
     const user = await User.findOne({ email });
-
     if (isEmptyOrSpaces(email)) {
       return NextResponse.json(
         {
           message: "Fields can't be empty",
-          statusCode: 204,
+          statusCode: 400,
         },
-        { status: 204 }
+        { status: 400 }
       );
     }
 
@@ -26,6 +25,7 @@ export const POST = async (req: NextRequest) => {
     } else {
       const jwtUserId = signJwt({ id: user?.id });
       const resetPasswordURL = `${process.env.NEXTAUTH_URL}/auth/resetPassword/${jwtUserId}`;
+      console.log("reset url", resetPasswordURL);
       const body = compileResetPasswordTemplate(user?.name, resetPasswordURL);
 
       await sendMail({

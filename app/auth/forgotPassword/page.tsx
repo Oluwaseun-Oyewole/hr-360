@@ -1,7 +1,9 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { forgotPassword } from "@/services/auth";
+import { routes } from "@/routes";
+import { useForgotPasswordMutation } from "@/services/mutations";
+import { handleSuccessToast } from "@/utils/success";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -20,17 +22,20 @@ const ForgotPassword = () => {
       .required("Email Required"),
   });
 
-  const handleSubmit = async (
-    values: Record<string, any>,
-    { resetForm }: any
-  ) => {
-    const response = await forgotPassword({ email: values.email });
-    if (response?.statusCode === 200) {
-      resetForm();
-      router.push("/auth/login");
-    }
+  const { mutate, isPending } = useForgotPasswordMutation();
+  const handleSubmit = async (values: Record<string, any>) => {
+    return mutate(
+      { email: values.email },
+      {
+        onSuccess: (data) => {
+          if (data) {
+            handleSuccessToast(data?.message);
+            router.replace(routes.login);
+          }
+        },
+      }
+    );
   };
-
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
       <h1 className="text-center">Reset Your Password</h1>
@@ -55,17 +60,14 @@ const ForgotPassword = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    error={formik.errors.email && formik.touched.email}
                   />
                 </div>
 
-                <div className="text-primary-100 text-sm !py-3 cursor-pointer">
-                  <p onClick={() => router.back()}>Back</p>
-                </div>
-
                 <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
-                  className={`${"!bg-blue-500"} !mt-5 !disabled:cursor-not-allowed`}
+                  isLoading={formik.isSubmitting || isPending}
+                  disabled={!formik.isValid || isPending}
+                  className="!bg-blue-500 !mt-5"
                 >
                   Reset Password
                 </Button>

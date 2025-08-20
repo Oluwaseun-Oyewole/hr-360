@@ -44,9 +44,33 @@
 .ant-select-selection-item,
 .ant-select-selection {
   color: black !important;
-  font-weight: 300 !important;
+  font-weight: 100 !important;
 }
 
 .ant-dropdown-menu-root {
   overflow-y: scroll !important;
+}
+
+.ant-input-password .ant-input::placeholder {
+  color: #6b7280 !important;
+  font-weight: 300 !important;
+}
+
+.ant-select-dropdown .ant-select-item {
+  font-weight: 300 !important;
+}
+
+/* Style the selected option in the dropdown */
+.ant-select-dropdown .ant-select-item-option-selected {
+  font-weight: 400 !important;
+}
+
+/* Style the dropdown menu itself */
+.ant-select-dropdown {
+  font-weight: 300 !important;
+}
+
+.ant-otp-input {
+  width: 60px !important;
+  height: 50px !important;
 }

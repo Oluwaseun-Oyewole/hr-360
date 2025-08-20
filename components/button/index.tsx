@@ -11,16 +11,18 @@ export default function Button({
   ...rest
 }: IProps) {
   return (
-    <button
-      {...rest}
-      className={classNames(
-        `py-[15px] px-[8px] rounded-[5px] bg-btn text-white bg-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed gap-4 ${
-          isLoading && "flex items-center justify-center gap-3"
-        } `,
-        className
-      )}
-    >
-      {children} {isLoading && <Loader />}
-    </button>
+    <>
+      <button
+        {...rest}
+        className={classNames(
+          ` h-[50px] px-[8px] rounded-[5px] bg-btn text-white bg-secondary w-full disabled:opacity-50 disabled:!cursor-not-allowed gap-4 ${
+            isLoading && "flex items-center justify-center gap-3 "
+          } `,
+          className
+        )}
+      >
+        {isLoading && <Loader />} {children}
+      </button>
+    </>
   );
 }

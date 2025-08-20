@@ -15,29 +15,9 @@ export const otpTemplates = `<!DOCTYPE html>
     </style>
   </head>
   <body style="max-width: 60%; margin: 0 auto">
-    <h1>Hr360</h1>
-    <p>Hi <span style="font-weight: bold">{{username}}, </span></p>
-    <p>
-      Your email verification code is
-      <span style="color: red; font-weight: bold">{{otp}}</span>
-    </p>
+    <p>Hi <span style="font-weight: bold">{{username}},</span> Your email verification code is
+      <span style="color: red; font-weight: bold">{{otp}}</span> </p>
     <p>This verification code will last for 15 minutes</p>
-
-    <div
-      style="
-        border-bottom: 1px grey solid;
-        padding-bottom: 15px;
-        padding-bottom: 15px;
-      "
-    >
-      <p style="font-size: 15px; font-weight: medium">Thanks you</p>
-      <p style="font-size: 15px; font-weight: medium">Team Hr360</p>
-    </div>
-
-    <div style="padding-top: 20px; font-size: 20px; font-weight: bold">
-      Powered by Hr360
-    </div>
   </body>
 </html>
-
 `;

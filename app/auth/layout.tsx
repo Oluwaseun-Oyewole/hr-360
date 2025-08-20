@@ -1,5 +1,5 @@
-import Logo from "@/assets/logo.svg";
-import Image from "next/image";
+import GoBack from "@/components/back";
+import ProgressLoader from "@/components/NProgress";
 import { outfit } from "../fonts";
 
 export default function AuthLayout({
@@ -8,12 +8,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className={`${outfit.className} `}>
-      <header className="flex items-center justify-center gap-2 py-3">
-        <Image src={Logo} alt="" className="w-5 h-5" />
-        <p>Hr360</p>
-      </header>
+    <main className={`${outfit.className}`}>
+      <ProgressLoader />
       <div className="flex flex-col items-center justify-center h-screen w-full">
+        <GoBack />
         {children}
       </div>
     </main>

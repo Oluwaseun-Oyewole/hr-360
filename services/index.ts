@@ -1,5 +1,13 @@
 /* eslint-disable valid-jsdoc */
+import { COOKIES_KEYS } from "@/utils/constants";
+import { getFromStorage } from "@/utils/helper";
 import Axios, { AxiosRequestConfig } from "axios";
+
+// const authInterceptor = (config: AxiosRequestConfig): AxiosRequestConfig => {
+//   const token = getFromStorage(COOKIES_KEYS.TOKEN);
+//   if (token) config.headers.Authorization = `Bearer ${token}`;
+//   return config;
+// };
 
 Axios.interceptors.response.use(
   (config) => {
@@ -12,6 +20,8 @@ Axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Axios.interceptors.request.use(authInterceptor);
 
 const Request = {
   /**
@@ -29,7 +39,7 @@ const Request = {
       ...requestOptions,
       headers: {
         ...(headers || {}),
-        authorization: "Bearer " + authToken,
+        authorization: "Bearer " + getFromStorage(COOKIES_KEYS.TOKEN),
       },
     };
     return { data, ...options };
