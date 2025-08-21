@@ -4,6 +4,15 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV !== "development",
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/auth/login",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withPWA = require("next-pwa")({

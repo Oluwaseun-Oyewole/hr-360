@@ -3,7 +3,7 @@ import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
 import { routes } from "@/routes";
 import { useForgotPasswordMutation } from "@/services/mutations";
-import { handleSuccessToast } from "@/utils/success";
+import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
       {
         onSuccess: (data) => {
           if (data) {
-            handleSuccessToast(data?.message);
+            Toastify.success(data?.message);
             router.replace(routes.login);
           }
         },

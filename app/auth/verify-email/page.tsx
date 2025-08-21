@@ -1,59 +1,64 @@
 "use client";
-import Button from "@/components/button";
-import FormikController from "@/components/form/form-controller";
+import Loader from "@/components/loader";
 import { routes } from "@/routes";
 import { useSendOtpMutation, useVerifyMutation } from "@/services/mutations";
 import { COOKIES_KEYS } from "@/utils/constants";
 import { saveToStorage } from "@/utils/helper";
 import { handleSuccessToast } from "@/utils/success";
 import { GetProps, Input } from "antd";
-import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 
 type OTPProps = GetProps<typeof Input.OTP>;
 
 const VerifyEmail = () => {
   const router = useRouter();
-  const validationSchema = Yup.object({
-    otp: Yup.number().required("Otp is required"),
-  });
+  // const validationSchema = Yup.object({
+  //   otp: Yup.number().required("Otp is required"),
+  // });
   const { mutate, isPending } = useVerifyMutation();
   const { OtpMutation, isOtpPending } = useSendOtpMutation();
-  const handleSubmit = async (values: Record<string, any>) => {
-    return mutate(
-      { email: values.email, otpCode: values.otp },
-      {
-        onSuccess: (data) => {
-          if (data) {
-            handleSuccessToast(data?.message);
-            saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
-            router.replace(routes.dashboard);
-          }
-        },
-      }
-    );
-  };
+  // const handleSubmit = async (values: Record<string, any>) => {
+  //   return mutate(
+  //     { otpCode: values.otp },
+  //     {
+  //       onSuccess: (data) => {
+  //         if (data) {
+  //           handleSuccessToast(data?.message);
+  //           saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
+  //           router.replace(routes.dashboard);
+  //         }
+  //       },
+  //     }
+  //   );
+  // };
 
   const onChange: OTPProps["onChange"] = (text) => {
-    console.log("onChange:", text?.length);
-  };
-
-  const onInput: OTPProps["onInput"] = (value) => {
-    console.log("onInput:", value);
+    if (text?.length === 6) {
+      return mutate(
+        { otpCode: text },
+        {
+          onSuccess: (data) => {
+            if (data) {
+              handleSuccessToast(data?.message);
+              saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
+              router.replace(routes.dashboard);
+            }
+          },
+        }
+      );
+    }
   };
 
   const sharedProps: OTPProps = {
     onChange,
-    onInput,
   };
 
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
       <h1>Verify your account</h1>
       <p className="text-sm">Enter the otp sent to your email address</p>
-      <div className="w-[80%] md:w-[60%] lg:w-[40%]">
-        <Formik
+      <div className="w-[80%] md:w-[60%] lg:w-[40%] pt-6 flex flex-col items-center">
+        {/* <Formik
           initialValues={{
             otp: "",
           }}
@@ -64,14 +69,13 @@ const VerifyEmail = () => {
             return (
               <>
                 <Form>
-                  {/* <div className="items-center justify-center flex">
-                    <OTPInput />
+                  <div className="items-center justify-center flex">
                     <Input.OTP
                       length={6}
                       separator={(i) => <span>—</span>}
                       {...sharedProps}
                     />
-                  </div> */}
+                  </div>
 
                   <div className="flex flex-col gap-5">
                     <FormikController
@@ -107,7 +111,25 @@ const VerifyEmail = () => {
               </>
             );
           }}
-        </Formik>
+        </Formik> */}
+
+        <Input.OTP
+          length={6}
+          separator={(i) => <span>—</span>}
+          disabled={isPending || isOtpPending}
+          {...sharedProps}
+        />
+
+        <div className="flex items-center justify-end text-primary-100 py-4">
+          <div
+            role="button"
+            tabIndex={0}
+            className="text-sm"
+            onClick={() => OtpMutation()}
+          >
+            {isOtpPending ? <Loader /> : "Resend OTP"}
+          </div>{" "}
+        </div>
       </div>
     </div>
   );

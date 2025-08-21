@@ -55,7 +55,7 @@ const Header = ({ role }: IHeadProps) => {
               <Button
                 className="!bg-green-700"
                 onClick={() => {
-                  signOut({ callbackUrl: "/auth/login" });
+                  signOut({ callbackUrl: "/auth/login", redirect: true });
                 }}
               >
                 Yes

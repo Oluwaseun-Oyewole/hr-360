@@ -5,7 +5,7 @@ import { routes } from "@/routes";
 import { useRegisterMutation } from "@/services/mutations";
 import { COOKIES_KEYS, EMPLOYMENT_TYPE, ROLES } from "@/utils/constants";
 import { saveToStorage } from "@/utils/helper";
-import { handleSuccessToast } from "@/utils/success";
+import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -49,8 +49,9 @@ const SignUp = () => {
       },
       {
         onSuccess: (data) => {
+          console.log("data is ", data);
           if (data) {
-            handleSuccessToast(data?.message);
+            Toastify.success(data?.message);
             saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
             router.replace(routes.verify);
           }

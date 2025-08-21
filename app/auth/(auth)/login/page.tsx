@@ -2,9 +2,10 @@
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
 import { login_redirect } from "@/routes";
+import { useLoginMutation } from "@/services/mutations";
+import { LoginRequestBody } from "@/services/types";
 import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -24,21 +25,25 @@ const Login = () => {
     password: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = async (values: Record<string, any>) => {
-            router.replace(login_redirect);
-    try {
-      const res = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
-      if (res?.status === 200) {
-        router.replace(login_redirect);
+  const { mutate, isPending } = useLoginMutation();
+  const handleSubmit = async (values: LoginRequestBody) => {
+    mutate(
+      { ...values },
+      {
+        onSuccess: (response) => {
+          if (response) {
+            if (response?.status === 401) {
+              Toastify.error("Invalid login credentials");
+            } else if (response?.status !== 200)
+              Toastify.error(response?.error as string);
+            else router.replace(login_redirect);
+          }
+        },
+        onError: (response: any) => {
+          Toastify.error(response?.error as string);
+        },
       }
-      Toastify.error(res?.error as string);
-    } catch (error) {
-      Toastify.error("Something went wrong");
-    }
+    );
   };
 
   return (
@@ -81,8 +86,8 @@ const Login = () => {
                 </div>
 
                 <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
+                  isLoading={formik.isSubmitting || isPending}
+                  disabled={!formik.isValid || isPending}
                   className="!bg-blue-500 !mt-5"
                 >
                   login

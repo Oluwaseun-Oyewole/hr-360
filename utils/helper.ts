@@ -53,9 +53,11 @@ export function removeFromStorage(key: string): void {
 
 export const getDecodedToken = () => {
   const token = getFromStorage(COOKIES_KEYS.TOKEN);
-  if (!token || typeof token !== "string") {
-    return;
-  }
+  if (!token || typeof token !== "string") return;
   const decodedToken = jwtDecode<{ email: string }>(token);
   return decodedToken;
 };
+
+export function isTokenExpired(expTime: number) {
+  return Date.now() >= expTime * 1000;
+}

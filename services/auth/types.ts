@@ -1,3 +1,8 @@
+export interface LoginRequestBody {
+  email: string;
+  password: string;
+  redirect: boolean;
+}
 export interface RegisterRequestBody {
   name: string;
   email: string;
@@ -37,6 +42,5 @@ export interface resendOTPRequestBody {
 }
 
 export interface verifyOTPRequestBody {
-  email: string;
   otpCode: string;
 }

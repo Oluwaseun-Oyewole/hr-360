@@ -18,12 +18,11 @@ export default function RootLayout({
   if (!storeRef.current) {
     storeRef.current = store();
   }
-
   return (
     <html lang="en">
       <head>
-        <title>hr360</title>
-        <meta name="hr360" content="hr360 dashboard" />
+        <title>HR</title>
+        <meta name="HR" content="HR" />
         <link rel="manifest" href="/manifest.json" />
         <meta
           name="viewport"

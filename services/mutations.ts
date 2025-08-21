@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { signIn } from "next-auth/react";
 import {
   forgotPassword,
   register,
@@ -12,6 +13,19 @@ import {
   RegisterRequestBody,
   verifyOTPRequestBody,
 } from "./auth/types";
+import { LoginRequestBody } from "./types";
+
+export const useLoginMutation = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: LoginRequestBody) =>
+      await signIn("credentials", {
+        ...values,
+        redirect: false,
+        callbackUrl: "/dashboard",
+      }),
+  });
+  return { isPending, mutate };
+};
 
 export const useRegisterMutation = () => {
   const { mutate, isPending } = useMutation({

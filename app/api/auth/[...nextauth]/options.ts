@@ -1,3 +1,4 @@
+import { jwtService } from "@/lib/jwt/index";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
 import { isEmptyOrSpaces } from "@/utils/helper";
@@ -20,8 +21,8 @@ export const options: NextAuthOptions = {
           image: profile.avatar_url,
         };
       },
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
 
     GoogleProvider({
@@ -42,7 +43,7 @@ export const options: NextAuthOptions = {
           const user = await User.findOne({
             email,
           });
-          if (!user || !user?.password) throw new Error("Invalid credentials");
+          if (!user) throw new Error("Invalid credentials");
           if (!user?.emailVerified)
             throw new Error("Please activate your email");
           else {
@@ -58,144 +59,111 @@ export const options: NextAuthOptions = {
   ],
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
-  // pages: {
-  //   signIn: "/auth/login",
-  //   error: "/auth/error",
-  // },
-  // events: {
-  //   async linkAccount({ user }) {
-  //     await User.findOneAndUpdate(
-  //       { _id: user.id },
-  //       { emailVerified: new Date() },
-  //       { new: true }
-  //     );
-  //   },
-  // },
-  // callbacks: {
-  //   async signIn({ user, account, email }) {
-  //     if (account?.provider === "credentials") {
-  //       return true;
-  //     }
-  //     if (account?.provider === "github" || account?.provider === "google") {
-  //       await mongoDBConnection();
-  //       try {
-  //         const existingUser = await User.findOne({
-  //           email: user.email,
-  //         });
-  //         if (!existingUser) {
-  //           await User.create({
-  //             name: user?.name,
-  //             email: user?.email,
-  //             role: user?.role,
-  //             emailVerified: new Date(),
-  //             employmentType: user?.employmentType,
-  //           });
-  //           return true;
-  //         }
-  //         return true;
-  //       } catch (error) {
-  //         return false;
-  //       }
-  //     }
-  //     return true;
-  //   },
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
+  events: {
+    // for fire and forget functions that runs when specific actions occur
+    // events are purely for side effects like logging, database updates, analytics etc.
 
-  // async redirect({ url, baseUrl }) {
-  //   console.log("url", url);
-  //   console.log("base url", baseUrl);
+    async signIn({ user, account, profile }) {
+      // Runs AFTER successful sign-in
+    },
 
-  //   const isRelativeUrl = url.startsWith("/");
-  //   console.log("relative", isRelativeUrl);
-  //   if (isRelativeUrl) {
-  //     return `${baseUrl}${url}`;
-  //   }
-  //   const isSameOriginUrl = new URL(url).origin === baseUrl;
-  //   const alreadyRedirected = url.includes("callbackUrl=");
-  //   console.log("already", alreadyRedirected);
+    async signOut({ session, token }) {
+      // Runs when user signs out
+    },
 
-  //   if (isSameOriginUrl && alreadyRedirected) {
-  //     const originalCallbackUrl = decodeURIComponent(
-  //       url.split("callbackUrl=")[1]
-  //     );
-  //     return originalCallbackUrl;
-  //   }
+    async createUser({ user }) {
+      // Runs when a new user is created
+    },
+    async linkAccount({ user }) {
+      // / Runs when an account is linked to a user
+      // Good place to mark email as verified for OAuth providers
+      await User.findOneAndUpdate(
+        { _id: user.id },
+        { emailVerified: new Date() },
+        { new: true }
+      );
+    },
+  },
+  callbacks: {
+    // these are synchronous functions that control authentication flow and they can be used to modify data
+    async signIn({ user, account, email }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+      if (account?.provider === "github" || account?.provider === "google") {
+        await mongoDBConnection();
+        try {
+          const existingUser = await User.findOne({
+            email: user.email,
+          });
+          if (!existingUser) {
+            await User.create({
+              name: user?.name,
+              email: user?.email,
+              role: user?.role,
+              emailVerified: new Date(),
+              employmentType: user?.employmentType,
+            });
+            return true;
+          }
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+      return true;
+    },
 
-  //   if (isSameOriginUrl) {
-  //     return url;
-  //   }
-  //   return baseUrl;
-  // },
+    async jwt({ token, user, account, trigger, session }) {
+      // this runs every time a JWT is created or accessed.
+      // token: existing JWT token
+      // user: user object (only available on sign-in)
+      // account: account info (only available on sign-in)
+      // trigger: what triggered this callback
+      // session: session data (only with trigger: "update")
 
-  // async jwt({ token, user, account, trigger, session }) {
-  //   const userToken = await jwtService.sign(
-  //     { name: user?.name, email: user?.email },
-  //     "24hrs"
-  //   );
+      if (account && user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.accountType = account.type;
 
-  //   // const refreshToken = async (token: string) => {
-  //   //   const decoded = verifyJwt(token);
-  //   //   let accessToken;
-  //   //   if (!decoded) {
-  //   //     accessToken = await jwtService.sign(
-  //   //       { name: user?.name, email: user?.email },
-  //   //       "24h"
-  //   //     );
-  //   //   }
-  //   //   return accessToken;
-  //   // };
+        token.role = "";
+        token.employmentType = "";
 
-  //   if (account && user) {
-  //     token.name = user.name;
-  //     token.email = user.email;
-  //     token.accessToken = userToken;
-  //     token.accountType = account.type;
-  //     // token.refreshToken = refreshToken(userToken);
-  //     token.role = "";
-  //     token.employmentType = "";
-  //   }
-  //   if (trigger === "update" && session?.name) {
-  //     token.role = session.role;
-  //     token.employmentType = session.employmentType;
-  //     token.name = session.name;
-  //   }
-  //   // const v = verifyJWT(token?.accessToken);
-  //   // console.log("vvvvv", v);
-  //   // if (v.expired) {
-  //   //   console.log("this token has expired");
-  //   // }
-  //   // // Return previous token if the access token has not expired yet
-  //   // if (token.accessTokenExpires > Date.now()) {
-  //   //   console.log("token still valid");s
-  //   //   return token;
-  //   // } else {
-  //   //   console.log("trying refresh token");
-  //   //   // Access token has expired, try to update it
-  //   //   return refreshAccessToken(token);
-  //   // }
-  //   return { ...token, ...user };
-  // },
-  // async session({ session, token, user }) {
-  //   await mongoDBConnection();
+        const customUserToken = await jwtService.sign(
+          { name: user?.name, email: user?.email },
+          "24hrs"
+        );
 
-  //   const existingUser = await User.findOne({
-  //     email: session.user.email!,
-  //   });
-  //   if (session.user) {
-  //     if (existingUser) {
-  //       session.user.name = existingUser.name!;
-  //       session.user.email = existingUser.email!;
-  //       session.user.role = existingUser.role;
-  //       session.user.employmentType = existingUser.employmentType;
-  //       session.user.accessToken = token.accessToken;
-  //     } else {
-  //       session.user.name = token.name!;
-  //       session.user.email = token.email!;
-  //       session.user.role = token.role;
-  //       session.user.employmentType = token.employmentType;
-  //       session.user.accessToken = token.accessToken;
-  //     }
-  //   }
-  //   return session;
-  // },
-  // },
+        token.accessToken = customUserToken;
+        token.accessTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+      }
+      if (trigger === "update" && session?.name) {
+        console.log("Session update triggered");
+        token.role = session.role;
+        token.employmentType = session.employmentType;
+        token.name = session.name;
+      }
+      // TOKEN REFRESH: check if token needs refreshing
+      if (token.accessTokenExpires && Date.now() > +token.accessTokenExpires) {
+        // Refresh custom token
+        const newToken = await jwtService.sign(
+          {
+            userId: token.id,
+            email: token.email,
+            role: token.role,
+          },
+          "24h"
+        );
+        token.accessToken = newToken;
+        token.accessTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+      }
+
+      return { ...token, ...user };
+    },
+  },
 };
