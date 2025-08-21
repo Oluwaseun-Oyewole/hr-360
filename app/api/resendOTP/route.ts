@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    const checkIfUserEmailExists = await User.findOne({ email });
+    const checkIfUserEmailExists: any = await User.findOne({ email });
     if (!checkIfUserEmailExists) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     } else {

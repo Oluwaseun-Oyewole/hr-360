@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema, models } from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
 
 enum IEmploymentType {
   FullTime = "Full-Time",
@@ -68,5 +68,13 @@ const DashboardSchema = new Schema<DashboardInterface>(
   { timestamps: true }
 );
 
-export const DashboardModel: Model<DashboardInterface> =
-  models.Dashboard || mongoose.model("Dashboard", DashboardSchema);
+let DashboardModelInstance: Model<DashboardInterface>;
+try {
+  DashboardModelInstance = mongoose.model<DashboardInterface>("Dashboard");
+} catch (error) {
+  DashboardModelInstance = mongoose.model<DashboardInterface>(
+    "Dashboard",
+    DashboardSchema
+  );
+}
+export const DashboardModel = DashboardModelInstance;

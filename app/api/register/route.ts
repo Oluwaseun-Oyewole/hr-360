@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
           { status: 204 }
         );
       } else {
-        const user = await User.create({
+        const user: any = await User.create({
           name,
           email,
           password: hashedPassword,

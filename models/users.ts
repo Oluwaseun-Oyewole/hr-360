@@ -1,4 +1,4 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 import { OTP } from "./otp";
 
 enum IEmploymentType {
@@ -18,7 +18,7 @@ enum IRoleType {
   Accountant = "Accountant",
   BusinessAnalyst = "BusinessAnalyst",
   SalesRep = "SalesRep",
-  CustomerService = "CustomerService ",
+  CustomerService = "CustomerService",
   AdministrativeAssistant = "AdministrativeAssistant",
   Default = "",
 }
@@ -27,15 +27,18 @@ export interface IUser extends Document {
   name: string;
   email: string;
   role: IRoleType;
-  emailVerified: Date;
-  password: string;
-  employmentType: IEmploymentType;
+  emailVerified?: Date;
+  password?: string;
+  employmentType?: IEmploymentType;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -44,18 +47,17 @@ const userSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      // for other services like OAuth services with google, github e.t.c
       required: false,
     },
-
     role: {
       type: String,
-      enum: IRoleType,
+      enum: Object.values(IRoleType),
       default: IRoleType.Default,
     },
     employmentType: {
       type: String,
-      enum: IEmploymentType,
+      enum: Object.values(IEmploymentType),
+      required: false,
     },
     emailVerified: {
       type: Date,
@@ -66,8 +68,7 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// use middleware for model.cascade
-
+// Pre middleware
 userSchema.pre(
   "deleteOne",
   { document: true, query: false },
@@ -81,7 +82,6 @@ userSchema.pre(
   }
 );
 
-// Also handle deleteMany operations
 userSchema.pre(
   "deleteMany",
   { document: false, query: true },
@@ -97,4 +97,13 @@ userSchema.pre(
   }
 );
 
-export const User = models.User || mongoose.model("User", userSchema);
+// Try-catch model creation
+let UserModelInstance: Model<IUser>;
+try {
+  UserModelInstance = mongoose.model<IUser>("User");
+} catch (error) {
+  UserModelInstance = mongoose.model<IUser>("User", userSchema);
+}
+
+export const User = UserModelInstance;
+export { IEmploymentType, IRoleType };

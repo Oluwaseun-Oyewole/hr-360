@@ -33,6 +33,7 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {},
+      //@ts-ignore
       async authorize(credentials: any, req) {
         const { email, password } = credentials;
         try {
@@ -47,6 +48,7 @@ export const options: NextAuthOptions = {
           if (!user?.emailVerified) {
             throw new Error("EMAIL_NOT_VERIFIED");
           } else {
+            //@ts-ignore
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (!passwordMatch) throw new Error("Invalid credentials");
             else return user;
