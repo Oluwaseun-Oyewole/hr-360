@@ -9,14 +9,14 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
+  const { email: userEmail, otpCode } = await req.json();
   const cookieStore = cookies();
   const token = cookieStore.get(COOKIES_KEYS.TOKEN);
   const decodedToken = verifyJwt(JSON.parse(token?.value as string));
-  const email = decodedToken?.email;
-  const { otpCode } = await req.json();
+  const email = decodedToken?.email || userEmail;
   await mongoDBConnection();
 
-  if (!token || !token?.value) {
+  if (!email) {
     return NextResponse.json(
       { message: "Authentication token missing" },
       { status: 401 }
@@ -28,12 +28,12 @@ export const POST = async (req: NextRequest) => {
     const userId = checkIfUserExist?._id;
     const isVerified = !!checkIfUserExist?.emailVerified;
 
-    if (!decodedToken || !decodedToken.email) {
-      return NextResponse.json(
-        { message: "Authentication token missing" },
-        { status: 401 }
-      );
-    }
+    // if (!decodedToken || !decodedToken.email) {
+    //   return NextResponse.json(
+    //     { message: "Authentication token missing" },
+    //     { status: 401 }
+    //   );
+    // }
 
     if (!checkIfUserExist) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -61,6 +61,7 @@ export const POST = async (req: NextRequest) => {
       }
 
       const { expiresAt, otp, hashedOTP } = otpVerify[0];
+      //@ts-ignore
       if (Date.now() < expiresAt) {
         const isValidOTP = await bcrypt.compare(otp, otpCode);
         if (otp !== otpCode) {

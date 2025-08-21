@@ -1,7 +1,7 @@
 import { signJwt } from "@/lib/jwt";
 import { compileActivationTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
-import { User } from "@/prisma/users";
+import { User } from "@/models/users";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import { NextRequest, NextResponse } from "next/server";
 

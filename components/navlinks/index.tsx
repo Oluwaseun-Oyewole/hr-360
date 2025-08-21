@@ -47,7 +47,7 @@ const NavMenuItems: React.FC<INavMenuTypes> = ({ route }) => {
             className={classNames(
               "flex px-3 justify-between items-center w-full",
               {
-                "bg-primary-100 py-5 rounded-lg": subRoutes?.some(
+                "bg-primary-100 py-4 rounded-lg": subRoutes?.some(
                   (route) => pathname === route.url
                 ),
               }
@@ -95,7 +95,7 @@ const NavMenuItems: React.FC<INavMenuTypes> = ({ route }) => {
       ) : (
         <li
           className={`px-3 flex justify-between items-center ${
-            pathname === path && "bg-primary-100 py-5 rounded-lg"
+            pathname === path && "bg-primary-100 py-4 rounded-lg"
           }`}
         >
           <Link

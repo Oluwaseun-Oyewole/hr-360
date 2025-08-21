@@ -33,7 +33,7 @@ export const sendOTPVerification = async ({
   // const body = compileActivationTemplate(name, activationURL);
 
   const otpCode = otp?.otp;
-  const body = compileOTPVerificationTemplate(name, otpCode);
+  const body = compileOTPVerificationTemplate(name, +otpCode);
   return await sendMail({
     to: email,
     subject: `${otpCode} is your verification code`,

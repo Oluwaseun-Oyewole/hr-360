@@ -43,13 +43,13 @@ export default function RootLayout({
       }
     >
       <div
-        className={`${outfit.className} grid grid-flow-col grid-cols-[100%] lg:grid-cols-[16%_84%]`}
+        className={`${outfit.className} grid grid-flow-col grid-cols-[100%] lg:grid-cols-[18%_82%]`}
       >
         <div className="hidden lg:block bg-[#F5F5F5] h-screen overflow-y-scroll">
           <Sidebar />
         </div>
 
-        <div className="h-screen overflow-y-scroll px-6 font-light">
+        <div className="h-screen overflow-y-scroll w-full mx-auto font-light px-8 md:px-12">
           <div
             className="sticky top-0 left-0 bg-white
          z-50"
@@ -61,7 +61,7 @@ export default function RootLayout({
           </p>
           <div className="flex justify-between items-center py-4">
             <Breadcrumb
-              className="flex items-center py-4 !text-xs"
+              className="flex items-center py-4 !text-sm"
               items={[
                 {
                   title: <Link href="/dashboard">Dashboard</Link>,
@@ -80,7 +80,7 @@ export default function RootLayout({
               ]}
               separator={<LuDot className="mt-0 text-xl" />}
             />
-            {currentDateTime}
+            <p className="text-sm">{currentDateTime}</p>
           </div>
 
           {children}

@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { login_redirect } from "@/routes";
+import { login_redirect, routes } from "@/routes";
 import { useLoginMutation } from "@/services/mutations";
 import { LoginRequestBody } from "@/services/types";
 import { Toastify } from "@/utils/toasts";
@@ -31,12 +31,18 @@ const Login = () => {
       { ...values },
       {
         onSuccess: (response) => {
-          if (response) {
-            if (response?.status === 401) {
-              Toastify.error("Invalid login credentials");
-            } else if (response?.status !== 200)
-              Toastify.error(response?.error as string);
-            else router.replace(login_redirect);
+          if (response?.error) {
+            if (response.error === "CredentialsSignin") {
+              Toastify.error("Invalid credentials");
+            } else if (response?.error === "Error: EMAIL_NOT_VERIFIED") {
+              return router.push(
+                `${routes.verify}?email=${encodeURIComponent(values?.email)}`
+              );
+            } else {
+              Toastify.error(response?.error);
+            }
+          } else if (response?.ok) {
+            router.replace(login_redirect);
           }
         },
         onError: (response: any) => {
@@ -99,7 +105,7 @@ const Login = () => {
 
         <div className="flex justify-between items-center py-2">
           <Link
-            href="/auth/forgotPassword"
+            href={routes.forgotPassword}
             className="text-blue-700 cursor-pointer text-sm"
           >
             Forgot Password?

@@ -2,6 +2,7 @@ import { signJwt } from "@/lib/jwt";
 import { compileResetPasswordTemplate, sendMail } from "@/lib/mail";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { routes } from "@/routes";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,8 +25,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     } else {
       const jwtUserId = signJwt({ id: user?.id });
-      const resetPasswordURL = `${process.env.NEXTAUTH_URL}/auth/resetPassword/${jwtUserId}`;
-      console.log("reset url", resetPasswordURL);
+      const resetPasswordURL = `${process.env.NEXTAUTH_URL}${routes.resetPassword}/${jwtUserId}`;
       const body = compileResetPasswordTemplate(user?.name, resetPasswordURL);
 
       await sendMail({

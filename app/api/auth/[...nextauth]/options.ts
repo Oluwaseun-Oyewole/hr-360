@@ -44,9 +44,9 @@ export const options: NextAuthOptions = {
             email,
           });
           if (!user) throw new Error("Invalid credentials");
-          if (!user?.emailVerified)
-            throw new Error("Please activate your email");
-          else {
+          if (!user?.emailVerified) {
+            throw new Error("EMAIL_NOT_VERIFIED");
+          } else {
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (!passwordMatch) throw new Error("Invalid credentials");
             else return user;

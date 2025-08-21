@@ -1,8 +1,10 @@
 "use client";
 import Button from "@/components/button";
 import FormikController from "@/components/form/form-controller";
-import { login_redirect } from "@/routes";
-import { updateAccount } from "@/services/auth";
+import { login_redirect, routes } from "@/routes";
+import { useUpdateAccountMutation } from "@/services/mutations";
+import { EMPLOYMENT_TYPE, ROLES } from "@/utils/constants";
+import { Toastify } from "@/utils/toasts";
 import { Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -18,31 +20,35 @@ const AccountUpdate = () => {
     employmentType: Yup.string().required("Select Employment Type"),
   });
 
-  const handleSubmit = async (
-    values: Record<string, any>,
-    { resetForm }: any
-  ) => {
-    const response = await updateAccount({
-      email: data?.user.email!,
-      name: values.name,
-      role: values.role,
-      employmentType: values.employmentType,
-    });
-    if (response?.status === 200) {
-      update({
+  const { mutate, isPending } = useUpdateAccountMutation();
+
+  const handleSubmit = async (values: Record<string, any>) => {
+    return mutate(
+      {
+        email: data?.user.email!,
         name: values.name,
         role: values.role,
         employmentType: values.employmentType,
-      });
-      resetForm();
-      router.push(login_redirect);
-    }
+      },
+      {
+        onSuccess: (data) => {
+          if (data) {
+            update({
+              name: values.name,
+              role: values.role,
+              employmentType: values.employmentType,
+            });
+            Toastify.success(data?.message);
+            router.push(routes.dashboard);
+          }
+        },
+      }
+    );
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center justify-center !font-light">
-      <h1 className="text-center">Account Update</h1>
-      <div className="w-[85%] lg:w-[40%]">
+    <div className="w-full flex flex-col gap-4 items-center justify-center !font-light pt-10 md:pt-14">
+      <div className="w-full md:w-[65%] xl:w-[50%]">
         <Formik
           initialValues={{
             name: "",
@@ -65,6 +71,7 @@ const AccountUpdate = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     className="py-[15px]"
+                    error={formik.errors.name && formik.touched.name}
                   />
 
                   <div className="flex flex-col lg:flex-row div py-2 gap-4">
@@ -79,44 +86,8 @@ const AccountUpdate = () => {
                         }}
                         onBlur={() => formik.setFieldTouched("role", true)}
                         placeholder="Select Roles"
-                        options={[
-                          { label: "HR Manager", value: "HR Manager" },
-                          {
-                            label: "Software Engineer",
-                            value: "Software Engineer",
-                          },
-                          { label: "Marketing Ex", value: "Marketing Ex" },
-                          {
-                            label: "Financial Analyst",
-                            value: "Financial Analyst",
-                          },
-                          {
-                            label: "Project Manager",
-                            value: "Project Manager",
-                          },
-                          { label: "Designer", value: "Designer" },
-                          {
-                            label: "Social Media Manager",
-                            value: "Social Media Manager",
-                          },
-                          { label: "Accountant", value: "Accountant" },
-                          {
-                            label: "Business analyst",
-                            value: "Business analyst",
-                          },
-                          {
-                            label: "Sales representative",
-                            value: "Sales representative",
-                          },
-                          {
-                            label: "Customer service",
-                            value: "Customer service",
-                          },
-                          {
-                            label: "Administrative assistant",
-                            value: "Administrative assistant",
-                          },
-                        ]}
+                        options={ROLES}
+                        error={formik.errors.role && formik.touched.role}
                       />
                     </div>
 
@@ -133,25 +104,19 @@ const AccountUpdate = () => {
                           formik.setFieldTouched("employmentType", true)
                         }
                         placeholder="Select employment type"
-                        options={[
-                          { label: "Full-Time", value: "Full-Time" },
-                          {
-                            label: "Part-Time",
-                            value: "Part-Time",
-                          },
-                          {
-                            label: "Contract",
-                            value: "Contract",
-                          },
-                        ]}
+                        options={EMPLOYMENT_TYPE}
+                        error={
+                          formik.errors.employmentType &&
+                          formik.touched.employmentType
+                        }
                       />
                     </div>
                   </div>
                 </div>
 
                 <Button
-                  isLoading={formik.isSubmitting}
-                  disabled={!formik.isValid}
+                  isLoading={formik.isSubmitting || isPending}
+                  disabled={!formik.isValid || isPending}
                   className={`${"!bg-blue-500"}  !mt-5 !disabled:cursor-not-allowed`}
                 >
                   Submit
@@ -160,10 +125,6 @@ const AccountUpdate = () => {
             );
           }}
         </Formik>
-
-        <div className="text-primary-100 text-sm !py-3 cursor-pointer">
-          <p onClick={() => router.back()}>Back</p>
-        </div>
       </div>
     </div>
   );

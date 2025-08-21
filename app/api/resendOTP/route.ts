@@ -5,17 +5,18 @@ import { User } from "@/models/users";
 import { COOKIES_KEYS } from "@/utils/constants";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async () => {
+export const POST = async (req: NextRequest) => {
+  const { email: userEmail } = await req.json();
   const cookieStore = cookies();
   const token = cookieStore.get(COOKIES_KEYS.TOKEN);
   const decodedToken = verifyJwt(JSON.parse(token?.value as string));
-  const email = decodedToken?.email;
+  const email = decodedToken?.email || userEmail;
 
   await mongoDBConnection();
   try {
-    if (!decodedToken || !decodedToken.email) {
+    if (!email) {
       return NextResponse.json(
         { message: "Authentication token missing" },
         { status: 401 }
@@ -50,6 +51,7 @@ export const POST = async () => {
       }
     }
   } catch (error) {
+    console.log("error - ", error);
     return NextResponse.json(
       { message: "Oops, something went wrong" },
       { status: 501 }

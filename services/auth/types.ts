@@ -38,9 +38,10 @@ export interface updateAccountRequestBody {
 }
 
 export interface resendOTPRequestBody {
-  email: string;
+  email?: string;
 }
 
 export interface verifyOTPRequestBody {
+  email?: string;
   otpCode: string;
 }

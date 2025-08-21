@@ -49,7 +49,6 @@ const SignUp = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("data is ", data);
           if (data) {
             Toastify.success(data?.message);
             saveToStorage(COOKIES_KEYS.TOKEN, data?.token);

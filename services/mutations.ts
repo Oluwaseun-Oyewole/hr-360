@@ -5,12 +5,17 @@ import {
   register,
   resendOTP,
   resetPassword,
+  updateAccount,
   verifyOTP,
 } from "./auth";
+import { changeEmail } from "./auth/index";
 import {
+  changeEmailRequestBody,
   ForgotPasswordRequestBody,
   PasswordResetRequestBody,
   RegisterRequestBody,
+  resendOTPRequestBody,
+  updateAccountRequestBody,
   verifyOTPRequestBody,
 } from "./auth/types";
 import { LoginRequestBody } from "./types";
@@ -59,7 +64,23 @@ export const useResetPasswordMutation = () => {
 
 export const useSendOtpMutation = () => {
   const { mutate: OtpMutation, isPending: isOtpPending } = useMutation({
-    mutationFn: async () => await resendOTP(),
+    mutationFn: async (values: resendOTPRequestBody) => await resendOTP(values),
   });
   return { isOtpPending, OtpMutation };
+};
+
+export const useUpdateAccountMutation = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: updateAccountRequestBody) =>
+      await updateAccount(values),
+  });
+  return { isPending, mutate };
+};
+
+export const useUpdateEmailMutation = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: changeEmailRequestBody) =>
+      await changeEmail(values),
+  });
+  return { isPending, mutate };
 };

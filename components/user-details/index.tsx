@@ -5,27 +5,26 @@ import Logout from "@/assets/logout-03.svg";
 import Mail from "@/assets/mail-02.svg";
 import Bell from "@/assets/notification-03.svg";
 import Settings from "@/assets/setting-03.svg";
-import Hr360Modal, { IHr360Modal } from "@/components/modal";
+import { routes } from "@/routes";
 import type { MenuProps } from "antd";
 import { Dropdown, Tooltip, notification } from "antd";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import Button from "../button";
+import { useEffect, useState } from "react";
 
 type UserProps = {
   isHidden: boolean;
   role: string;
 };
 const UserDetails = ({ isHidden, role }: UserProps) => {
-  const [msg, ,] = useState([
+  const msg = [
     {
       id: 1,
       title: `Account Update (oauth user)`,
       description: "Click this link to update your account",
     },
-  ]);
+  ];
 
   const [isOnline, setIsOnline] = useState(false);
   const [api, contextHolder] = notification.useNotification();
@@ -38,7 +37,7 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
               message: value.title,
               description: (
                 <div className="text-primary-100">
-                  <Link href="/auth/accountUpdate">{value.description}</Link>
+                  <Link href={routes.accountUpdate}>{value.description}</Link>
                 </div>
               ),
             });
@@ -56,42 +55,11 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
     setIsOnline(isOnline);
   }, []);
 
-  const modalRef = useRef<IHr360Modal>(null);
-  const handleLogoutModal = () => {
-    modalRef.current?.open({
-      title: "",
-      content: (
-        <div className="w-full flex items-center justify-center flex-col">
-          <p className="text-lg pb-3 !font-light">
-            Are you sure you want to logout?
-          </p>
-
-          <div className="flex gap-5 pt-6 pb-4 w-[80%] items-center justify-center">
-            <Button
-              className="!bg-green-700"
-              onClick={() => {
-                signOut({ callbackUrl: "/auth/login" });
-              }}
-            >
-              Yes
-            </Button>
-            <Button
-              className="!bg-red-700"
-              onClick={() => modalRef.current?.close()}
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: (
-        <Link href="/auth/accountUpdate">
+        <Link href={routes.accountUpdate}>
           <p className="font-light">Account update</p>
         </Link>
       ),
@@ -100,27 +68,11 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
     {
       key: "2",
       label: (
-        <Link href="/auth/forgotPassword">
-          <p className="font-light">Update password</p>
-        </Link>
-      ),
-    },
-
-    {
-      key: "3",
-      label: (
-        <Link href="/auth/emailUpdate">
-          <p className="font-light">Update Email</p>
-        </Link>
-      ),
-    },
-
-    {
-      key: "4",
-      label: (
         <div
           className="flex items-center gap-2 font-light"
-          onClick={handleLogoutModal}
+          onClick={() => {
+            signOut({ callbackUrl: routes.login });
+          }}
         >
           Logout <Image src={Logout} alt="logout" />
         </div>
@@ -130,7 +82,6 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
 
   return (
     <div className={`${isHidden && "hidden"} flex gap-8 items-center`}>
-      <Hr360Modal ref={modalRef} />
       <div className="flex gap-4 items-center">
         {contextHolder}
 

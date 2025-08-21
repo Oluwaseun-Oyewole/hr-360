@@ -12,7 +12,6 @@ import { CiCalendarDate } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa6";
 import { IoIosHelpCircleOutline } from "react-icons/io";
-import { LuLineChart } from "react-icons/lu";
 import { PiNotebookThin } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { TbReport } from "react-icons/tb";
@@ -84,7 +83,7 @@ export const routes: IRoutesType[] = [
     path: Routes.performance,
     icon: Metric,
     title: "Performance Metrics",
-    ActiveIcon: LuLineChart,
+    ActiveIcon: TbReport,
   },
 
   {
