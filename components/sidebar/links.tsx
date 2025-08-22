@@ -1,17 +1,12 @@
 import Book from "@/assets/book-02.svg";
-import { default as Schedule } from "@/assets/calendar-01.svg";
 import Payroll from "@/assets/cash-01.svg";
 import Metric from "@/assets/chart-evaluation.svg";
 import DashboardIcon from "@/assets/dashboard-square-01.svg";
 import Recruit from "@/assets/elements.svg";
-import Training from "@/assets/file-01.svg";
-import Help from "@/assets/information-circle.svg";
 import Employee from "@/assets/user-group.svg";
 import { IconType } from "react-icons";
-import { CiCalendarDate } from "react-icons/ci";
 import { FaUsers } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa6";
-import { IoIosHelpCircleOutline } from "react-icons/io";
 import { PiNotebookThin } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { TbReport } from "react-icons/tb";
@@ -112,14 +107,14 @@ export const routes: IRoutesType[] = [
     ],
   },
 
-  {
-    id: 5,
-    path: Routes.schedule,
-    icon: Schedule,
-    title: "Schedule",
-    disabled: true,
-    ActiveIcon: CiCalendarDate,
-  },
+  // {
+  //   id: 5,
+  //   path: Routes.schedule,
+  //   icon: Schedule,
+  //   title: "Schedule",
+  //   disabled: true,
+  //   ActiveIcon: CiCalendarDate,
+  // },
 
   {
     id: 6,
@@ -129,23 +124,23 @@ export const routes: IRoutesType[] = [
     ActiveIcon: PiNotebookThin,
   },
 
-  {
-    id: 7,
-    path: Routes.report,
-    icon: Training,
-    title: "Report and Analytics",
-    disabled: true,
-    ActiveIcon: TbReport,
-  },
+  // {
+  //   id: 7,
+  //   path: Routes.report,
+  //   icon: Training,
+  //   title: "Report and Analytics",
+  //   disabled: true,
+  //   ActiveIcon: TbReport,
+  // },
 ];
 
 export const bottomRoutes: IRoutesType[] = [
-  {
-    id: 1,
-    path: Routes.help,
-    icon: Help,
-    title: "Help",
-    ActiveIcon: IoIosHelpCircleOutline,
-    disabled: true,
-  },
+  // {
+  //   id: 1,
+  //   path: Routes.help,
+  //   icon: Help,
+  //   title: "Help",
+  //   ActiveIcon: IoIosHelpCircleOutline,
+  //   disabled: true,
+  // },
 ];

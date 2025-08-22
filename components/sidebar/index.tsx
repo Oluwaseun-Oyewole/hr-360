@@ -41,7 +41,6 @@ export const Sidebar = () => {
             }}
           >
             <Image src={Logout} alt="logout" />
-
             <Tooltip title="logout" color={`#380ABB`}>
               <div className="!text-black cursor-pointer">logout</div>
             </Tooltip>

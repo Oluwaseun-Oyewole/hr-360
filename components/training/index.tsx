@@ -62,15 +62,6 @@ export default function TrainingComponent({
 
   const columns: TableProps<DataType>["columns"] = [
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (el) => {
-        return <div>{dayjs(el, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD")}</div>;
-      },
-    },
-
-    {
       title: "Employee",
       dataIndex: "employeeName",
       key: "employeeName",
@@ -109,7 +100,7 @@ export default function TrainingComponent({
     },
 
     {
-      title: "Employment Type",
+      title: "Emp type",
       dataIndex: "employmentType",
       key: "employeeType",
       render: (el) => (
@@ -139,26 +130,29 @@ export default function TrainingComponent({
     },
 
     {
-      title: "Check In",
+      title: "Check-in",
       dataIndex: "checkIn",
       key: "checkIn",
-      render: (el) => <div>{`${el} AM`}</div>,
+      render: (el) => {
+        return <div>{dayjs(el).format("YYYY-MM-DD h:mm")}</div>;
+      },
     },
 
     {
-      title: "check Out",
+      title: "check-out",
       dataIndex: "checkOut",
       key: "checkOut",
-      render: (el) => <div>{`${el} PM`}</div>,
+      render: (el) => <div>{dayjs(el).format("YYYY-MM-DD h:mm")}</div>,
     },
 
     {
-      title: "Over Time",
+      title: "Overtime",
       dataIndex: "overTime",
       key: "overTime",
-      render: (el) => <div>{`${el} h`}</div>,
+      render: (el) => {
+        return el ? <div>{`${el} h`}</div> : "-";
+      },
     },
-
     {
       title: "Action",
       dataIndex: "action",
@@ -170,7 +164,7 @@ export default function TrainingComponent({
             }}
           >
             <Button
-              className="!text-primary-100 !border-[1px] !border-primary-100 !w-[80px] !py-2 !px-2 !text-xs"
+              className="!text-primary-100  !px-2 !text-xs"
               onClick={seeMoreModal}
             >
               See More

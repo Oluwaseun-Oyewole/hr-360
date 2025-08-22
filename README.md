@@ -7,7 +7,6 @@ Hr360 is a Fullstack dashboard that tracks and manages employee activities,payro
 #### Features:
 
 ```bash
-
 Clean, responsive UI
 Complete Authentication Flow
 Progressive web app
@@ -18,13 +17,7 @@ Backend API
 #### Technologies
 
 ```bash
-React
-NextJS
-Tailwind
-Typescript
-NextAuth
-Mongo
-Mongoose
+React, NextJS, Tailwind, Typescript, NextAuth, Mongo, Mongoose
 ```
 
 [Designer](https://www.behance.net/Barbaraani)
@@ -36,7 +29,3 @@ Mongoose
 ![screenshot](<assets/Screenshot 2024-03-24 at 14.37.45.png>)
 ![screenshot](<assets/Screenshot 2024-03-24 at 15.13.36.png>)
 ![screenshot](<assets/Screenshot 2024-03-24 at 14.38.00.png>)
-
-import { getToken } from "next-auth/jwt";
-import { withAuth } from "next-auth/middleware";
-import { isAuthenticate } from "./lib/auth.authenticate";

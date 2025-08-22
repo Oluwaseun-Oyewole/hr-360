@@ -1,20 +1,16 @@
 "use client";
 import Logo from "@/assets/logo.svg";
 import Logout from "@/assets/logout-03.svg";
-import Mail from "@/assets/mail-02.svg";
-import Bell from "@/assets/notification-03.svg";
 import Hr360Modal, { IHr360Modal } from "@/components/modal";
 import type { DrawerProps } from "antd";
 import { Drawer, Tooltip } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoStar } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-import Button from "../button";
 import NavMenuItems from "../navlinks";
 import { bottomRoutes, routes } from "../sidebar/links";
 import { Routes } from "../sidebar/routes";
@@ -23,14 +19,12 @@ import UserDetails from "../user-details";
 type IHeadProps = {
   role: string;
 };
-const images = [Bell, Mail];
 const Header = ({ role }: IHeadProps) => {
   const session = useSession();
   const [click, setClicked] = useState(false);
   const [open, setOpen] = useState(false);
   const [placement, ,] = useState<DrawerProps["placement"]>("left");
   const modalRef = useRef<IHr360Modal>(null);
-  const router = useRouter();
 
   const onClose = () => {
     setOpen(false);
@@ -40,37 +34,6 @@ const Header = ({ role }: IHeadProps) => {
   const handleClick = () => {
     setClicked((click) => !click);
     setOpen(true);
-  };
-
-  const handleLogoutModal = () => {
-    modalRef.current?.open({
-      title: "",
-      content: (
-        <div className="">
-          <p className="text-lg pb-3 !font-light">
-            Are you sure you want to logout?
-          </p>
-          <div className="w-full flex items-center justify-center">
-            <div className="flex gap-5 pt-6 pb-4 w-[80%] items-center justify-center">
-              <Button
-                className="!bg-green-700"
-                onClick={() => {
-                  signOut({ callbackUrl: "/auth/login", redirect: true });
-                }}
-              >
-                Yes
-              </Button>
-              <Button
-                className="!bg-red-700"
-                onClick={() => modalRef.current?.close()}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
-      ),
-    });
   };
 
   return (
@@ -133,7 +96,9 @@ const Header = ({ role }: IHeadProps) => {
 
             <Tooltip title="logout" color={`#380ABB`} className="text-black">
               <div
-                onClick={handleLogoutModal}
+                onClick={() => {
+                  signOut({ callbackUrl: "/auth/login", redirect: true });
+                }}
                 className="!text-black cursor-pointer"
               >
                 logout

@@ -33,19 +33,19 @@ const HR360Pagination = ({
   const pathname = usePathname();
 
   const onChange: PaginationProps["onChange"] = (page) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams as any);
     params.set("page", page.toString());
     setCurrentPage(page);
     replace(`${pathname}?${params.toString()}`);
   };
   return (
-    <div className="py-6 md:flex justify-between items-center">
-      <div className="flex gap-3 pb-4 md:pb-0">
+    <div className="md:flex justify-between items-center py-5">
+      <div className="flex gap-2 pb-4 md:pb-0 text-sm">
         <span className="text-gray-500">Showing</span>
         <span className="font-normal">
           {lowBound} to {upBound} of {total}
         </span>
-        <span className="text-gray-500 -ml-2">{title}</span>
+        <span className="text-gray-500">{title}</span>
       </div>
       <Pagination
         current={currentPage}

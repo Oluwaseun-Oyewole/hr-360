@@ -52,9 +52,9 @@ const HR360Table: React.FC<ITableProps> = ({
           columns={columns}
           onChange={onChange}
           pagination={pagination}
-          {...rest}
           className="cursor-pointer"
           scroll={{ x: width ?? 900 }}
+          {...rest}
         />
       </div>
       {isPaginate && dataSource?.length > 0 && (

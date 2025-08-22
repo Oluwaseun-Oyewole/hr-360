@@ -28,7 +28,7 @@
 
 .ant-table {
   position: relative !important;
-  height: 500px !important;
+  /* height: 500px !important; */
   overflow: scroll !important;
 }
 

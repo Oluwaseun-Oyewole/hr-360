@@ -4,56 +4,28 @@ import Profile from "@/assets/image.svg";
 import Logout from "@/assets/logout-03.svg";
 import Mail from "@/assets/mail-02.svg";
 import Bell from "@/assets/notification-03.svg";
-import Settings from "@/assets/setting-03.svg";
 import { routes } from "@/routes";
 import type { MenuProps } from "antd";
 import { Dropdown, Tooltip, notification } from "antd";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 type UserProps = {
   isHidden: boolean;
   role: string;
 };
 const UserDetails = ({ isHidden, role }: UserProps) => {
-  const msg = [
-    {
-      id: 1,
-      title: `Account Update (oauth user)`,
-      description: "Click this link to update your account",
-    },
-  ];
-
-  const [isOnline, setIsOnline] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const openNotification: any = () => {
     {
-      role === ""
-        ? msg.map((value) => {
-            api.open({
-              duration: 3,
-              message: value.title,
-              description: (
-                <div className="text-primary-100">
-                  <Link href={routes.accountUpdate}>{value.description}</Link>
-                </div>
-              ),
-            });
-          })
-        : api.open({
-            duration: 3,
-            message: "",
-            description: <div>No Notification</div>,
-          });
+      api.open({
+        duration: 3,
+        message: "",
+        description: <div>No Notification</div>,
+      });
     }
   };
-  useEffect(() => {
-    const isOnline =
-      window && typeof window !== undefined ? navigator.onLine == true : false;
-    setIsOnline(isOnline);
-  }, []);
 
   const items: MenuProps["items"] = [
     {
@@ -97,24 +69,12 @@ const UserDetails = ({ isHidden, role }: UserProps) => {
               className="cursor-pointer"
               onClick={openNotification}
             />
-
-            {!role && isOnline && (
-              <div className="h-4 w-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center text-white font-bold absolute -top-2 left-3">
-                {msg?.length}
-              </div>
-            )}
           </Tooltip>
         </div>
 
         <Tooltip title="Messages" color={`#380ABB`} className="text-black">
           <Link href="/dashboard/messages">
             <Image src={Mail} alt="mail" className="cursor-pointer" />
-          </Link>
-        </Tooltip>
-
-        <Tooltip title="Settings" color={`#380ABB`} className="text-black">
-          <Link href="/dashboard">
-            <Image src={Settings} alt="settings" className="cursor-pointer" />
           </Link>
         </Tooltip>
       </div>
