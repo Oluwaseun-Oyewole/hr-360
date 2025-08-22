@@ -87,12 +87,9 @@ export const resetPasswordTemplate = `<!DOCTYPE html>
 
 <body style="background-color: #FFFFFF; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
 	<p>Hi {{name}}, you can reset your password with the link below</p>
-	<div class="alignment" align="center"><!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{url}}" style="height:46px;width:166px;v-text-anchor:middle;" arcsize="9%" stroke="false" fillcolor="#534feb">
-<w:anchorlock/>
-<v:textbox inset="0px,0px,0px,0px">
-<center style="color:#ffffff; font-family:Arial, sans-serif; font-size:13px">
-<![endif]--><a href="{{url}}" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#534feb;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:undefined;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:10px;padding-bottom:10px;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:13px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:30px;padding-right:30px;font-size:13px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 26px;">Reset Your Password</span></span></a><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></div>
+	<a href="{{url}}" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#534feb;border-radius:4px;width:auto;border-top:0px solid transparent;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:10px;padding-bottom:10px;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:13px;text-align:center;mso-border-alt:none;word-break:keep-all;">
+	<span style="padding-left:30px;padding-right:30px;font-size:13px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 26px;">Reset Your Password</span></span>
+	</a>
 </body>
 
 </html>`;

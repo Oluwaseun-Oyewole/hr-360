@@ -34,22 +34,7 @@ export default function StageComponent() {
   const seeMoreModal = () => {
     modalRef.current?.open({
       title: "See More",
-      content: (
-        <div>
-          <p className="pb-2">All Users Details</p>
-          <div className="grid grid-flow-col grid-cols-[max_content-auto-auto] items-center justify-between">
-            <div className="flex flex-col gap-1">
-              Email: <Tag>{rowInfo?.email}</Tag>
-            </div>
-            <div className="flex flex-col gap-1">
-              FullName:<Tag>{rowInfo?.employeeName}</Tag>
-            </div>
-            <div className="flex flex-col gap-1">
-              Role:<Tag>{rowInfo?.role}</Tag>
-            </div>
-          </div>
-        </div>
-      ),
+      content: <div>More contents...</div>,
     });
   };
 
