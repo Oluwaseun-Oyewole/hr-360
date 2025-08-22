@@ -1,5 +1,5 @@
 import { mongoDBConnection } from "@/lib/mongodb";
-import { DashboardInterface, DashboardModel } from "@/models/dashboard";
+import { DashboardModel } from "@/models/dashboard";
 import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   const resultsPerPage = 10;
@@ -24,7 +24,7 @@ export const GET = async (req: NextRequest) => {
   }
 
   try {
-    const employees: DashboardInterface[] = await DashboardModel.find(filter)
+    const employees = await DashboardModel.find(filter)
       .limit(10)
       .skip(skip)
       .sort({ createdAt: -1 });

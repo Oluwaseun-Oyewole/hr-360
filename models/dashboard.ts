@@ -12,34 +12,23 @@ export interface DashboardInterface extends Document {
   checkOut: Date;
   overTime?: number;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
+//@ts-ignore
 const DashboardSchema = new Schema<DashboardInterface>(
   {
-    date: {
-      type: Date,
-      default: Date.now,
-    },
-    employeeName: {
-      type: String,
-      required: true,
-    },
+    employeeName: { type: String, required: true },
     role: {
       type: String,
-      enum: Object.values(IRoleType),
+      enum: IRoleType,
       default: IRoleType.Default,
     },
     employmentType: {
       type: String,
-      enum: Object.values(IEmploymentType),
-      required: true,
+      enum: IEmploymentType,
     },
     status: {
       type: String,
-      enum: Object.values(IStatus),
-      required: true,
     },
     checkIn: {
       type: Date,
@@ -56,17 +45,12 @@ const DashboardSchema = new Schema<DashboardInterface>(
     },
     email: {
       type: String,
-      required: true,
-      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 let DashboardModelInstance: Model<DashboardInterface>;
-
 try {
   DashboardModelInstance = mongoose.model<DashboardInterface>("Dashboard");
 } catch (error) {
@@ -75,5 +59,4 @@ try {
     DashboardSchema
   );
 }
-
 export const DashboardModel = DashboardModelInstance;

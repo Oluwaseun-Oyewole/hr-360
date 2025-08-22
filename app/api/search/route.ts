@@ -1,5 +1,5 @@
 import { mongoDBConnection } from "@/lib/mongodb";
-import { DashboardInterface, DashboardModel } from "@/models/dashboard";
+import { DashboardModel } from "@/models/dashboard";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -11,7 +11,7 @@ export const GET = async (req: NextRequest) => {
   const skip = (page - 1) * resultsPerPage;
   await mongoDBConnection();
   try {
-    const employees: DashboardInterface[] = await DashboardModel.find({
+    const employees = await DashboardModel.find({
       $or: [
         { role: { $regex: searchQuery, $options: "i" } },
         { employeeName: { $regex: searchQuery, $options: "i" } },
