@@ -1,12 +1,14 @@
 import { jwtService } from "@/lib/jwt/index";
 import { mongoDBConnection } from "@/lib/mongodb";
 import { User } from "@/models/users";
+import { COOKIES_KEYS } from "@/utils/constants";
 import { isEmptyOrSpaces } from "@/utils/helper";
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { cookies } from "next/headers";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -128,11 +130,11 @@ export const options: NextAuthOptions = {
       // trigger: what triggered this callback
       // session: session data (only with trigger: "update")
 
+      const cookieStore = cookies();
       if (account && user) {
         token.name = user.name;
         token.email = user.email;
         token.accountType = account.type;
-
         token.role = "";
         token.employmentType = "";
 
@@ -140,12 +142,11 @@ export const options: NextAuthOptions = {
           { name: user?.name, email: user?.email },
           "24hrs"
         );
-
         token.accessToken = customUserToken;
         token.accessTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+        cookieStore.set(COOKIES_KEYS.TOKEN, customUserToken);
       }
       if (trigger === "update" && session?.name) {
-        console.log("Session update triggered");
         token.role = session.role;
         token.employmentType = session.employmentType;
         token.name = session.name;
@@ -163,6 +164,7 @@ export const options: NextAuthOptions = {
         );
         token.accessToken = newToken;
         token.accessTokenExpires = Date.now() + 24 * 60 * 60 * 1000;
+        cookieStore.set(COOKIES_KEYS.TOKEN, newToken);
       }
 
       return { ...token, ...user };

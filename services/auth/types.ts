@@ -45,3 +45,45 @@ export interface verifyOTPRequestBody {
   email?: string;
   otpCode: string;
 }
+
+export enum IEmploymentType {
+  FullTime = "Full-Time",
+  PartTime = "Part-Time",
+  Contract = "Contract",
+}
+
+export enum IStatus {
+  present = "Present",
+  absent = "Absent",
+  late = "Late",
+}
+
+export enum IRoleType {
+  HrManager = "HR Manager",
+  Software = "Software Engineer",
+  Marketing = "Marketing Ex",
+  FinancialAnalyst = "Financial Analyst",
+  ProjectManager = "Project Manager",
+  Designer = "Designer",
+  SocialMedia = "Social Media Manager",
+  Accountant = "Accountant",
+  BusinessAnalyst = "Business analyst",
+  SalesRep = "Sales representative",
+  CustomerService = "Customer service ",
+  AdministrativeAssistant = "Administrative assistant",
+  Default = "",
+}
+
+export interface AddEmployeeInterface {
+  date?: Date;
+  employeeName: string;
+  role: IRoleType | null;
+  employmentType: IEmploymentType | null;
+  status: IStatus | null;
+  checkIn: Date | null;
+  checkOut: Date | null;
+  overTime?: null;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

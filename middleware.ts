@@ -40,7 +40,6 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        console.log("token token - ", token?.accessToken);
         if (req.nextUrl.pathname.startsWith("/auth/")) {
           return true;
         }

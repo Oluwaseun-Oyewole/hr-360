@@ -3,7 +3,7 @@ import Loader from "@/components/loader";
 import { routes } from "@/routes";
 import { useSendOtpMutation, useVerifyMutation } from "@/services/mutations";
 import { COOKIES_KEYS } from "@/utils/constants";
-import { saveToStorage } from "@/utils/helper";
+import { removeFromStorage } from "@/utils/helper";
 import { Toastify } from "@/utils/toasts";
 import { GetProps, Input } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -38,7 +38,7 @@ const VerifyEmailComponent = () => {
           onSuccess: (data) => {
             if (data) {
               Toastify.success(data?.message);
-              saveToStorage(COOKIES_KEYS.TOKEN, data?.token);
+              removeFromStorage(COOKIES_KEYS.TOKEN);
               router.replace(routes.login);
             }
           },

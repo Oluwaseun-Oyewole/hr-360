@@ -8,4 +8,6 @@ export class Endpoints {
   static updateAccount = BASE_URL + "accountUpdate";
   static verifyOTP = BASE_URL + "verifyOTP";
   static resendOTP = BASE_URL + "resendOTP";
+  static employees = BASE_URL + "employees";
+  static addEmployee = BASE_URL + "add-employee";
 }

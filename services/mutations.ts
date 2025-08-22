@@ -10,6 +10,7 @@ import {
 } from "./auth";
 import { changeEmail } from "./auth/index";
 import {
+  AddEmployeeInterface,
   changeEmailRequestBody,
   ForgotPasswordRequestBody,
   PasswordResetRequestBody,
@@ -18,6 +19,7 @@ import {
   updateAccountRequestBody,
   verifyOTPRequestBody,
 } from "./auth/types";
+import { addEmployee } from "./dashboard";
 import { LoginRequestBody } from "./types";
 
 export const useLoginMutation = () => {
@@ -81,6 +83,14 @@ export const useUpdateEmailMutation = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: async (values: changeEmailRequestBody) =>
       await changeEmail(values),
+  });
+  return { isPending, mutate };
+};
+
+export const useAddEmployeeMutation = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: AddEmployeeInterface) =>
+      await addEmployee(values),
   });
   return { isPending, mutate };
 };

@@ -61,3 +61,13 @@ export const getDecodedToken = () => {
 export function isTokenExpired(expTime: number) {
   return Date.now() >= expTime * 1000;
 }
+
+export const formatDateTimeLocal = (date: Date) => {
+  const d = new Date(date);
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
+};
+
+export const getCurrentDateTime = () => {
+  return formatDateTimeLocal(new Date());
+};

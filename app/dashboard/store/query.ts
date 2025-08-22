@@ -56,7 +56,7 @@ export const DashboardSlice = createApi({
     }),
     addNewEmployee: builder.mutation({
       query: (payload) => ({
-        url: "dashboard",
+        url: "add-employee",
         method: "POST",
         body: payload,
         headers: {

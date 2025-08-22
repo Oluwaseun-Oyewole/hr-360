@@ -57,7 +57,7 @@ const HR360Table: React.FC<ITableProps> = ({
           scroll={{ x: width ?? 900 }}
         />
       </div>
-      {isPaginate && (
+      {isPaginate && dataSource?.length > 0 && (
         <HR360Pagination
           total={total}
           title={title}

@@ -1,74 +1,72 @@
+import { IStatus } from "@/services/auth/types";
 import mongoose, { Model, Schema } from "mongoose";
+import { IEmploymentType, IRoleType } from "./users";
 
-enum IEmploymentType {
-  FullTime = "Full-Time",
-  PartTime = "Part-Time",
-  Contract = "Contract",
-}
-enum IStatus {
-  present = "Present",
-  absent = "Absent",
-  late = "Late",
-}
-enum IRoleType {
-  HrManager = "HR Manager",
-  Software = "Software Engineer",
-  Marketing = "Marketing Ex",
-  FinancialAnalyst = "Financial Analyst",
-  ProjectManager = "Project Manager",
-  Designer = "Designer",
-  SocialMedia = "Social Media Manager",
-  Accountant = "Accountant",
-  BusinessAnalyst = "Business analyst",
-  SalesRep = "Sales representative",
-  CustomerService = "Customer service ",
-  AdministrativeAssistant = "Administrative assistant",
-  Default = "",
-}
 export interface DashboardInterface extends Document {
   date: Date;
   employeeName: string;
   role: IRoleType;
   employmentType: IEmploymentType;
   status: IStatus;
-  checkIn: number;
-  checkOut: number;
-  overTime: number;
+  checkIn: Date;
+  checkOut: Date;
+  overTime?: number;
   email: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const DashboardSchema = new Schema<DashboardInterface>(
   {
-    employeeName: { type: String, required: true },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+    employeeName: {
+      type: String,
+      required: true,
+    },
     role: {
       type: String,
-      enum: IRoleType,
+      enum: Object.values(IRoleType),
       default: IRoleType.Default,
     },
     employmentType: {
       type: String,
-      enum: IEmploymentType,
+      enum: Object.values(IEmploymentType),
+      required: true,
     },
     status: {
       type: String,
+      enum: Object.values(IStatus),
+      required: true,
     },
     checkIn: {
-      type: Number,
+      type: Date,
+      required: true,
     },
     checkOut: {
-      type: Number,
+      type: Date,
+      required: true,
     },
     overTime: {
       type: Number,
+      required: false,
+      default: 0,
     },
     email: {
       type: String,
+      required: true,
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 let DashboardModelInstance: Model<DashboardInterface>;
+
 try {
   DashboardModelInstance = mongoose.model<DashboardInterface>("Dashboard");
 } catch (error) {
@@ -77,4 +75,5 @@ try {
     DashboardSchema
   );
 }
+
 export const DashboardModel = DashboardModelInstance;
